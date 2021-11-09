@@ -19,13 +19,23 @@ module.exports = class extends Command {
                     description: "The reason why you want to kick the user from the server.",
                     required: false
                 }
-            ]
+            ],
             category: "moderation"
         })
     }
 
     run = (message) => {
-if (!message.member.permissions.has('KICK_MEMBERS')) return message.reply({ content: 'Você precisa de permissão para expulsar membros no servidor.', ephemeral: true })
+        return message.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("Soon...")
+                    .setThumbnail(this.client.user.avatarURL())
+                    .setTimestamp()
+                    .setFooter(this.client.user.username, this.client.user.avatarURL())
+            ]
+        })
+
+        if (!message.member.permissions.has('KICK_MEMBERS')) return message.reply({ content: 'Você precisa de permissão para expulsar membros no servidor.', ephemeral: true })
 
         const user = message.options.getUser('usuário')
         if (message.user.id === user.id) return message.reply({ content: 'Você não pode se expulsar.', ephemeral: true })
