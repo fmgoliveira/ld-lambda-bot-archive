@@ -51,6 +51,7 @@ module.exports = class extends Command {
                 .setFooter(this.client.user.username, this.client.user.avatarURL())
                 .setTimestamp()
                 .setColor("#ffa726")
+                .setThumbnail("https://cdn.discordapp.com/attachments/905885763755995176/905886436006432799/logo_bg_orange_text.png")
 
             for (let category of categories) {
                 let counter = category.commands.length
