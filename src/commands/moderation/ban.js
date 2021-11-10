@@ -4,19 +4,19 @@ const Command = require("../../structures/Command")
 module.exports = class extends Command {
     constructor(client) {
         super(client, {
-            name: "kick",
-            description: "Kicks an user from the server.",
+            name: "ban",
+            description: "Bans an user from the server.",
             options: [
                 {
                     name: "user",
                     type: "USER",
-                    description: "The user you want to kick from the server.",
+                    description: "The user you want to ban from the server.",
                     required: true
                 },
                 {
                     name: "reason",
                     type: "STRING",
-                    description: "The reason why you want to kick the user from the server.",
+                    description: "The reason why you want to ban the user from the server.",
                     required: false
                 }
             ],
@@ -37,19 +37,19 @@ module.exports = class extends Command {
                     new MessageEmbed()
                         .setTitle("Error")
                         .setColor("RED")
-                        .setDescription("You don't have permission to kick members.")
+                        .setDescription("You don't have permission to ban members.")
                         .setFooter(this.client.user.username, this.client.user.avatarURL())
                         .setTimestamp()
                 ],
                 ephemeral: true
             })
         } else {
-            if (!message.member.permissions.has("KICK_MEMBERS")) return message.reply({
+            if (!message.member.permissions.has("BAN_MEMBERS")) return message.reply({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Error")
                         .setColor("RED")
-                        .setDescription("You need the `KICK_MEMBERS` permission to kick members. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
+                        .setDescription("You need the `BAN_MEMBERS` permission to ban members. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
                         .setFooter(this.client.user.username, this.client.user.avatarURL())
                         .setTimestamp()
                 ],
@@ -58,12 +58,11 @@ module.exports = class extends Command {
         }
 
         const user = message.options.getUser('user')
-
         if (message.user.id === user.id) return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("You can't kick yourself. If you want, just leave the server by yourself.")
+                    .setDescription("You can't ban yourself. If you want, just leave the server by yourself.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
@@ -75,7 +74,7 @@ module.exports = class extends Command {
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("You can't kick users with a role above yours.")
+                    .setDescription("You can't ban users with a role above yours.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
@@ -85,7 +84,7 @@ module.exports = class extends Command {
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("I can't kick this user, one of his roles is above mine.")
+                    .setDescription("I can't ban this user, one of his roles is above mine.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
@@ -94,12 +93,12 @@ module.exports = class extends Command {
 
         const reason = message.options.getString('reason') || 'No reason specified.'
 
-        message.guild.members.kick(user, { reason })
+        message.guild.members.ban(user, { reason })
             .then(() => message.reply({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Success")
-                        .setDescription(`User \`${user.tag}\` kicked successfully. | ${reason}`)
+                        .setDescription(`User \`${user.tag}\` banned successfully. | ${reason}`)
                         .setColor("#fff59d")
                 ]
             }))

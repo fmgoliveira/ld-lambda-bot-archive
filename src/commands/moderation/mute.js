@@ -1,32 +1,32 @@
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 const Command = require("../../structures/Command")
 
 module.exports = class extends Command {
     constructor(client) {
         super(client, {
-            name: "kick",
-            description: "Kicks an user from the server.",
+            name: "mute",
+            description: "Mutes an user.",
+            category: "moderation",
+            usage: "<user> (reason)",
+            requireDatabase: true,
             options: [
                 {
                     name: "user",
                     type: "USER",
-                    description: "The user you want to kick from the server.",
+                    description: "The user you want to mute.",
                     required: true
                 },
                 {
                     name: "reason",
                     type: "STRING",
-                    description: "The reason why you want to kick the user from the server.",
+                    description: "The reason why you want to mute the user.",
                     required: false
                 }
-            ],
-            category: "moderation",
-            usage: "<user> (reason)",
-            requireDatabase: true
+            ]
         })
     }
 
-    run = (message) => {
+    run = async (message) => {
         let roleId
 
         if (message.guild.db?.moderation?.moderator_role) { roleId = message.guild.db.moderation.moderator_role }
@@ -37,19 +37,19 @@ module.exports = class extends Command {
                     new MessageEmbed()
                         .setTitle("Error")
                         .setColor("RED")
-                        .setDescription("You don't have permission to kick members.")
+                        .setDescription("You don't have permission to mute members.")
                         .setFooter(this.client.user.username, this.client.user.avatarURL())
                         .setTimestamp()
                 ],
                 ephemeral: true
             })
         } else {
-            if (!message.member.permissions.has("KICK_MEMBERS")) return message.reply({
+            if (!message.member.permissions.has("MANAGE_GUILD")) return message.reply({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Error")
                         .setColor("RED")
-                        .setDescription("You need the `KICK_MEMBERS` permission to kick members. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
+                        .setDescription("You need the `MANAGE_GUILD` permission to mute members. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
                         .setFooter(this.client.user.username, this.client.user.avatarURL())
                         .setTimestamp()
                 ],
@@ -57,13 +57,14 @@ module.exports = class extends Command {
             })
         }
 
-        const user = message.options.getUser('user')
+        const user = message.options.getUser("user")
+        const reason = message.options.getString("reason") || "No reason specified"
 
         if (message.user.id === user.id) return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("You can't kick yourself. If you want, just leave the server by yourself.")
+                    .setDescription("You can't mute yourself. If you want, just be quiet.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
@@ -71,11 +72,12 @@ module.exports = class extends Command {
         })
 
         const member = message.guild.members.cache.get(user.id)
+
         if (member.roles.highest.position >= message.member.roles.highest.position) return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("You can't kick users with a role above yours.")
+                    .setDescription("You can't mute users with a role above yours.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
@@ -85,41 +87,43 @@ module.exports = class extends Command {
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("I can't kick this user, one of his roles is above mine.")
+                    .setDescription("I can't mute this user, one of his roles is above mine.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
             ], ephemeral: true
         })
 
-        const reason = message.options.getString('reason') || 'No reason specified.'
+        const muteRole = message.guild.db.moderation?.mute_role
 
-        message.guild.members.kick(user, { reason })
-            .then(() => message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Success")
-                        .setDescription(`User \`${user.tag}\` kicked successfully. | ${reason}`)
-                        .setColor("#fff59d")
-                ]
-            }))
-            .catch(() => message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("And error occurred while running this command. \n\n> *Please get in contact with our team in our* **support server**.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true,
-                components: [new MessageActionRow().addComponents(
-                    new MessageButton()
-                        .setEmoji("<:logo:906086580354162698>")
-                        .setLabel("Join Lambda Group")
-                        .setURL(process.env.SERVER_LINK)
-                        .setStyle("LINK")
-                )], ephemeral: true
-            }))
+        if (!muteRole) return message.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("Error")
+                    .setColor("RED")
+                    .setDescription("There isn't any mute role set yet. Please use `/config moderation mute_role <role>` to set it.")
+                    .setFooter(this.client.user.username, this.client.user.avatarURL())
+                    .setTimestamp()
+            ],
+            ephemeral: true
+        })
+
+        try {
+            member.roles.add(muteRole)
+        } catch {
+            console.log("Could not add muted role to user.")
+        }
+
+        return message.reply({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle("Success")
+                    .setDescription(`<@${user.id}> was muted | ${reason}`)
+                    .setColor("#fff59d")
+                    .setTimestamp()
+                    .setFooter(this.client.user.username, this.client.user.avatarURL())
+            ]
+        })
+
     }
 }
