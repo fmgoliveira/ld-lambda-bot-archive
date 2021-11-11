@@ -67,6 +67,11 @@ module.exports = class extends Event {
         }
 
         // ? TICKETS MODULE ? //
-
+        if (interaction.isButton()) {
+            if (!interaction.guild) return
+            
+            const buttonId = interaction.customId
+             
+        }
     }
 }

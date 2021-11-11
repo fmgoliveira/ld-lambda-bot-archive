@@ -6,6 +6,23 @@ const guildSchema = new Schema({
         channel: String,
         role: String,
         message: String
+    },
+    moderation: {
+        moderator_role: String,
+        mute_role: String
+    },
+    tickets: {
+        log_channel: String,
+        support_role: String,
+        category: String,
+        closed_category: String,
+        panel: {
+            msg: Object,
+            channel: String,
+            url: String,
+            disabled: Boolean
+        },
+        ticketChannels: [ Object ]
     }
 })
 

@@ -18,6 +18,16 @@ module.exports = class extends Client {
         // temporary
         // this.guilds.cache.get('878935240377241701').commands.set(this.commands)
 
+        const guilds = this.guilds.cache.map(guild => guild.id)
+
+        for (const guild of guilds) {
+            this.application.commands.set(this.commands, guild)
+        }
+
+        // for (let guild of this.guilds.cache.map(guild => guild.id)) {
+        //     this.application.commands.set(this.commands, this.guilds.cache.get(guild))
+        // }
+
         // this.application.commands.set(this.commands)
     }
 
