@@ -75,6 +75,53 @@ module.exports = class extends Event {
                         ],
                         ephemeral: true
                     })
+
+                } else if (message.content.split(" ")[0] === "!leave") {
+                    if (!message.content.split(" ")[1]) return
+                
+                    const guildId = message.content.split(" ")[1]
+                    const guild = await this.client.guilds.cache.get(guildId) 
+
+                    if (!guild) return message.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Error")
+                                .setColor("RED")
+                                .setDescription(`I'm not in that guild.`)
+                                .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                .setTimestamp()
+                        ],
+                        ephemeral: true
+                    })
+
+                    guild.leave()
+
+                    return message.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Success")
+                                .setColor("GREEN")
+                                .setDescription(`I left the guild with id \`${guildId}\`.`)
+                                .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                .setTimestamp()
+                        ],
+                        ephemeral: true
+                    })
+                } else if (message.content.split(" ")[0] === "!guilds") {
+                    const guilds = this.client.guilds.cache.map(guild => guild)
+
+                    const embed = new MessageEmbed()
+                        .setTitle("Guilds")
+                        .setColor("ORANGE")
+                        .setDescription(`These are the guilds I'm in:`)
+                        .setFooter(this.client.user.username, this.client.user.avatarURL())
+                        .setTimestamp()
+
+                    for (const guild of guilds) {
+                        embed.addField(guild.name, `**ID:** ${guild.id}\n**Created at:** ${guild.createdAt.toLocaleString()}\n**Members:** ${guild.memberCount}\n**Owner ID:** ${guild.ownerId}`, true)
+                    }
+
+                    return message.reply({ embeds: [ embed ], ephemeral: true })
                 }
             }
         }

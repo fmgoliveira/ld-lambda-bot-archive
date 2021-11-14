@@ -51,6 +51,7 @@ module.exports = class extends Client {
         const categories = readdirSync(path)
 
         for (const category of categories) {
+            if (!["client"].includes(category)) continue
             const events = readdirSync(`${path}/${category}`)
 
             for (const event of events) {

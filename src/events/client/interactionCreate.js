@@ -71,7 +71,14 @@ module.exports = class extends Event {
             if (!interaction.guild) return
             
             const buttonId = interaction.customId
-             
+            const _category = buttonId.split("-")[0]
+            const _command = buttonId.split("-")[1]
+
+            if (["reply"].includes(_category)) return
+
+            const database = await this.client.db.guilds.findById(interaction.guild.id) || new this.client.db.guilds({ _id: interaction.guild.id })
+            
+            require(`../${_category}/${_command}`)(this.client, interaction, database)
         }
     }
 }

@@ -36,7 +36,7 @@ module.exports = class extends Command {
                     .setEmoji("✅")
                     .setLabel("Verify")
                     .setStyle("SUCCESS")
-                    .setCustomId("verify")
+                    .setCustomId("bug-verify")
                     .setDisabled(verifyDisabled)
             )
 
@@ -45,19 +45,19 @@ module.exports = class extends Command {
                     .setEmoji("<:status_green:906087473627668490>")
                     .setLabel("Mark as 'Resolved'")
                     .setStyle("SECONDARY")
-                    .setCustomId("resolve")
+                    .setCustomId("bug-resolve")
                     .setDisabled(resolvedDisabled),
                 new MessageButton()
                     .setEmoji("<:status_yellow:906087532356304906>")
                     .setLabel("Mark as 'On Hold'")
                     .setStyle("SECONDARY")
-                    .setCustomId("onhold")
+                    .setCustomId("bug-onhold")
                     .setDisabled(onHoldDisabled),
                 new MessageButton()
                     .setEmoji("<:status_red:906087602447335424>")
                     .setLabel("Mark as 'Won't Fix'")
                     .setStyle("SECONDARY")
-                    .setCustomId("wontfix")
+                    .setCustomId("bug-wontfix")
                     .setDisabled(wontFixDisabled)
             ])
 
@@ -79,95 +79,6 @@ module.exports = class extends Command {
             ],
             components: createButtons(),
             fetchReply: true
-        })
-
-        const collector = reply.createMessageComponentCollector({})
-
-        collector.on("collect", (i) => {
-            let content
-            switch (i.customId) {
-                case "verify":
-                    BugDB.status = "✅ Verified"
-                    BugDB.save()
-                    content = {
-                        embeds: [
-                            new MessageEmbed()
-                                .setTitle(`Bug Report`)
-                                .addField("ID", String(BugDB._id), true)
-                                .addField("Description", BugDB.content)
-                                .addField("Reported by", BugDB.user, true)
-                                .addField("Guild", BugDB.guild, true)
-                                .addField("Status", BugDB.status, true)
-                                .setTimestamp()
-                                .setColor("#fff59d")
-                                .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        ],
-                        components: createButtons(true, false, false, false)
-                    }
-                    break
-
-                case "resolve":
-                    BugDB.status = "<:status_green:906087473627668490> Resolved"
-                    BugDB.save()
-                    content = {
-                        embeds: [
-                            new MessageEmbed()
-                                .setTitle(`Bug Report`)
-                                .addField("ID", String(BugDB._id), true)
-                                .addField("Description", BugDB.content)
-                                .addField("Reported by", BugDB.user, true)
-                                .addField("Guild", BugDB.guild, true)
-                                .addField("Status", BugDB.status, true)
-                                .setTimestamp()
-                                .setColor("GREEN")
-                                .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        ],
-                        components: createButtons(true, true, false, false)
-                    }
-                    break
-
-                case "onhold":
-                    BugDB.status = "<:status_yellow:906087532356304906> On Hold"
-                    BugDB.save()
-                    content = {
-                        embeds: [
-                            new MessageEmbed()
-                                .setTitle(`Bug Report`)
-                                .addField("ID", String(BugDB._id), true)
-                                .addField("Description", BugDB.content)
-                                .addField("Reported by", BugDB.user, true)
-                                .addField("Guild", BugDB.guild, true)
-                                .addField("Status", BugDB.status, true)
-                                .setTimestamp()
-                                .setColor("GOLD")
-                                .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        ],
-                        components: createButtons(true, false, true, false)
-                    }
-                    break
-
-                case "wontfix":
-                    BugDB.status = "<:status_red:906087602447335424> Won't Fix"
-                    BugDB.save()
-                    content = {
-                        embeds: [
-                            new MessageEmbed()
-                                .setTitle(`Bug Report`)
-                                .addField("ID", String(BugDB._id), true)
-                                .addField("Description", BugDB.content)
-                                .addField("Reported by", BugDB.user, true)
-                                .addField("Guild", BugDB.guild, true)
-                                .addField("Status", BugDB.status, true)
-                                .setTimestamp()
-                                .setColor("RED")
-                                .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        ],
-                        components: createButtons(true, false, false, true)
-                    }
-                    break
-            }
-
-            i.update(content)
         })
 
         return message.reply({

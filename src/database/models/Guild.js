@@ -22,7 +22,7 @@ const guildSchema = new Schema({
             url: String,
             disabled: Boolean
         },
-        ticketChannels: [ Object ]
+        ticketCount: Number
     }
 })
 
