@@ -9,6 +9,31 @@ module.exports = class extends Event {
     }
 
     run = async (message) => {
+        // ? TICKET MODULE ? //
+        const guildDatabase = await this.client.db.guilds.findById(message.guild.id) || new this.client.db.guilds({ _id: message.guild.id })
+        if (guildDatabase.tickets?.category) {
+            if (message.channel.parentId === guildDatabase.tickets.category) {
+                await this.client.db.transcripts.findOneAndUpdate(
+                    { _id: message.channel.id },
+                    {
+                        _id: message.channel.id,
+                        $push: {
+                            content: {
+                                author: {
+                                    tag: message.author.tag,
+                                    id: message.author.id
+                                },
+                                content: message.content,
+                                timestamp: message.createdAt.toLocaleString()
+                            }
+                        }
+                    },
+                    { upsert: true }
+                )
+                return
+            }
+        }
+
         if (message.guild.id === process.env.LAMBDA_GUILD_ID) {
             if (message.member.roles.cache.some(r => r.id === process.env.BOT_ADMIN_ROLE_ID)) {
                 if (message.content.split(" ")[0] === "!bl") {

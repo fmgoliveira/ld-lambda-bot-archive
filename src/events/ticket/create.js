@@ -39,9 +39,24 @@ module.exports = (client, interaction, database) => {
                 }
             ]
         }).then((channel) => {
-            const role = database.tickets.support_role
+            if (database.tickets.log_channel) {
+                try {
+                    const log_channel = interaction.guild.channels.cache.get(database.tickets.log_channel)
+                    log_channel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Ticket Created")
+                                .setDescription(`Ticket \`${channel.name}\` was **created** by ${interaction.member.user.tag}.`)
+                                .setFooter(client.user.username, client.user.avatarURL())
+                                .setTimestamp()
+                                .setColor("GREEN")
+                        ]
+                    })
+                } catch (err) {console.log(err)}
+            }
             
             let roleMsg
+            const role = database.tickets?.support_role
             if (role) roleMsg = `<@&${role}>, ` 
             else roleMsg = ""
 

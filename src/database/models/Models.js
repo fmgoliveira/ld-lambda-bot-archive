@@ -3,4 +3,5 @@ module.exports = {
     bugs: require("./Bugs"),
     users: require("./User"),
     warns: require("./Warns"),
+    transcripts: require("./Transcripts")
 }
