@@ -27,16 +27,22 @@ module.exports = (client, interaction, database) => {
                             fs.writeFileSync(`src/temp/${ch.id}.txt`, content)
 
                             client.channels.cache.get(database.tickets.log_channel).send({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle("Ticket Deleted")
-                                        .setDescription(`Ticket \`${ch.id}\` was **deleted** (there isn't any closed category set) by ${interaction.member.user.tag}.`)
-                                        .setFooter(client.user.username, client.user.avatarURL())
-                                        .setTimestamp()
-                                        .setColor("RED")
-                                ]
-                            })
-                            await client.channels.cache.get(database.tickets.log_channel).send({files: [`./src/temp/${ch.id}.txt`]})
+                                    embeds: [
+                                        new MessageEmbed()
+                                            .setTitle("Ticket Deleted")
+                                            .setDescription(`Ticket \`${ch.id}\` was **deleted** (there isn't any closed category set) by ${interaction.member.user.tag}.`)
+                                            .setFooter(client.user.username, client.user.avatarURL())
+                                            .setTimestamp()
+                                            .setColor("RED"),
+                                        new MessageEmbed()
+                                            .setTitle("Ticket Transcript")
+                                            .setDescription(content)
+                                            .setFooter(client.user.username, client.user.avatarURL())
+                                            .setTimestamp()
+                                            .setColor("BLACK")
+                                    ]
+                                })
+                                // await client.channels.cache.get(database.tickets.log_channel).send({files: [`./src/temp/${ch.id}.txt`]})
 
                             client.db.transcripts.findOneAndDelete({ _id: ch.id })
                             fs.unlink(`src/temp/${ch.id}.txt`, (err) => { if (err) console.log(err) })
