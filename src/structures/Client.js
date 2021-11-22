@@ -14,15 +14,50 @@ module.exports = class extends Client {
         this.loadEvents()
     }
 
+    updateStatus() {
+        let memberCount = 0
+        this.guilds.cache.forEach(guild => {
+            memberCount += guild.memberCount
+        })
+
+        let currentIndex = 0
+        const activities = [
+            {
+                name: `/help`,
+                type: "LISTENING"
+            },
+            {
+                name: `${memberCount} users`,
+                type: "LISTENING"
+            },
+            {
+                name: `${this.client.guilds.cache.size} servers`,
+                type: "WATCHING"
+            },
+            {
+                name: `${this.client.channels.cache.size} channels`,
+                type: "WATCHING"
+            },
+        ]
+
+        setInterval(() => {
+            const activity = activities[currentIndex]
+
+            this.user.setPresence({ activities: [activity] })
+
+            currentIndex = currentIndex >= activities.length - 1 ? 0 : currentIndex + 1
+        }, 10000)
+    }
+
     registryCommands() {
         // temporary
         // this.guilds.cache.get('878935240377241701').commands.set(this.commands)
 
-        const guilds = this.guilds.cache.map(guild => guild.id)
+        // const guilds = this.guilds.cache.map(guild => guild.id)
 
-        for (const guild of guilds) {
-            this.application.commands.set(this.commands, guild)
-        }
+        // for (const guild of guilds) {
+        //     this.application.commands.set(this.commands, guild)
+        // }
 
         // for (let guild of this.guilds.cache.map(guild => guild.id)) {
         //     this.application.commands.set(this.commands, this.guilds.cache.get(guild))
