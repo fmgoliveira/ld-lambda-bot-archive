@@ -36,6 +36,10 @@ module.exports = (client, interaction, database) => {
                 {
                     id: interaction.member.id,
                     allow: [ Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.READ_MESSAGE_HISTORY ]
+                },
+                {
+                    id: interaction.guild.id,
+                    deny: [ Permissions.FLAGS.VIEW_CHANNEL ]
                 }
             ]
         }).then((channel) => {
