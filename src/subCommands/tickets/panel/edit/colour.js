@@ -76,15 +76,29 @@ module.exports = async (client, interaction) => {
     const title = msg.embeds[0].title
     const description = msg.embeds[0].description
 
-    msg.edit({
-        embeds: [
-            new MessageEmbed()
-                .setTitle(title)
-                .setDescription(description)
-                .setColor(data)
+    try {
+        msg.edit({
+            embeds: [
+                new MessageEmbed()
+                    .setTitle(title)
+                    .setDescription(description)
+                    .setColor(data)
+                    .setFooter(client.user.username, client.user.avatarURL())
+            ]
+        })
+    } catch {
+        return interaction.reply({
+            embeds: [new MessageEmbed()
+                .setTitle("Error")
+                .setDescription("Please inform a valid colour.")
+                .setColor("RED")
+                .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())
-        ]
-    })
+            ],
+            ephemeral: true
+        })
+    }
+    
 
     return interaction.reply({
         embeds: [new MessageEmbed()

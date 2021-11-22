@@ -59,9 +59,9 @@ module.exports = class extends Client {
         //     this.application.commands.set(this.commands, guild)
         // }
 
-        // for (let guild of this.guilds.cache.map(guild => guild.id)) {
-        //     this.application.commands.set(this.commands, this.guilds.cache.get(guild))
-        // }
+        for (let guild of this.guilds.cache.map(guild => guild.id)) {
+            this.application.commands.set(this.commands, guild)
+        }
 
         // this.application.commands.set(this.commands)
     }
