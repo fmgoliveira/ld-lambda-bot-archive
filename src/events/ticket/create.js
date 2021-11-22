@@ -64,6 +64,10 @@ module.exports = (client, interaction, database) => {
             if (role) roleMsg = `<@&${role}>, ` 
             else roleMsg = ""
 
+            if (role) {
+                channel.permissionOverwrites.create(role, {"VIEW_CHANNEL": true, "SEND_MESSAGES": true})
+            }
+
             channel.send({
                 content: `${roleMsg}<@${interaction.member.id}> opened a ticket.`,
                 embeds: [
