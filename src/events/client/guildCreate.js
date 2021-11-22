@@ -14,7 +14,8 @@ module.exports = class extends Event {
         this.client.channels.cache.get(process.env.LAMBDA_GUILD_LOGS).send({
             embeds: [
                 new MessageEmbed()
-                    .setTitle("Bot joined Guild")
+                    .setTitle("Joined")
+                    .setDescription("Bot joined a guild!")
                     .addField("Name", guild.name, true)
                     .addField("ID", guild.id, true)
                     .addField("Owner ID", guild.ownerId, true)
