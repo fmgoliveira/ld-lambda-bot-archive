@@ -20,7 +20,7 @@ module.exports = (client, interaction, database) => {
                         client.db.transcripts.findById(ch.id, async(err, data) => {
                             if (err) console.log(err)
                             if (data) {
-                                let content
+                                let content = ""
                                 data.content.forEach(msg => {
                                     if (msg.content) content += `**${msg.author.tag}** (\`${msg.author.id}\`) >> ${msg.content}\n`
                                 })
