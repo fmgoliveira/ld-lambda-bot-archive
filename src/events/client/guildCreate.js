@@ -19,7 +19,6 @@ module.exports = class extends Event {
                     .addField("Name", guild.name, true)
                     .addField("ID", guild.id, true)
                     .addField("Owner ID", guild.ownerId, true)
-                    .addField("Members", guild.memberCount, true)
                     .setTimestamp()
                     .setColor("GREEN")
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
