@@ -31,11 +31,11 @@ module.exports = class extends Client {
                 type: "LISTENING"
             },
             {
-                name: `${this.client.guilds.cache.size} servers`,
+                name: `${this.guilds.cache.size} servers`,
                 type: "WATCHING"
             },
             {
-                name: `${this.client.channels.cache.size} channels`,
+                name: `${this.channels.cache.size} channels`,
                 type: "WATCHING"
             },
         ]
