@@ -52,7 +52,10 @@ module.exports = class extends Command {
             ephemeral: true
         })
 
-        const text = message.options.getString("message")
+        let text = message.options.getString("message")
+
+        if (text.includes("@everyone") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) text = text.replace("@everyone", "@ everyone")
+        if (text.includes("@here") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) text = text.replace("@here", "@ here")
 
         channel.send({ content: text }).then(() => {
             message.reply({
