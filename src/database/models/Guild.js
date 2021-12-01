@@ -23,6 +23,11 @@ const guildSchema = new Schema({
             disabled: Boolean
         },
         ticketCount: Number
+    },
+    verification: {
+        role: String,
+        panel: Object,
+        inverse: Boolean
     }
 })
 

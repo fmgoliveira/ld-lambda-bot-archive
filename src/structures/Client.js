@@ -17,7 +17,7 @@ module.exports = class extends Client {
     updateStatus() {
         let memberCount = 0
         this.guilds.cache.forEach(guild => {
-            memberCount += guild.memberCount
+            if (guild.members.cache.has(this.client.user.id)) memberCount += guild.memberCount
         })
 
         let currentIndex = 0
@@ -59,11 +59,11 @@ module.exports = class extends Client {
         //     this.application.commands.set(this.commands, guild)
         // }
 
-        for (let guild of this.guilds.cache.map(guild => guild.id)) {
-            this.application.commands.set(this.commands, guild)
-        }
+        // for (let guild of this.guilds.cache.map(guild => guild.id)) {
+        //     this.application.commands.set(this.commands, guild)
+        // }
 
-        // this.application.commands.set(this.commands)
+        this.application.commands.set(this.commands)
     }
 
     loadCommands(path = "src/commands") {
