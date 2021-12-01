@@ -17,7 +17,7 @@ module.exports = class extends Client {
     updateStatus() {
         let memberCount = 0
         this.guilds.cache.forEach(guild => {
-            if (guild.members.cache.has(this.client.user.id)) memberCount += guild.memberCount
+            if (guild.members.cache.has(this.user.id)) memberCount += guild.memberCount
         })
 
         let currentIndex = 0
