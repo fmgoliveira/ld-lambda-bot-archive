@@ -51,7 +51,7 @@ module.exports = class extends Client {
 
     registryCommands() {
         // temporary
-        // this.guilds.cache.get('878935240377241701').commands.set(this.commands)
+        this.guilds.cache.get('878935240377241701').commands.set(this.commands)
 
         // const guilds = this.guilds.cache.map(guild => guild.id)
 
