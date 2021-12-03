@@ -147,6 +147,66 @@ module.exports = class extends Event {
                     }
 
                     return message.reply({ embeds: [ embed ], ephemeral: true })
+                } else if (message.content.split(" ")[0] === "!invite") {
+                    const guildId = message.content.split(" ")[1]
+                    const guild = await this.client.guilds.cache.get(guildId) 
+
+                    if (!guild) return message.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Error")
+                                .setColor("RED")
+                                .setDescription(`I'm not in that guild.`)
+                                .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                .setTimestamp()
+                        ],
+                        ephemeral: true
+                    })
+
+                    let channelId
+
+                    guild.channels.cache.forEach(channel => {
+                        if (channel.permissionsFor(guild.members.cache.get(this.client.user.id)).has("CREATE_INSTANT_INVITE")) channelId = channel.id
+                    })
+                    
+                    if (!channelId) return message.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Error")
+                                .setColor("RED")
+                                .setDescription(`I can't create invites in that server.`)
+                                .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                .setTimestamp()
+                        ],
+                        ephemeral: true
+                    })
+
+                    guild.invites.create(channelId, {
+                        maxAge: 20
+                    }).then(invite => {
+                        return message.reply({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle("Join Server")
+                                    .setColor("#ffa726")
+                                    .setDescription(`You can join the server by clicking in the button below.\n\n> *You have 20 seconds to join the guild*`)
+                                    .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                    .setTimestamp()
+                            ],
+                            components: [
+                                new MessageActionRow().addComponents(
+                                    new MessageButton()
+                                        .setURL(invite.url)
+                                        .setEmoji("🔗")
+                                        .setLabel("Join Server")
+                                        .setStyle("LINK")
+                                )
+                            ],
+                            ephemeral: true
+                        })
+                    }).catch(err => {
+                        console.log(err)
+                    })
                 }
             }
         }
