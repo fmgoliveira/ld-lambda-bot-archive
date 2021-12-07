@@ -30,15 +30,7 @@ module.exports = class extends Client {
 
         const server = http.createServer((req, res) => {
             try {
-                const headers = {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
-                    'Access-Control-Max-Age': 2592000, // 30 days
-                    /** add other headers as per requirement */
-                };
-                res.writeHead(204, headers);
-                res.end();
-                res.writeHead(200, {"Content-Type": "text/plain"})
+                res.writeHead(200, { "Content-Type": "text/plain", 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'OPTIONS, POST, GET', 'Access-Control-Max-Age': 2592000 })
                 res.end(`{ guilds: ${this.guilds.cache.size}, channels: ${this.channels.cache.size}, users: ${memberCountStr} }`)
             } catch {
                 res.writeHead(500, {"Content-Type": "text/plain"})
