@@ -36,12 +36,8 @@ module.exports = class extends Client {
                     'Access-Control-Max-Age': 2592000, // 30 days
                     /** add other headers as per requirement */
                 };
-                
-                if (req.method === 'OPTIONS') {
-                    res.writeHead(204, headers);
-                    res.end();
-                }
-
+                res.writeHead(204, headers);
+                res.end();
                 res.writeHead(200, {"Content-Type": "text/plain"})
                 res.end(`{ guilds: ${this.guilds.cache.size}, channels: ${this.channels.cache.size}, users: ${memberCountStr} }`)
             } catch {
