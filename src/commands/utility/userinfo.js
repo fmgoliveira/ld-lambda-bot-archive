@@ -45,6 +45,9 @@ module.exports = class extends Command {
             if (role.id !== message.guild.id) roles += `<@&${role.id}> `
             roleCount++
         })
+        roleCount--
+
+        if (roleCount === 0) roles = "The user has no roles in this server"
 
         if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.STAFF_ROLE)) {
             staff = true
@@ -57,7 +60,7 @@ module.exports = class extends Command {
             .setThumbnail(avatar)
             .addField(`Joined`, message.guild.members.cache.get(id).joinedAt.toLocaleString(), true)
             .addField(`Registered`, user.createdAt.toLocaleString(), true)
-            .addField(`Roles [${roleCount - 1}]`, roles)
+            .addField(`Roles [${roleCount}]`, roles)
             .addField("ID", id)
             .addField("Bot", bot ? `✅ Yes` : `❌ No`, true)
             .addField("Status", status, true)
