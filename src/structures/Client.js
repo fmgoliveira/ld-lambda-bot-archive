@@ -38,7 +38,7 @@ module.exports = class extends Client {
             }
         })
 
-        server.listen(8080)
+        server.listen(process.env.PORT || 8888)
     }
 
     updateStatus() {
