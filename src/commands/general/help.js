@@ -20,7 +20,7 @@ module.exports = class extends Command {
         })
     }
 
-    run = (message) => {
+    run = async (message) => {
         var commandCommand = message.options.getString("command")
 
         const directories = [...new Set(this.client.commands.map((cmd) => cmd.category))]
@@ -78,9 +78,9 @@ module.exports = class extends Command {
                 )
             ]
 
-            const initialMessage = message.reply({ embeds: [embed], components: components(false) })
+            const initialMessage = await message.reply({ embeds: [embed], components: components(false), fetchReply: true })
 
-            const collector = message.channel.createMessageComponentCollector({ componentType: "SELECT_MENU", /*time: 30000*/ })
+            const collector = initialMessage.createMessageComponentCollector({ componentType: "SELECT_MENU", /*time: 30000*/ })
 
             collector.on("collect", (interaction) => {
                 const [directory] = interaction.values
