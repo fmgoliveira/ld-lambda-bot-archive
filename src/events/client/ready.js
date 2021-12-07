@@ -12,5 +12,6 @@ module.exports = class extends Event {
         this.client.registryCommands()
         await this.client.connectToDatabase()
         this.client.updateStatus()
+        this.client.startWebServer()
     }
 }

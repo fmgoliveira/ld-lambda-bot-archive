@@ -1,7 +1,6 @@
 require("dotenv").config()
 
 const Client = require("./src/structures/Client")
-
 const client = new Client({
     intents: [
         "GUILDS",
@@ -21,6 +20,5 @@ const client = new Client({
         "DIRECT_MESSAGE_TYPING"
     ]
 })
-
 // client.login(process.env.BETA_TOKEN)
 client.login(process.env.BOT_TOKEN)

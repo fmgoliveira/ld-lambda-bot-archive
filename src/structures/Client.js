@@ -14,6 +14,33 @@ module.exports = class extends Client {
         this.loadEvents()
     }
 
+    startWebServer() {
+        const http = require("http")
+        const path = require("path")
+
+        let memberCount = 0
+        this.guilds.cache.forEach(guild => {
+            if (guild.members.cache.has(this.user.id)) memberCount += guild.memberCount
+        })
+
+        let memberCountStr = String(memberCount)
+
+        if (memberCountStr.length >= 7) memberCountStr = `${memberCountStr.slice(0, -6)}M+`
+        if (memberCountStr.length >= 4) memberCountStr = `${memberCountStr.slice(0, -3)}K+`
+
+        const server = http.createServer((req, res) => {
+            try {
+                res.writeHead(200, {"Content-Type": "text/plain"})
+                res.end(`{ guilds: ${this.guilds.cache.size}, channels: ${this.channels.cache.size}, users: ${memberCountStr} }`)
+            } catch {
+                res.writeHead(500, {"Content-Type": "text/plain"})
+                res.end("Internal Server Error")
+            }
+        })
+
+        server.listen(5665) 
+    }
+
     updateStatus() {
         let memberCount = 0
         this.guilds.cache.forEach(guild => {
