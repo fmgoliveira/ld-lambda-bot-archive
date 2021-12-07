@@ -11,6 +11,7 @@ module.exports = class extends Event {
     run = async (guild) => {
         console.log("Bot joined ", guild.name)
         this.client.updateStatus()
+        this.client.startWebServer()
         this.client.channels.cache.get(process.env.LAMBDA_GUILD_LOGS).send({
             embeds: [
                 new MessageEmbed()

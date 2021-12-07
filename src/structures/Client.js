@@ -24,14 +24,23 @@ module.exports = class extends Client {
         })
 
         let memberCountStr = String(memberCount)
+        let guildCountStr = String(this.guilds.cache.size)
+        let channelCountStr = String(this.channels.cache.size)
 
         if (memberCountStr.length >= 7) memberCountStr = `${memberCountStr.slice(0, -6)}M+`
         if (memberCountStr.length >= 4) memberCountStr = `${memberCountStr.slice(0, -3)}K+`
 
+        if (guildCountStr.length >= 7) guildCountStr = `${guildCountStr.slice(0, -6)}M+`
+        if (guildCountStr.length >= 4) guildCountStr = `${guildCountStr.slice(0, -3)}K+`
+
+        if (channelCountStr.length >= 7) channelCountStr = `${channelCountStr.slice(0, -6)}M+`
+        if (channelCountStr.length >= 4) channelCountStr = `${channelCountStr.slice(0, -3)}K+`
+
+
         const server = http.createServer((req, res) => {
             try {
                 res.writeHead(200, { "Content-Type": "text/plain", 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'OPTIONS, POST, GET', 'Access-Control-Max-Age': 2592000 })
-                res.end(`${this.guilds.cache.size} | ${this.channels.cache.size} | ${memberCountStr}`)
+                res.end(`${guildCountStr} | ${channelCountStr} | ${memberCountStr}`)
             } catch {
                 res.writeHead(500, {"Content-Type": "text/plain"})
                 res.end("Internal Server Error")
