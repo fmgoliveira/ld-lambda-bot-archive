@@ -31,7 +31,7 @@ module.exports = class extends Client {
         const server = http.createServer((req, res) => {
             try {
                 res.writeHead(200, { "Content-Type": "text/plain", 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'OPTIONS, POST, GET', 'Access-Control-Max-Age': 2592000 })
-                res.end(`{ "guilds": ${this.guilds.cache.size}, "channels": ${this.channels.cache.size}, "users": ${memberCountStr} }`)
+                res.end(`{ "guilds": "${this.guilds.cache.size}", "channels": "${this.channels.cache.size}", "users": "${memberCountStr}" }`)
             } catch {
                 res.writeHead(500, {"Content-Type": "text/plain"})
                 res.end("Internal Server Error")
