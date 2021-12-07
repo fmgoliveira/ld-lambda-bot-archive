@@ -38,7 +38,7 @@ module.exports = class extends Client {
             }
         })
 
-        server.listen(80)
+        server.listen(8080)
     }
 
     updateStatus() {
