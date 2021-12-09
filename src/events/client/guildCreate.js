@@ -10,8 +10,8 @@ module.exports = class extends Event {
 
     run = async (guild) => {
         console.log("Bot joined ", guild.name)
-        this.client.updateStatus()
-        this.client.restartWebServer()
+        // this.client.updateStatus()
+        // this.client.restartWebServer()
         this.client.channels.cache.get(process.env.LAMBDA_GUILD_LOGS).send({
             embeds: [
                 new MessageEmbed()
@@ -41,5 +41,7 @@ module.exports = class extends Event {
         } catch(err) {
             console.log(err)
         }
+
+        process.exit()
     }
 }

@@ -1,5 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 const Command = require("../../structures/Command")
+const Topgg = require("@top-gg/sdk")
+const topgg = new Topgg.Api(process.env.TOPGG_TOKEN)
 
 module.exports = class extends Command {
     constructor(client) {
@@ -10,11 +12,13 @@ module.exports = class extends Command {
         })
     }
 
-    run = (message) => {
+    run = async (message) => {
+        let votedTopgg = await topgg.hasVoted(message.member.id)
+
         const embed = new MessageEmbed()
             .setTitle("Vote")
             .setDescription(`Upvote our bot to let us grow over Discord!`)
-            .addField("[Top.gg]", `\`${process.env.BOT_VERSION}\``)
+            .addField("[Top.gg](https://top.gg/bot/900398063607242762)", )
             .addField("Creator", "`@DrMonocle#4948`")
             .setThumbnail(this.client.user.avatarURL())
             .setTimestamp()

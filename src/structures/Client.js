@@ -14,7 +14,7 @@ module.exports = class extends Client {
         this.loadEvents()
     }
 
-    restartWebServer() {
+    startWebServer() {
         const http = require("http")
         const path = require("path")
 
@@ -45,8 +45,6 @@ module.exports = class extends Client {
                 res.end("Internal Server Error")
             }
         })
-
-        server.close(() => console.log("Server closed"))
 
         server.listen(process.env.PORT || 8888)
     }
