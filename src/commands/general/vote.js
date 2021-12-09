@@ -13,22 +13,26 @@ module.exports = class extends Command {
     }
 
     run = async (message) => {
-        let votedTopgg = await topgg.hasVoted(message.member.id)
+        let voted = await topgg.hasVoted(message.member.id)
+
+        const checkVoted = (voted) => {
+            if (voted) return "❌ Not active. Vote me to activate them"
+            else return "✅ Active"
+        }
 
         const embed = new MessageEmbed()
             .setTitle("Vote")
             .setDescription(`Upvote our bot to let us grow over Discord!`)
-            .addField("[Top.gg](https://top.gg/bot/900398063607242762)", )
-            .addField("Creator", "`@DrMonocle#4948`")
+            .addField("Vote benefits", checkVoted(voted))
             .setThumbnail(this.client.user.avatarURL())
             .setTimestamp()
-            .setFooter("Requested by: " + message.member.user.username, this.client.user.avatarURL())
+            .setFooter(this.client.user.username, this.client.user.avatarURL())
 
         return message.reply({
             embeds: [embed],
             components: [
                 new MessageActionRow().addComponents(
-                    new MessageButton().setEmoji("<:logo:906086580354162698>").setLabel("Join Lambda Group").setStyle("LINK").setURL(process.env.SERVER_LINK)
+                    new MessageButton().setEmoji("👍").setLabel("Upvote Bot").setStyle("LINK").setURL("https://top.gg/bot/900398063607242762")
                 )
             ]
         })
