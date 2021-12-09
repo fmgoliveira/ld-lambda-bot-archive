@@ -14,7 +14,7 @@ module.exports = class extends Client {
         this.loadEvents()
     }
 
-    startWebServer() {
+    restartWebServer() {
         const http = require("http")
         const path = require("path")
 
@@ -36,7 +36,6 @@ module.exports = class extends Client {
         if (channelCountStr.length >= 7) channelCountStr = `${channelCountStr.slice(0, -6)}M+`
         if (channelCountStr.length >= 4) channelCountStr = `${channelCountStr.slice(0, -3)}K+`
 
-
         const server = http.createServer((req, res) => {
             try {
                 res.writeHead(200, { "Content-Type": "text/plain", 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'OPTIONS, POST, GET', 'Access-Control-Max-Age': 2592000 })
@@ -47,7 +46,11 @@ module.exports = class extends Client {
             }
         })
 
-        server.listen(process.env.PORT || 8888)
+        try {
+            server.close()
+        } finally {
+            server.listen(process.env.PORT || 8888)
+        }
     }
 
     updateStatus() {
