@@ -47,7 +47,6 @@ module.exports = class extends Client {
         })
 
         server.close(() => console.log("Server closed"))
-        destroySockets()
 
         server.listen(process.env.PORT || 8888)
     }
