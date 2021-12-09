@@ -46,20 +46,6 @@ module.exports = class extends Client {
             }
         })
 
-        const serverSockets = new Set()
-
-        server.on("connection", socket => {
-            serverSockets.add(socket)
-            socket.on("close", () => {
-                serverSockets.delete(socket)
-            })
-        })
-
-        function destroySockets(sockets) {
-            for (const socket of sockets.values()) {
-                socket.destroy()
-            }
-        }
         server.close(() => console.log("Server closed"))
         destroySockets()
 
