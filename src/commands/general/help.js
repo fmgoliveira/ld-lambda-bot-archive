@@ -47,7 +47,7 @@ module.exports = class extends Command {
 
             const embed = new MessageEmbed()
                 .setTitle("Help - Categories")
-                .setDescription("These are the command categories for LΛMBDΛ bot. Use `/help <command>` to view all the info about a specific command.")
+                .setDescription("These are all the commands for Lambda. Use `/help <command>` to view all the info about a specific command or choose the category from the dropdown menu below.")
                 .setFooter(this.client.user.username, this.client.user.avatarURL())
                 .setTimestamp()
                 .setColor("#ffa726")
@@ -56,9 +56,9 @@ module.exports = class extends Command {
             for (let category of categories) {
                 let counter = category.commands.length
                 let cmds = category.commands.map((cmd) => cmd.name)
-                let commands = cmds.join(", ")
+                let commands = cmds.join("; ")
 
-                embed.addField(`${category.directory} [${counter}]`, commands, true)
+                embed.addField(`${category.directory}`, commands, true)
             }
 
             const components = (state) => [
@@ -88,7 +88,7 @@ module.exports = class extends Command {
 
                 const categoryEmbed = new MessageEmbed()
                     .setTitle(`${formatString(directory)} Category`)
-                    .setDescription(`These are the commands in the \`${directory.toUpperCase()}\` category. Use \`/help <command>\` to check the use cases.`)
+                    .setDescription(`The commands listed below are the commands from \`${directory.toUpperCase()}\` category. Use \`/help <command>\` to see some info about the command.`)
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
                     .setTimestamp()
                     .setColor("#ffa726")

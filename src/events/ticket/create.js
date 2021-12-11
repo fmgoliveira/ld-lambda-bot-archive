@@ -73,7 +73,7 @@ module.exports = (client, interaction, database) => {
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Support Ticket")
-                        .setDescription(`The support team of **${interaction.guild.name}** has been notified. Please provide as much information related to your issue as possible and wait patiently.`)
+                        .setDescription(`The support team of **${interaction.guild.name}** will be here as soon as possible. Please provide all the information you can and wait for a staff member.`)
                         .setColor("#ffa726")
                         .setFooter(client.user.username, client.user.avatarURL())
                         .setTimestamp()

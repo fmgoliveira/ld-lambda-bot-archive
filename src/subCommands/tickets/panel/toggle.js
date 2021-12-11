@@ -113,7 +113,7 @@ module.exports = async (client, interaction) => {
         embeds: [
             new MessageEmbed()
                 .setTitle("Support")
-                .setDescription(`Click the button below to create a ticket between you and the support team of **${interaction.guild.name}**.`)
+                .setDescription(`Click the button below to create a ticket and get assisted by **${interaction.guild.name}** support team.`)
                 .setColor("GREEN")
                 .setFooter(client.user.username, client.user.avatarURL())
         ],

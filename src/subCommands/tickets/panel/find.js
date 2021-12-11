@@ -27,7 +27,7 @@ module.exports = async (client, interaction) => {
     return interaction.reply({
         embeds: [new MessageEmbed()
             .setTitle("Ticket panel")
-            .setDescription("Lost your panel? No worries, click the button below to locate it.")
+            .setDescription("Have you lost your panel? No worries, click the button below to locate it.")
             .setColor("#ffa726")
             .setTimestamp()
             .setFooter(client.user.username, client.user.avatarURL())
