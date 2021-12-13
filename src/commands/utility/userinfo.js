@@ -24,6 +24,9 @@ module.exports = class extends Command {
         const { id, bot, username, discriminator } = user
         const avatar = user.avatarURL()
         let staff = false
+        let dev = false
+        let owner = false
+        let voted = false
         let roles = ""
         let statusStr
         let status
@@ -49,9 +52,37 @@ module.exports = class extends Command {
 
         if (roleCount === 0) roles = "The user has no roles in this server"
 
-        if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.STAFF_ROLE)) {
-            staff = true
-            footer += " | The emoji next to the mention means the user is part of Lambda Staff Team"
+        if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.has(id)) {
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.STAFF_ROLE)) {
+                staff = true
+            }
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.DEV_ROLE)) {
+                dev = true
+            }
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.VOTED_ROLE)) {
+                voted = true
+            }
+        }
+
+        if (id === process.env.OWNER_ID) owner = true
+
+        let acknowledgements = ""
+
+        if (staff) {
+            if (acknowledgements === "") acknowledgements += "<:mod:919935193857548308> Lambda Team"
+            else acknowledgements += ", <:mod:919935193857548308> Lambda Team"
+        }
+        if (dev) {
+            if (acknowledgements === "") acknowledgements += "<:dev:919935194000154624> Lambda Developer"
+            else acknowledgements += ", <:dev:919935194000154624> Lambda Developer"
+        }
+        if (owner) {
+            if (acknowledgements === "") acknowledgements += "<:owner:919935193861718036> Bot Owner"
+            else acknowledgements += ", <:owner:919935193861718036> Bot Owner"
+        }
+        if (voted) {
+            if (acknowledgements === "") acknowledgements += "<:voted:919935193832362044> Voted"
+            else acknowledgements += ", <:voted:919935193832362044> Voted"
         }
 
         const embed = new MessageEmbed()
@@ -64,6 +95,7 @@ module.exports = class extends Command {
             .addField("ID", id)
             .addField("Bot", bot ? `✅ Yes` : `❌ No`, true)
             .addField("Status", status, true)
+            .addField("Acknowledgements", acknowledgements === "" ? "None" : acknowledgements)
             .setFooter(footer, this.client.user.avatarURL())
             .setColor("#ffa726")
         
