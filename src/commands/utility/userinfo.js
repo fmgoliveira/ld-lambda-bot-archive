@@ -84,6 +84,10 @@ module.exports = class extends Command {
             if (acknowledgements === "") acknowledgements += "<:voted:919935193832362044> Voted"
             else acknowledgements += ", <:voted:919935193832362044> Voted"
         }
+        if (message.guild.ownerId === id) {
+            if (acknowledgements === "") acknowledgements += "Server Owner"
+            else acknowledgements += ", Server Owner"
+        }
 
         const embed = new MessageEmbed()
             .setDescription(`<@${id}>`)
