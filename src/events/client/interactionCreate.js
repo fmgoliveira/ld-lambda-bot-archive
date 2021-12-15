@@ -66,7 +66,7 @@ module.exports = class extends Event {
             }
         }
 
-        // ? TICKETS MODULE ? //
+        // ? TICKETS & BUGS MODULE ? //
         if (interaction.isButton()) {
             if (!interaction.guild) return
             

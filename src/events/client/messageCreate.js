@@ -34,7 +34,7 @@ module.exports = class extends Event {
             }
         }
 
-        if (message.guild.id === process.env.LAMBDA_GUILD_ID) {
+        if (message.guild.id === process.env.LAMBDA_STAFF_GUILD_ID) {
             if (message.member.roles.cache.some(r => r.id === process.env.BOT_ADMIN_ROLE_ID)) {
                 if (message.content.split(" ")[0] === "!bl") {
                     if (!message.content.split(" ")[1]) return

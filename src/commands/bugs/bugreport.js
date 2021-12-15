@@ -22,7 +22,7 @@ module.exports = class extends Command {
     run = async (message) => {
         const bugMessage = message.options.getString("bug_message")
 
-        const LambdaGuild = this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID)
+        const LambdaGuild = this.client.guilds.cache.get(process.env.LAMBDA_STAFF_GUILD_ID)
         const channel = LambdaGuild.channels.cache.get(process.env.BUGS_CHANNEL_ID)
         const user = message.member.user.tag
         const guild = `${message.member.guild.name} (\`${message.member.guild.id}\`)`
