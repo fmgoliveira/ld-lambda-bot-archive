@@ -54,8 +54,36 @@ module.exports = class extends Command {
 
         let text = message.options.getString("message")
 
-        if (text.includes("@everyone") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) text = text.replace("@everyone", "@ everyone")
-        if (text.includes("@here") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) text = text.replace("@here", "@ here")
+        if (text.includes("@everyone") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) return message.reply({
+            embeds: [new MessageEmbed()
+                .setTitle("Error")
+                .setDescription("You don't have permission to mention that role.")
+                .setColor("RED")
+                .setTimestamp()
+                .setFooter(this.client.user.username, this.client.user.avatarURL())
+            ],
+            ephemeral: true
+        })
+        if (text.includes("@here") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) return message.reply({
+            embeds: [new MessageEmbed()
+                .setTitle("Error")
+                .setDescription("You don't have permission to mention that role.")
+                .setColor("RED")
+                .setTimestamp()
+                .setFooter(this.client.user.username, this.client.user.avatarURL())
+            ],
+            ephemeral: true
+        })
+        if (text.includes("<@") && !channel.permissionsFor(message.member).has(Permissions.FLAGS.MENTION_EVERYONE)) return message.reply({
+            embeds: [new MessageEmbed()
+                .setTitle("Error")
+                .setDescription("You don't have permission to mention that role.")
+                .setColor("RED")
+                .setTimestamp()
+                .setFooter(this.client.user.username, this.client.user.avatarURL())
+            ],
+            ephemeral: true
+        })
 
         channel.send({ content: text }).then(() => {
             message.reply({
