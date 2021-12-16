@@ -13,9 +13,9 @@ module.exports = class extends Command {
     run = (message) => {
         const embed = new MessageEmbed()
             .setTitle("Bot Information")
-            .setDescription(`Developed by <:logo:906086580354162698> **LΛMBDΛ Group**`)
+            .setDescription(`Developed by <:logo:921033010764218428> **Lambda Development** Group`)
             .addField("Version", `\`${process.env.BOT_VERSION}\``)
-            .addField("Creator", "`@DrMonocle#4948`")
+            .addField("Creator", "<@549619189271494676> (`@DrMonocle#4948`)")
             .setThumbnail(this.client.user.avatarURL())
             .setTimestamp()
             .setFooter("Requested by: " + message.member.user.username, this.client.user.avatarURL())
@@ -24,7 +24,7 @@ module.exports = class extends Command {
             embeds: [embed],
             components: [
                 new MessageActionRow().addComponents(
-                    new MessageButton().setEmoji("<:logo:906086580354162698>").setLabel("Join Lambda Group").setStyle("LINK").setURL(process.env.SERVER_LINK)
+                    new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Join Lambda Development").setStyle("LINK").setURL(process.env.SERVER_LINK)
                 )
             ]
         })

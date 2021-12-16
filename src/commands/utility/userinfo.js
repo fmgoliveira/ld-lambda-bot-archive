@@ -34,7 +34,7 @@ module.exports = class extends Command {
         let roleCount = 0
 
         try {
-            statusStr = message.guild.members.cache.get(id).presence.status  
+            statusStr = message.guild.members.cache.get(id).presence.status
         } catch {
             statusStr = "offline"
         }
@@ -102,12 +102,12 @@ module.exports = class extends Command {
             .addField("Acknowledgements", acknowledgements === "" ? "None" : acknowledgements)
             .setFooter(footer, this.client.user.avatarURL())
             .setColor("#ffa726")
-        
-        if (staff) embed.setDescription(`<:logo:906086580354162698> <@${id}>`)
+
+        if (staff) embed.setDescription(`<:logo:921033010764218428> <@${id}>`)
         else embed.setTimestamp()
-        
+
         message.reply({
-            embeds: [ embed ]
+            embeds: [embed]
         })
     }
 }

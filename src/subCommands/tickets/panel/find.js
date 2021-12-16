@@ -16,8 +16,8 @@ module.exports = async (client, interaction) => {
         components: [
             new MessageActionRow().addComponents(
                 new MessageButton()
-                    .setEmoji("<:logo:906086580354162698>")
-                    .setLabel("Join Lambda Group")
+                    .setEmoji("<:logo:921033010764218428>")
+                    .setLabel("Join Lambda Development")
                     .setURL(process.env.SERVER_LINK)
                     .setStyle("LINK")
             )

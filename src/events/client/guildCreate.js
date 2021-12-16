@@ -32,7 +32,7 @@ module.exports = class extends Event {
                     new MessageEmbed()
                         .setTitle("Thank you for inviting Lambda")
                         .setDescription("Get started by running `/help`")
-                        .addField("Support Server", `Click [here](https://dsc.gg/lambda-dev) to join **Lambda Group**`)
+                        .addField("Support Server", `Click [here](https://dsc.gg/lambda-dev) to join **Lambda Development**`)
                         .setTimestamp()
                         .setColor("#ffa726")
                         .setFooter(this.client.user.username, this.client.user.avatarURL())

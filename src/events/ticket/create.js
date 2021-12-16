@@ -14,8 +14,8 @@ module.exports = (client, interaction, database) => {
         components: [
             new MessageActionRow().addComponents(
                 new MessageButton()
-                    .setEmoji("<:logo:906086580354162698>")
-                    .setLabel("Join Lambda Group")
+                    .setEmoji("<:logo:921033010764218428>")
+                    .setLabel("Join Lambda Development")
                     .setURL(process.env.SERVER_LINK)
                     .setStyle("LINK")
             )
@@ -35,11 +35,11 @@ module.exports = (client, interaction, database) => {
             permissionOverwrites: [
                 {
                     id: interaction.member.id,
-                    allow: [ Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.READ_MESSAGE_HISTORY ]
+                    allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES, Permissions.FLAGS.READ_MESSAGE_HISTORY]
                 },
                 {
                     id: interaction.guild.id,
-                    deny: [ Permissions.FLAGS.VIEW_CHANNEL ]
+                    deny: [Permissions.FLAGS.VIEW_CHANNEL]
                 }
             ]
         }).then((channel) => {
@@ -56,16 +56,16 @@ module.exports = (client, interaction, database) => {
                                 .setColor("GREEN")
                         ]
                     })
-                } catch (err) {console.log(err)}
+                } catch (err) { console.log(err) }
             }
-            
+
             let roleMsg
             const role = database.tickets?.support_role
-            if (role) roleMsg = `<@&${role}>, ` 
+            if (role) roleMsg = `<@&${role}>, `
             else roleMsg = ""
 
             if (role) {
-                channel.permissionOverwrites.create(role, {"VIEW_CHANNEL": true, "SEND_MESSAGES": true})
+                channel.permissionOverwrites.create(role, { "VIEW_CHANNEL": true, "SEND_MESSAGES": true })
             }
 
             channel.send({
@@ -116,11 +116,11 @@ module.exports = (client, interaction, database) => {
                 async function databaseSave(database) {
                     await database.save()
                 }
-                
+
                 database.tickets.ticketCount = length + 1
                 databaseSave(database)
             })
-    })
+        })
     } catch {
         return interaction.reply({
             embeds: [
@@ -135,7 +135,7 @@ module.exports = (client, interaction, database) => {
             components: [
                 new MessageActionRow().addComponents(
                     new MessageButton()
-                        .setEmoji("<:logo:906086580354162698>")
+                        .setEmoji("<:logo:921033010764218428>")
                         .setLabel("Support Server")
                         .setURL(process.env.SERVER_LINK)
                         .setStyle("LINK")

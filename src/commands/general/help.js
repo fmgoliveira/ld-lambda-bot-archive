@@ -114,7 +114,7 @@ module.exports = class extends Command {
                     ],
                     ephemeral: true,
                     components: [
-                        new MessageActionRow().addComponents(new MessageButton().setEmoji("<:logo:906086580354162698>").setLabel("Join Lambda Group").setStyle("LINK").setURL(process.env.SERVER_LINK))
+                        new MessageActionRow().addComponents(new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Join Lambda Development").setStyle("LINK").setURL(process.env.SERVER_LINK))
                     ]
                 })
             }
@@ -138,7 +138,7 @@ module.exports = class extends Command {
                 .setTimestamp()
                 .setFooter(this.client.user.username, this.client.user.avatarURL())
 
-            return message.reply({embeds: [commandEmbed]})
+            return message.reply({ embeds: [commandEmbed] })
         }
     }
 }

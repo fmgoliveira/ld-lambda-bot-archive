@@ -16,8 +16,8 @@ module.exports = (client, interaction) => {
         components: [
             new MessageActionRow().addComponents(
                 new MessageButton()
-                    .setEmoji("<:logo:906086580354162698>")
-                    .setLabel("Join Lambda Group")
+                    .setEmoji("<:logo:921033010764218428>")
+                    .setLabel("Join Lambda Development")
                     .setURL(process.env.SERVER_LINK)
                     .setStyle("LINK")
             )
@@ -37,8 +37,8 @@ module.exports = (client, interaction) => {
         components: [
             new MessageActionRow().addComponents(
                 new MessageButton()
-                    .setEmoji("<:logo:906086580354162698>")
-                    .setLabel("Join Lambda Group")
+                    .setEmoji("<:logo:921033010764218428>")
+                    .setLabel("Join Lambda Development")
                     .setURL(process.env.SERVER_LINK)
                     .setStyle("LINK")
             )
@@ -70,15 +70,17 @@ module.exports = (client, interaction) => {
             url: msg.url,
             disabled: false
         }
-        else database.tickets = { panel: {
-            msg,
-            channel: interaction.channel.id,
-            url: msg.url,
-            disabled: false
-        } }
-    
+        else database.tickets = {
+            panel: {
+                msg,
+                channel: interaction.channel.id,
+                url: msg.url,
+                disabled: false
+            }
+        }
+
         database.save()
-    
+
         return interaction.reply({
             embeds: [new MessageEmbed()
                 .setTitle("Success")

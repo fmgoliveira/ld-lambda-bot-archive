@@ -17,7 +17,7 @@ module.exports = (client, interaction, database) => {
             setTimeout(async () => {
                 try {
                     interaction.channel.delete().then((ch) => {
-                        client.db.transcripts.findById(ch.id, async(err, data) => {
+                        client.db.transcripts.findById(ch.id, async (err, data) => {
                             if (err) console.log(err)
                             if (data) {
                                 let content = ""
@@ -26,7 +26,7 @@ module.exports = (client, interaction, database) => {
                                 })
 
                                 // fs.writeFileSync(`src/temp/${ch.id}.txt`, content)
-                                
+
                                 try {
                                     client.channels.cache.get(database.tickets.log_channel).send({
                                         embeds: [
@@ -47,7 +47,7 @@ module.exports = (client, interaction, database) => {
                                 } catch (err) {
                                     console.log(err)
                                 }
-                                
+
                                 // await client.channels.cache.get(database.tickets.log_channel).send({files: [`./src/temp/${ch.id}.txt`]})
 
                                 client.db.transcripts.findOneAndDelete({ _id: ch.id })
@@ -67,7 +67,7 @@ module.exports = (client, interaction, database) => {
                         .setColor("RED")
                 ]
             })
-            setTimeout(async() => {
+            setTimeout(async () => {
                 interaction.channel.delete()
             }, 5000)
         }
@@ -85,8 +85,8 @@ module.exports = (client, interaction, database) => {
             components: [
                 new MessageActionRow().addComponents(
                     new MessageButton()
-                        .setEmoji("<:logo:906086580354162698>")
-                        .setLabel("Join Lambda Group")
+                        .setEmoji("<:logo:921033010764218428>")
+                        .setLabel("Join Lambda Development")
                         .setURL(process.env.SERVER_LINK)
                         .setStyle("LINK")
                 )
