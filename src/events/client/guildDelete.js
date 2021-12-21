@@ -12,7 +12,7 @@ module.exports = class extends Event {
         console.log("Bot left ", guild.name)
         if (!guild.available) return
         this.client.updateStatus()
-        this.client.startWebServer()
+        // this.client.startWebServer()
         this.client.channels.cache.get(process.env.LAMBDA_GUILD_LOGS).send({
             embeds: [
                 new MessageEmbed()
