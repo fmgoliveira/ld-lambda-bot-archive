@@ -13,7 +13,7 @@ module.exports = class extends Command {
     run = (message) => {
         const embed = new MessageEmbed()
             .setTitle(`Need help?`)
-            .setDescription(`Click **[here](https://dsc.gg/lambda-dev)** to join <:logo:921033010764218428> **Lambda Development**!`)
+            .setDescription(`Click **[here](https://discord.lambdadev.xyz)** to join <:logo:921033010764218428> **Lambda Development**!`)
             .setThumbnail(this.client.user.avatarURL())
             .setTimestamp()
             .setFooter("Requested by: " + message.member.user.username, this.client.user.avatarURL())
@@ -22,7 +22,7 @@ module.exports = class extends Command {
             embeds: [embed],
             components: [
                 new MessageActionRow().addComponents(
-                    new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Support Server").setStyle("LINK").setURL("https://dsc.gg/lambda-dev")
+                    new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Support Server").setStyle("LINK").setURL("https://discord.lambdadev.xyz")
                 )
             ]
         })

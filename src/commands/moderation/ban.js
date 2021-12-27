@@ -22,42 +22,13 @@ module.exports = class extends Command {
             ],
             category: "moderation",
             usage: "<user> (reason)",
-            requireDatabase: true
+            permissions: [ "BAN_MEMBERS" ]
         })
     }
 
     run = (message) => {
-        let roleId
-
-        if (message.guild.db?.moderation?.moderator_role) { roleId = message.guild.db.moderation.moderator_role }
-
-        if (roleId) {
-            if (!message.member.roles.cache.some(r => r.id === roleId)) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You don't have permission to ban members.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        } else {
-            if (!message.member.permissions.has("BAN_MEMBERS")) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You need the `BAN_MEMBERS` permission to ban members. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        }
-
         const user = message.options.getUser('user')
+        
         if (message.user.id === user.id) return message.reply({
             embeds: [
                 new MessageEmbed()
@@ -80,7 +51,7 @@ module.exports = class extends Command {
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
             ], ephemeral: true
         })
-        if (message.guild.me.roles.highest.position <= member.roles.highest.position) return message.reply({
+        if (message.guild.me.roles.highest.position <= member.roles.highest.position || message.guild.ownerId === member.id) return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")

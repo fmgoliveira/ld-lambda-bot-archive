@@ -13,7 +13,7 @@ module.exports = class extends Command {
     run = (message) => {
         const embed = new MessageEmbed()
             .setTitle(`Invite ${this.client.user.username}`)
-            .setDescription(`Click **[here](https://dsc.gg/lambda-invite)** to invite Lambda!`)
+            .setDescription(`Click **[here](https://bot.lambdadev.xyz/invite)** to invite Lambda!`)
             .setThumbnail(this.client.user.avatarURL())
             .setTimestamp()
             .setFooter("Requested by: " + message.member.user.username, this.client.user.avatarURL())
@@ -22,7 +22,7 @@ module.exports = class extends Command {
             embeds: [embed],
             components: [
                 new MessageActionRow().addComponents(
-                    new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Invite Lambda").setStyle("LINK").setURL("https://dsc.gg/lambda-invite")
+                    new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Invite Lambda").setStyle("LINK").setURL("https://bot.lambdadev.xyz/invite")
                 )
             ]
         })

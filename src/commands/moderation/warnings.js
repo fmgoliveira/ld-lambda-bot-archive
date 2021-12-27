@@ -15,7 +15,8 @@ module.exports = class extends Command {
                     description: "The user whose warnings you want to get.",
                     required: true
                 }
-            ]
+            ],
+            permissions: [ "MODERATE_MEMBERS" ]
         })
     }
 

@@ -42,7 +42,6 @@ module.exports = class extends Command {
             }
         })
 
-        // console.log(categories)
         if (!commandCommand) {
 
             const embed = new MessageEmbed()
@@ -132,11 +131,16 @@ module.exports = class extends Command {
             const commandEmbed = new MessageEmbed()
                 .setTitle(formatString(command.name))
                 .setDescription(command.description)
-                .addField("Usage", `\`/${command.name}${usage}\``)
                 .setColor("#ffa726")
                 .setFooter(`() = Optional, <> = Required\n${this.client.user.username}`, this.client.user.avatarURL())
                 .setTimestamp()
                 .setFooter(this.client.user.username, this.client.user.avatarURL())
+            
+            if (command.name === "config") {
+                commandEmbed.addField("Usage", `\`/${command.name}${usage}\` or \`/config reset <item>\``)    
+            } else {
+                commandEmbed.addField("Usage", `\`/${command.name}${usage}\``)    
+            }
 
             return message.reply({ embeds: [commandEmbed] })
         }

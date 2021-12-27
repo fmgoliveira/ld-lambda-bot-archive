@@ -8,6 +8,7 @@ module.exports = class extends Command {
             description: "Adds a user to the ticket channel.",
             category: "tickets",
             requireDatabase: true,
+            usage: "<user>",
             options: [
                 {
                     type: "USER",

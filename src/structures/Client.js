@@ -1,52 +1,22 @@
 const { Client } = require("discord.js")
-const { readdirSync, statSync, readdir } = require("fs")
 const { connect } = require("mongoose")
-const { join } = require("path")
 const { cwd } = require("process")
 const Models = require("../database/models/Models")
+const Ascii = require("ascii-table");
+const { readdirSync } = require("fs");
+const createWebServer = require("../server/index")
 
 module.exports = class extends Client {
     constructor(options) {
         super(options)
 
         this.commands = []
-        this.loadCommands()
         this.loadEvents()
+        this.loadCommands()
     }
 
     startWebServer() {
-        const http = require("http")
-        const path = require("path")
-
-        let memberCount = 0
-        this.guilds.cache.forEach(guild => {
-            if (guild.members.cache.has(this.user.id)) memberCount += guild.memberCount
-        })
-
-        let memberCountStr = String(memberCount)
-        let guildCountStr = String(this.guilds.cache.size)
-        let channelCountStr = String(this.channels.cache.size)
-
-        if (memberCountStr.length >= 7) memberCountStr = `${memberCountStr.slice(0, -6)}M+`
-        if (memberCountStr.length >= 4) memberCountStr = `${memberCountStr.slice(0, -3)}K+`
-
-        if (guildCountStr.length >= 7) guildCountStr = `${guildCountStr.slice(0, -6)}M+`
-        if (guildCountStr.length >= 4) guildCountStr = `${guildCountStr.slice(0, -3)}K+`
-
-        if (channelCountStr.length >= 7) channelCountStr = `${channelCountStr.slice(0, -6)}M+`
-        if (channelCountStr.length >= 4) channelCountStr = `${channelCountStr.slice(0, -3)}K+`
-
-        const server = http.createServer((req, res) => {
-            try {
-                res.writeHead(200, { "Content-Type": "text/plain", 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'OPTIONS, POST, GET', 'Access-Control-Max-Age': 2592000 })
-                res.end(`${guildCountStr} | ${channelCountStr} | ${memberCountStr}`)
-            } catch {
-                res.writeHead(500, { "Content-Type": "text/plain" })
-                res.end("Internal Server Error")
-            }
-        })
-
-        server.listen(process.env.PORT || 8888)
+        createWebServer(this)
     }
 
     updateStatus() {
@@ -84,59 +54,88 @@ module.exports = class extends Client {
         }, 10000)
     }
 
-    registryCommands() {
-        // temporary
-        this.guilds.cache.get('878935240377241701').commands.set(this.commands)
+    registerCommands() {
+        // Lambda Guilds
+        this.guilds.cache.get(process.env.LAMBDA_GUILD_ID).commands.set(this.commands)
+        this.guilds.cache.get(process.env.LAMBDA_STAFF_GUILD_ID).commands.set(this.commands)
 
-        // const guilds = this.guilds.cache.map(guild => guild.id)
-
-        // for (const guild of guilds) {
-        //     this.application.commands.set(this.commands, guild)
-        // }
-
-        // for (let guild of this.guilds.cache.map(guild => guild.id)) {
-        //     this.application.commands.set(this.commands, guild)
-        // }
-
+        // Other Guilds
         this.application.commands.set(this.commands)
     }
 
-    loadCommands(path = "src/commands") {
-        const categories = readdirSync(path)
+    loadCommands() {
+        const Table = new Ascii("Loaded Commands");
 
-        for (const category of categories) {
-            const commands = readdirSync(`${path}/${category}`)
+        const categories = readdirSync("src/commands")
+        categories.forEach(category => {
+            const commandFiles = readdirSync(`src/commands/${category}`)
+            commandFiles.forEach(commandFile => {
+                const cmd = require(`../commands/${category}/${commandFile.replace(".js", "")}`)
+                const Permissions = require("../validation/PermissionNames").Permissions
 
-            for (const command of commands) {
-                const commandClass = require(join(cwd(), `${path}/${category}/${command}`))
-                const cmd = new (commandClass)(this)
+                const command = new (cmd)(this)
 
-                if (!this.commands.includes(cmd)) this.commands.push(cmd)
-                console.log(`Command "${cmd.name}" loaded.`)
-            }
-        }
+                command.category = category
+
+                if (!command.name) {
+                    const pathToFile = `${category}/${commandFile}`
+                    Table.addRow(`${commandFile.replace(".js", "")}`, `🔴 Name missing: ${pathToFile}`)
+                    return
+                }
+                if (!command.description) {
+                    const pathToFile = `${category}/${commandFile}`
+                    Table.addRow(`${command.name}`, `🔴 Description missing: ${pathToFile}`)
+                    return
+                }
+                if (command.permissions) {
+                    if (!command.permissions.every(elem => Permissions.includes(elem))) {
+                        const pathToFile = `${category}/${commandFile}`
+                        Table.addRow(`${command.name}`, `🔴 One of the permissions is invalid: ${pathToFile}`)
+                        return
+                    }
+                }
+
+                Table.addRow(command.name, `🟢 Command loaded successfully`)
+
+                if (!this.commands.includes(command)) this.commands.push(command)
+            })
+        })
+
+        console.log(Table.toString())
     }
 
-    loadEvents(path = "src/events") {
-        const categories = readdirSync(path)
+    loadEvents() {
+        const Table = new Ascii("Loaded Events");
 
-        for (const category of categories) {
-            if (!["client"].includes(category)) continue
-            const events = readdirSync(`${path}/${category}`)
+        const categories = readdirSync("src/events")
+        categories.forEach(category => {
+            const eventFiles = readdirSync(`src/events/${category}`)
+            eventFiles.forEach(eventFile => {
+                const evt = require(`../events/${category}/${eventFile.replace(".js", "")}`)
+                const Events = require("../validation/EventNames").Events
 
-            for (const event of events) {
-                const eventClass = require(join(cwd(), `${path}/${category}/${event}`))
-                const evt = new (eventClass)(this)
+                const event = new (evt)(this)
 
-                if (evt.name === "ready") { this.once(evt.name, evt.run) }
-                else { this.on(evt.name, evt.run) }
+                if (!Events.includes(event.name) || !event.name) {
+                    const pathToFile = `${category}/${eventFile}`
+                    Table.addRow(`${event.name || "MISSING"}`, `🔴 Event name invalid or missing: ${pathToFile}`)
+                    return
+                }
 
-                console.log(`Event "${evt.name}" loaded.`)
-            }
-        }
+                if (event.once) {
+                    this.once(event.name, event.run)
+                } else {
+                    this.on(event.name, event.run)
+                }
+
+                Table.addRow(event.name, `🟢 Event loaded successfully`)
+            })
+        })
+
+        console.log(Table.toString())
     }
 
-    async connectToDatabase() {
+    connectToDatabase() {
         const connection = connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -144,6 +143,6 @@ module.exports = class extends Client {
 
         this.db = { connection, ...Models }
 
-        console.log("Connected to MongoDB database.")
+        console.log("💾 Connected to MongoDB database successfully.")
     }
 }

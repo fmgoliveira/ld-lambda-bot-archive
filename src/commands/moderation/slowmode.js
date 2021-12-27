@@ -15,40 +15,14 @@ module.exports = class extends Command {
                 }
             ],
             category: "moderation",
-            usage: "<seconds>"
+            usage: "<seconds>",
+            permissions: [ "MANAGE_CHANNELS" ]
         })
     }
 
     run = async (message) => {
-        let roleId
 
-        if (message.guild.db?.moderation?.moderator_role) { roleId = message.guild.db.moderation.moderator_role }
-
-        if (roleId) {
-            if (!message.member.roles.cache.some(r => r.id === roleId)) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You don't have permission to change a channel slowmode.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        } else {
-            if (!message.member.permissions.has("MANAGE_CHANNELS")) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You need the `MANAGE_CHANNELS` permission to change a channel slowmode. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        }
+        if (!message.guilds.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
 
         const amount = message.options.getNumber('seconds')
         const { channel } = message

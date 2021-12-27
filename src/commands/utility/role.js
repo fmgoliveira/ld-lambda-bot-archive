@@ -7,7 +7,7 @@ module.exports = class extends Command {
             name: "role",
             description: "Add/Remove a user's role.",
             category: "utility",
-            usage: "<add/remove> <user> <role>",
+            usage: "<add|remove> <user> <role>",
             options: [
                 {
                     type: "SUB_COMMAND",
@@ -47,22 +47,12 @@ module.exports = class extends Command {
                         }
                     ]
                 }
-            ]
+            ],
+            permissions: [ "MANAGE_ROLES" ]
         })
     }
 
     run = async (message) => {
-        if (!message.member.permissions.has("MANAGE_ROLES")) return message.reply({
-            embeds: [new MessageEmbed()
-                .setTitle("Error")
-                .setColor("RED")
-                .setDescription("You do not have permission to use this command. \n\n> You need the `MANAGE_ROLES` permission to do that.")
-                .setFooter(this.client.user.username, this.client.user.avatarURL())
-                .setTimestamp()
-            ],
-            ephemeral: true
-        })
-
         const subCommand = message.options.getSubcommand()
         
         require(`../../subCommands/role/${subCommand}`)(this.client, message)

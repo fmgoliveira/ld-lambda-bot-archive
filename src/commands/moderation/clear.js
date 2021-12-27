@@ -1,59 +1,31 @@
 const { MessageEmbed } = require("discord.js")
 const Command = require("../../structures/Command")
+const { missingClientPermissions } = require("../../structures/embeds/ErrorEmbed")
 
 module.exports = class extends Command {
     constructor(client) {
         super(client, {
             name: "clear",
-            description: "Clears a certain amount of messages from a channel.",
+            description: "Clears a certain amount of messages from a channel (up to 300).",
             options: [
                 {
                     name: "amount",
                     type: "NUMBER",
-                    description: "The user you want to kick from the server.",
+                    description: "The amount of messages you want to purge you want to kick from the server.",
                     required: true
                 }
             ],
             category: "moderation",
-            usage: "<amount>"
+            usage: "<amount>",
+            permissions: [ "MANAGE_MESSAGES" ]
         })
     }
 
     run = async (message) => {
-        let roleId
 
-        if (message.guild.db?.moderation?.moderator_role) { roleId = message.guild.db.moderation.moderator_role }
-
-        if (roleId) {
-            if (!message.member.roles.cache.some(r => r.id === roleId)) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You don't have permission to clear messages.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        } else {
-            if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You need the `MANAGE_MESSAGES` permission to clear messages. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        }
+        if (!message.guilds.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
 
         var amount = message.options.getNumber('amount')
-
-        if (amount > 100) amount = 100
-
         if (amount === 0 || amount < 0) return message.reply({
             embeds: [
                 new MessageEmbed()
@@ -65,13 +37,58 @@ module.exports = class extends Command {
             ], ephemeral: true
         })
 
-        const { size } = await message.channel.bulkDelete(amount, true)
+        let tempSize
+
+        if (amount <= 100) {
+            let { size } = await message.channel.bulkDelete(amount, true)
+            tempSize = size
+        }
+        else if (amount <= 200) {
+            let { size } = await message.channel.bulkDelete(100, true)
+            let left = amount - size
+            if (left > 0) {
+                setTimeout( async () => {
+                    let { size } = await message.channel.bulkDelete(left, true)
+                    tempSize = 100 + size
+                }, 3000)
+            }
+        }
+        else if (amount <= 300) {
+            let { size } = await message.channel.bulkDelete(100, true)
+            let left = amount - size
+            if (left > 0) {
+                setTimeout( async () => {
+                    let { size } = await message.channel.bulkDelete(100, true)
+                    let left2 = left - size
+
+                    if (left2 > 0) {
+                        setTimeout( async () => {
+                            let { size } = await message.channel.bulkDelete(left, true)
+                            tempSize = 200 + size
+                        }, 3000)
+                    }
+                }, 3000)
+            }
+        }
+        else {
+            return message.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle("Error")
+                        .setDescription(`Please inform a valid amount (\`1-300\`).`)
+                        .setColor("RED")
+                        .setTimestamp()
+                        .setFooter(this.client.user.username, this.client.user.avatarURL())
+                ],
+                ephemeral: true
+            })
+        }
 
         return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Success")
-                    .setDescription(`Successfully deleted \`${size}\` messages from the channel.`)
+                    .setDescription(`Successfully deleted \`${tempSize}\` messages from the channel.`)
                     .setColor("#fff59d")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())

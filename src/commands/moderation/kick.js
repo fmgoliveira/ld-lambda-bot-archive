@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js")
 const Command = require("../../structures/Command")
+const inviteButton = require("../../structures/components/inviteButton")
 
 module.exports = class extends Command {
     constructor(client) {
@@ -22,48 +23,18 @@ module.exports = class extends Command {
             ],
             category: "moderation",
             usage: "<user> (reason)",
-            requireDatabase: true
+            permissions: [ "KICK_MEMBERS" ]
         })
     }
 
     run = (message) => {
-        let roleId
-
-        if (message.guild.db?.moderation?.moderator_role) { roleId = message.guild.db.moderation.moderator_role }
-
-        if (roleId) {
-            if (!message.member.roles.cache.some(r => r.id === roleId)) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You don't have permission to kick members.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        } else {
-            if (!message.member.permissions.has("KICK_MEMBERS")) return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setColor("RED")
-                        .setDescription("You need the `KICK_MEMBERS` permission to kick members. \n\n> Ask a Server Admin to create a Moderator Role with `/config moderation moderator_role <role>` to allow a specific role to access moderation commands.")
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ],
-                ephemeral: true
-            })
-        }
-
         const user = message.options.getUser('user')
 
         if (message.user.id === user.id) return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("You can't kick yourself. If you want, just leave the server by yourself.")
+                    .setDescription("You can't kick yourself. If you want, just leave the server.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
@@ -81,7 +52,7 @@ module.exports = class extends Command {
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
             ], ephemeral: true
         })
-        if (message.guild.me.roles.highest.position <= member.roles.highest.position) return message.reply({
+        if (message.guild.me.roles.highest.position <= member.roles.highest.position || message.guild.ownerId === member.id) return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
@@ -113,13 +84,7 @@ module.exports = class extends Command {
                         .setTimestamp()
                 ],
                 ephemeral: true,
-                components: [new MessageActionRow().addComponents(
-                    new MessageButton()
-                        .setEmoji("<:logo:921033010764218428>")
-                        .setLabel("Join Lambda Development")
-                        .setURL(process.env.SERVER_LINK)
-                        .setStyle("LINK")
-                )], ephemeral: true
+                components: [ new inviteButton() ], ephemeral: true
             }))
     }
 }

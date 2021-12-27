@@ -7,6 +7,7 @@ module.exports = class extends Command {
             name: "remove",
             description: "Removes a user from the ticket channel.",
             category: "tickets",
+            usage: "<user>",
             requireDatabase: true,
             options: [
                 {

@@ -7,6 +7,7 @@ module.exports = class extends Command {
             name: "panel",
             description: "Configure ticket panel.",
             category: "tickets",
+            usage: "<add|remove|find|edit|toggle>",
             requireDatabase: true,
             options: [
                 {
@@ -75,29 +76,18 @@ module.exports = class extends Command {
                         }
                     ]
                 }
-            ]
+            ],
+            permissions: [ "MANAGE_GUILD" ]
         })
     }
 
     run = async (message) => {
-        if (!message.member.permissions.has("MANAGE_GUILD")) return message.reply({
-            embeds: [new MessageEmbed()
-                .setTitle("Error")
-                .setColor("RED")
-                .setDescription("You do not have permission to use this command. \n\n> You need the `MANAGE_GUILD` permission to do that.")
-                .setFooter(this.client.user.username, this.client.user.avatarURL())
-                .setTimestamp()
-            ],
-            ephemeral: true
-        })
-
         const subCommand = message.options.getSubcommand()
         let subCommandGroup
         try {
             subCommandGroup = message.options.getSubcommandGroup()
         } catch (error) {
-            if (error.type === TypeError) console.log("No subcommand")
-            subCommandGroup = undefined
+            if (error.type === TypeError) subCommandGroup = undefined
         }
 
         if (!subCommandGroup) require(`../../subCommands/tickets/panel/${subCommand}`)(this.client, message)

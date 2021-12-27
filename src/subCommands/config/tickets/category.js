@@ -6,7 +6,7 @@ module.exports = (client, interaction) => {
     if (channel.type !== "GUILD_CATEGORY") return interaction.reply({
         embeds: [new MessageEmbed()
             .setTitle("Error")
-            .setDescription("Please inform a valid text/announcement channel.")
+            .setDescription("Please inform a valid category channel.")
             .setColor("RED")
             .setTimestamp()
             .setFooter(client.user.username, client.user.avatarURL())

@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton, Message } = require("discord.js")
 const Command = require("../../structures/Command")
+const inviteButton = require("../../structures/components/inviteButton")
 
 module.exports = class extends Command {
     constructor(client) {
@@ -25,7 +26,7 @@ module.exports = class extends Command {
         try {
             db = await this.client.db.bugs.findById(bugId)
         } catch (err) {
-            console.log(err)
+            if (err.name !== "CastError") console.log(err)
             return message.reply({
                 embeds: [new MessageEmbed()
                     .setTitle("Error")
@@ -35,9 +36,7 @@ module.exports = class extends Command {
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
                 ],
                 ephemeral: true,
-                components: [
-                    new MessageActionRow().addComponents(new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Join Lambda Development").setStyle("LINK").setURL(process.env.SERVER_LINK))
-                ]
+                components: [ new inviteButton() ]
             })
         }
 
@@ -50,9 +49,7 @@ module.exports = class extends Command {
                 .setFooter(this.client.user.username, this.client.user.avatarURL())
             ],
             ephemeral: true,
-            components: [
-                new MessageActionRow().addComponents(new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Join Lambda Group").setStyle("LINK").setURL(process.env.SERVER_LINK))
-            ]
+            components: [ new inviteButton() ]
         })
 
         return message.reply({

@@ -7,6 +7,7 @@ class Command {
         this.category = options.category,
         this.usage = options.usage,
         this.requireDatabase = options.requireDatabase
+        this.permissions = options.permissions
     }
 }
 
