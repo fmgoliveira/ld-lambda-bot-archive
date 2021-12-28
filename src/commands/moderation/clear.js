@@ -17,13 +17,13 @@ module.exports = class extends Command {
             ],
             category: "moderation",
             usage: "<amount>",
-            permissions: [ "MANAGE_MESSAGES" ]
+            permissions: ["MANAGE_MESSAGES"]
         })
     }
 
     run = async (message) => {
 
-        if (!message.guilds.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
+        if (!message.guild.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
 
         var amount = message.options.getNumber('amount')
         if (amount === 0 || amount < 0) return message.reply({
@@ -47,7 +47,7 @@ module.exports = class extends Command {
             let { size } = await message.channel.bulkDelete(100, true)
             let left = amount - size
             if (left > 0) {
-                setTimeout( async () => {
+                setTimeout(async () => {
                     let { size } = await message.channel.bulkDelete(left, true)
                     tempSize = 100 + size
                 }, 3000)
@@ -57,12 +57,12 @@ module.exports = class extends Command {
             let { size } = await message.channel.bulkDelete(100, true)
             let left = amount - size
             if (left > 0) {
-                setTimeout( async () => {
+                setTimeout(async () => {
                     let { size } = await message.channel.bulkDelete(100, true)
                     let left2 = left - size
 
                     if (left2 > 0) {
-                        setTimeout( async () => {
+                        setTimeout(async () => {
                             let { size } = await message.channel.bulkDelete(left, true)
                             tempSize = 200 + size
                         }, 3000)

@@ -16,13 +16,13 @@ module.exports = class extends Command {
             ],
             category: "moderation",
             usage: "<seconds>",
-            permissions: [ "MANAGE_CHANNELS" ]
+            permissions: ["MANAGE_CHANNELS"]
         })
     }
 
     run = async (message) => {
 
-        if (!message.guilds.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
+        if (!message.guild.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
 
         const amount = message.options.getNumber('seconds')
         const { channel } = message
