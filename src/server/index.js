@@ -4,10 +4,14 @@ module.exports = function createWebServer(client) {
     const app = express()
     const port = process.env.PORT || 8888
 
-    const [ memberCountStr, guildCountStr, channelCountStr ] = getCounters(client)
+    const [memberCountStr, guildCountStr, channelCountStr] = getCounters(client)
 
-    app.use((req, res) => {
+    app.use((req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        next();
     })
 
     app.get("/", (req, res) => {
@@ -32,7 +36,7 @@ module.exports = function createWebServer(client) {
                 res.status(404).send("Not found")
                 console.log(`GET Request at /api/get/${req.params.param} failed`)
                 break
-        }  
+        }
     })
 
     app.get("/api/get/db/:collection/:id", async (req, res) => {
@@ -113,5 +117,5 @@ function getCounters(client) {
     if (channelCountStr.length >= 7) channelCountStr = `${channelCountStr.slice(0, -6)}M+`
     if (channelCountStr.length >= 4) channelCountStr = `${channelCountStr.slice(0, -3)}K+`
 
-    return [ memberCountStr, guildCountStr, channelCountStr ]
+    return [memberCountStr, guildCountStr, channelCountStr]
 }
