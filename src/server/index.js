@@ -6,6 +6,10 @@ module.exports = function createWebServer(client) {
 
     const [ memberCountStr, guildCountStr, channelCountStr ] = getCounters(client)
 
+    app.use((req, res) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+    })
+
     app.get("/", (req, res) => {
         res.send(`${guildCountStr} | ${channelCountStr} | ${memberCountStr}`)
     })
