@@ -1,0 +1,26 @@
+<button id="menu-btn">
+    <span class="material-icons-round">menu</span>
+</button>
+
+<div class="theme-toggler">
+    <span class="material-icons-round">light_mode</span>
+    <span class="material-icons-round active">dark_mode</span>
+</div>
+
+<div class="profile">
+    <div class="info">
+        <p>Hey, <b><%- user.username %></b></p>
+        <% if (guild) { %> 
+            <% if (guild.name.length <= 25) { %> 
+                <small class="text-muted"><%- guild.name %></small>
+            <% } else { %> 
+                <small class="text-muted"><%- guild.name.slice(0, 22) %>...</small>
+            <% }%> 
+        <% } %> 
+    </div>
+    <div class="profile-photo">
+        <img src="https://cdn.discordapp.com/avatars/<%- user.id %>/<%- user.avatar %>.png">
+    </div>
+</div>
+
+<link rel="stylesheet" href="<%- domain %>/css/top.css">

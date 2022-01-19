@@ -22,13 +22,14 @@ module.exports = class extends Command {
             ],
             category: "moderation",
             usage: "<user> (reason)",
-            permissions: [ "BAN_MEMBERS" ]
+            permissions: ["BAN_MEMBERS"],
+            requireDatabase: true
         })
     }
 
     run = (message) => {
         const user = message.options.getUser('user')
-        
+
         if (message.user.id === user.id) return message.reply({
             embeds: [
                 new MessageEmbed()
@@ -65,14 +66,35 @@ module.exports = class extends Command {
         const reason = message.options.getString('reason') || 'No reason specified.'
 
         message.guild.members.ban(user, { reason })
-            .then(() => message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Success")
-                        .setDescription(`User \`${user.tag}\` banned successfully. | ${reason}`)
-                        .setColor("#fff59d")
-                ]
-            }))
+            .then(() => {
+                if (message.guild.db.moderation.dm.ban) {
+                    try {
+                        user.send({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle("Banned")
+                                    .setColor("RED")
+                                    .setDescription(`You were banned from **${message.guild.name}**.`)
+                                    .addField("Reason", reason)
+                                    .addField("Moderator", message.member.user.tag)
+                                    .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                    .setTimestamp()
+                            ]
+                        })
+                    } catch {
+                        console.log("Could not send message to user.")
+                    }
+                }
+
+                message.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Success")
+                            .setDescription(`User \`${user.tag}\` banned successfully. ${message.guild.db.moderation.includeReason ? "| " + reason : ""}`)
+                            .setColor("#fff59d")
+                    ]
+                })
+            })
             .catch(() => message.reply({
                 embeds: [
                     new MessageEmbed()

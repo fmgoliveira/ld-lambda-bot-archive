@@ -1,0 +1,78 @@
+.topbar {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 2rem;
+}
+
+.topbar button {
+    display: none;
+}
+
+.topbar .theme-toggler {
+    background: var(--color-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 1.6rem;
+    width: 4.2rem;
+    border-radius: var(--border-radius-1);
+    cursor: pointer;
+}
+
+.topbar .theme-toggler span {
+    font-size: 1.2rem;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbar .theme-toggler span.active {
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--border-radius-1);
+}
+
+.topbar .profile {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        align-items: center;
+        padding: 0 .8rem;
+        height: 4.6rem;
+        background: var(--color-white);
+        width: 100%;
+        margin: 0;
+        z-index: 2;
+        box-shadow: 0 1rem 1rem var(--color-light);
+    }
+    .topbar .theme-toggler {
+        width: 4.4rem;
+        position: absolute;
+        left: 66%;
+    }
+    .profile .info {
+        display: none;
+    }
+    .topbar button {
+        display: inline-block;
+        background-color: transparent;
+        cursor: pointer;
+        color: var(--color-dark);
+        position: absolute;
+        left: 1rem;
+    }
+    .topbar button span {
+        font-size: 2rem;
+    }
+}

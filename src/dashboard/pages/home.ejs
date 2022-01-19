@@ -1,0 +1,232 @@
+<div class="left">
+    <h1>
+        <%- pageName %>
+    </h1>
+    <div class="insights">
+        <div class="members">
+            <span class="icon icon material-icons-round">people</span>
+            <div class="middle">
+                <div class="left">
+                    <h3>Total Members</h3>
+                    <h1>
+                        <%- guild.memberCount %>
+                    </h1>
+                </div>
+                <div class="progress">
+                    <svg>
+                        <circle class="second" cx="38" cy="38" r="36"
+                            style="--clr: var(--color-blue); --dasharray: <%- botPercent %> 226.19;"></circle>
+                        <circle class="first" cx="38" cy="38" r="36"
+                            style="--clr: var(--color-primary); --dasharray: <%- humanPercent %> 226.19; --dashoffset: -<%- botPercent %>;">
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+            <small class="text-muted"><b>Humans:</b>
+                <span style="color: var(--color-primary); font-weight: 600;">
+                    <%- humans %>
+                </span> &nbsp; &nbsp; <b>Bots:</b>
+                <span style="color: var(--color-blue); font-weight: 600;">
+                    <%- bots %>
+                </span>
+            </small>
+        </div>
+
+        <div class="channels">
+            <span class="icon material-icons-round">tag</span>
+            <div class="middle">
+                <div class="left">
+                    <h3>Total Channels</h3>
+                    <h1>
+                        <%- channelCount %>
+                    </h1>
+                </div>
+                <div class="progress">
+                    <svg>
+                        <circle class="second" cx="38" cy="38" r="36"
+                            style="--clr: var(--color-danger); --dasharray: <%- voiceChannelPercent %> 226.19;">
+                        </circle>
+                        <circle class="first" cx="38" cy="38" r="36"
+                            style="--clr: var(--color-primary); --dasharray: <%- textChannelPercent %> 226.19; --dashoffset: -<%- voiceChannelPercent %>;">
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+            <small class="text-muted"><b>Text channels:</b>
+                <span style="color: var(--color-primary); font-weight: 600;">
+                    <%- textChannels %>
+                </span> &nbsp; &nbsp; <b>Voice channels:</b>
+                <span style="color: var(--color-danger); font-weight: 600;">
+                    <%- voiceChannels %>
+                </span>
+            </small>
+        </div>
+
+        <div class="roles">
+            <span class="icon material-icons-round">manage_accounts</span>
+            <div class="middle">
+                <div class="left">
+                    <h3>Total Roles</h3>
+                    <h1>
+                        <%- roleCount %>
+                    </h1>
+                </div>
+                <div class="progress">
+                    <svg>
+                        <circle class="second" cx="38" cy="38" r="36"
+                            style="--clr: var(--color-success); --dasharray: <%- managedRolePercent %> 226.19;">
+                        </circle>
+                        <circle class="first" cx="38" cy="38" r="36"
+                            style="--clr: var(--color-primary); --dasharray: <%- createdRolePercent %> 226.19; --dashoffset: -<%- managedRolePercent %>;">
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+            <small class="text-muted"><b>Created by users:</b>
+                <span style="color: var(--color-primary); font-weight: 600;">
+                    <%- createdRoleCount %>
+                </span> &nbsp; &nbsp; <b>Managed by integrations:</b>
+                <span style="color: var(--color-success); font-weight: 600;">
+                    <%- managedRoleCount %>
+                </span>
+            </small>
+        </div>
+    </div>
+
+    <div class="recent-members">
+        <h2>Last members joining</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Display Name</th>
+                    <th>Tag</th>
+                    <th>Joined at <small>(GMT+00)</small></th>
+                    <th>Roles</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% recentMembers.forEach(member=> {%>
+                    <tr>
+                        <td>
+                            <%- member.user.username %>
+                        </td>
+                        <td>
+                            <%- member.user.tag %> <small class="text-muted userId" onclick="copyId(this)"><br>
+                                    <%- member.user.id %>
+                                        <span class="material-icons-round">
+                                            content_copy
+                                        </span></span>
+                        </td>
+                        <td>
+                            <%- member.joinedAt.toString().split(" GMT")[0].substring(4) %>
+                        </td>
+                        <td>
+                            <% member.roles.cache.filter(r=> r.name !== "@everyone").forEach(role => { %>
+                                <span class="roleBox" style="--clr: <%- role.hexColor === " #000000" ? "" :
+                                    role.hexColor %>; --bg: <%- role.hexColor==="#000000" ? "#ffffff0f" :
+                                        `${role.hexColor}1a` %>; ">@<%- role.name %></span>
+                                <% }) %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+        <a href="<%- guild.id %>/members">Show All</a>
+    </div>
+</div>
+
+<div class="right">
+    <div class="recent-actions">
+        <h2>Latest Actions</h2>
+        <div class="actions">
+            <% latestActions.forEach(action=> {%>
+                <div class="action">
+                    <div class="profile-photo">
+                        <img
+                            src="https://cdn.discordapp.com/avatars/<%- action.user.id %>/<%- action.user.avatar %>.png">
+                    </div>
+                    <div class="message">
+                        <p><b>
+                                <%- action.user.tag %>
+                            </b>
+                            <%- action.action.toLowerCase() %>
+                        </p>
+                        <small class="text-muted">
+                            <% const date=new Date(Number(action.date)) %>
+                                <%- date.toString().split(" GMT")[0].substring(4) %>
+                        </small>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <div class="member-stats">
+        <h2>Server Growth</h2>
+        <div class="item joins">
+            <div class="icon">
+                <span class="material-icons-round">person_add_alt_1</span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Server Joins</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5></h5>
+                <h3 class="number">
+                    <%- join1.length %>
+                </h3>
+            </div>
+        </div>
+
+        <div class="item leaves">
+            <div class="icon">
+                <span class="material-icons-round">person_remove</span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Server Leaves</h3>
+                    <small class="text-muted">Last 24 Hours</small>
+                </div>
+                <h5></h5>
+                <h3 class="number">
+                    <%- leave1.length %>
+                </h3>
+            </div>
+        </div>
+
+        <div class="item joins">
+            <div class="icon">
+                <span class="material-icons-round">person_add_alt_1</span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Server Joins</h3>
+                    <small class="text-muted">Last 7 Days</small>
+                </div>
+                <h5></h5>
+                <h3 class="number">
+                    <%- join2.length %>
+                </h3>
+            </div>
+        </div>
+
+        <div class="item leaves">
+            <div class="icon">
+                <span class="material-icons-round">person_remove</span>
+            </div>
+            <div class="right">
+                <div class="info">
+                    <h3>Server Leaves</h3>
+                    <small class="text-muted">Last 7 Days</small>
+                </div>
+                <h5></h5>
+                <h3 class="number">
+                    <%- leave2.length %>
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="<%- domain %>/css/dashboard.css">

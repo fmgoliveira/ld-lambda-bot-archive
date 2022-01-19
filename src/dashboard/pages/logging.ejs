@@ -1,0 +1,206 @@
+<form action="/dashboard/<%- guild.id %>/logging" method="post" id="form">
+    <div class="logging-content">
+        <h1>
+            <%- pageName %>
+        </h1>
+
+        <div class="cards">
+            <div class="_container">
+                <div class="card moderation">
+                    <h2>Moderation Logging</h2>
+
+                    <h3>Actions:</h3>
+
+                    <div class="inputs">
+                        <div class="input">
+                            <input type="checkbox" name="ban" id="ban" <%- logging.active.moderation.ban ? "checked" : "" %>>
+                            <label for="ban">Ban/Unban action</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="kick" id="kick" <%- logging.active.moderation.kick ? "checked" : "" %>>
+                            <label for="kick">Kick action</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="clear" id="clear" <%- logging.active.moderation.clear ? "checked" : "" %>>
+                            <label for="clear">Purged messages (<code>/clear</code>)</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="warn" id="warn" <%- logging.active.moderation.warn ? "checked" : "" %>>
+                            <label for="warn">Warn action</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="timeout" id="timeout" <%- logging.active.moderation.timeout ? "checked" : "" %>>
+                            <label for="timeout">Timeout action</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="slowmode" id="slowmode" <%- logging.active.moderation.slowmode ? "checked" : "" %>>
+                            <label for="slowmode">Slowmode changes</label>
+                        </div>
+                    </div>
+
+                    <div class="color">
+                        <h3 style=" margin-top: .6rem;">Color</h3>
+                        <input type="color" name="moderationColor" id="moderationColor" value="<%- logging.color.moderation %>">
+                    </div>
+
+                    <%- include("../partials/components/channel-select-logging.ejs", { id: 54680, guild, bot, domain,
+                        label: "Logging Channel" , selected: logging.channel.moderation, value: "moderationChannel" ,
+                        data: logging.channel.moderation }) %>
+
+                        <button type="submit" name="moderationSave">Save</button>
+                </div>
+            </div>
+
+            <div class="_container">
+                <div class="card serverEvents">
+                    <h2>Server Events</h2>
+
+                    <h3>Actions:</h3>
+
+                    <div class="inputs">
+                        <div class="input">
+                            <input type="checkbox" name="channelCreate" id="channelCreate" <%- logging.active.serverEvents.channelCreate ? "checked" : "" %>>
+                            <label for="channelCreate">Channel created</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="channelUpdate" id="channelUpdate" <%- logging.active.serverEvents.channelUpdate ? "checked" : "" %>>
+                            <label for="channelUpdate">Channel updated</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="channelDelete" id="channelDelete" <%- logging.active.serverEvents.channelDelete ? "checked" : "" %>>
+                            <label for="channelDelete">Channel deleted</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="roleCreateDelete" id="roleCreateDelete" <%- logging.active.serverEvents.roleCreateDelete ? "checked" : "" %>>
+                            <label for="roleCreateDelete">Role created/deleted</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="roleUpdate" id="roleUpdate" <%- logging.active.serverEvents.roleUpdate ? "checked" : "" %>>
+                            <label for="roleUpdate">Role updated</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="guildUpdate" id="guildUpdate" <%- logging.active.serverEvents.guildUpdate ? "checked" : "" %>>
+                            <label for="guildUpdate">Guild updated</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="emojis" id="emojis" <%- logging.active.serverEvents.emojis ? "checked" : "" %>>
+                            <label for="emojis">Emoji changes</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="joinVoiceChannel" id="joinVoiceChannel" <%- logging.active.serverEvents.joinVoiceChannel ? "checked" : "" %>>
+                            <label for="joinVoiceChannel">Joined voice channel</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="moveVoiceChannel" id="moveVoiceChannel" <%- logging.active.serverEvents.moveVoiceChannel ? "checked" : "" %>>
+                            <label for="moveVoiceChannel">Moved between voice channels</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="leaveVoiceChannel" id="leaveVoiceChannel" <%- logging.active.serverEvents.leaveVoiceChannel ? "checked" : "" %>>
+                            <label for="leaveVoiceChannel">Left voice channel</label>
+                        </div>
+                    </div>
+
+                    <div class="color">
+                        <h3 style=" margin-top: .6rem;">Color</h3>
+                        <input type="color" name="serverEventsColor" id="serverEventsColor"
+                            value="<%- logging.color.serverEvents %>">
+                    </div>
+
+                    <%- include("../partials/components/channel-select-logging.ejs", { id: 54480, guild, bot, domain,
+                        label: "Logging Channel" , selected: logging.channel.serverEvents, value: "serverEventsChannel"
+                        , data: logging.channel.serverEvents }) %>
+
+                        <button type="submit" name="serverEventsSave">Save</button>
+                </div>
+            </div>
+
+            <div class="last-cards">
+                <div class="card memberEvents">
+                    <h2>Member Events</h2>
+
+                    <h3>Actions:</h3>
+
+                    <div class="inputs">
+                        <div class="input">
+                            <input type="checkbox" name="memberJoin" id="memberJoin" <%- logging.active.memberEvents.memberJoin ? "checked" : "" %>>
+                            <label for="memberJoin">Member joined</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="memberLeave" id="memberLeave" <%- logging.active.memberEvents.memberLeave ? "checked" : "" %>>
+                            <label for="memberLeave">Member left</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="rolesUpdate" id="rolesUpdate" <%- logging.active.memberEvents.rolesUpdate ? "checked" : "" %>>
+                            <label for="rolesUpdate">Roles updated</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="nicknameUpdate" id="nicknameUpdate" <%- logging.active.memberEvents.nicknameUpdate ? "checked" : "" %>>
+                            <label for="nicknameUpdate">Nickname updated</label>
+                        </div>
+                    </div>
+
+                    <div class="color">
+                        <h3 style=" margin-top: .6rem;">Color</h3>
+                        <input type="color" name="memberEventsColor" id="memberEventsColor"
+                            value="<%- logging.color.memberEvents %>">
+                    </div>
+
+                    <%- include("../partials/components/channel-select-logging.ejs", { id: 53680, guild, bot, domain,
+                        label: "Logging Channel" , selected: logging.channel.memberEvents, value: "memberEventsChannel"
+                        , data: logging.channel.memberEvents }) %>
+
+                        <button type="submit" name="memberEventsSave">Save</button>
+                </div>
+
+                <div class="card messageEvents">
+                    <h2>Message Events</h2>
+
+                    <h3>Actions:</h3>
+
+                    <div class="inputs">
+                        <div class="input">
+                            <input type="checkbox" name="messageDelete" id="messageDelete" <%- logging.active.messageEvents.messageDelete ? "checked" : "" %>>
+                            <label for="messageDelete">Deleted message</label>
+                        </div>
+
+                        <div class="input">
+                            <input type="checkbox" name="messageEdit" id="messageEdit" <%- logging.active.messageEvents.messageEdit ? "checked" : "" %>>
+                            <label for="messageEdit">Edited message</label>
+                        </div>
+                    </div>
+
+                    <div class="color">
+                        <h3 style=" margin-top: .6rem;">Color</h3>
+                        <input type="color" name="messageEventsColor" id="messageEventsColor"
+                            value="<%- logging.color.messageEvents %>">
+                    </div>
+
+                    <%- include("../partials/components/channel-select-logging.ejs", { id: 54860, guild, bot, domain,
+                        label: "Logging Channel" , selected: logging.channel.messageEvents,
+                        value: "messageEventsChannel" , data: logging.channel.messageEvents }) %>
+
+                        <button type="submit" name="messageEventsSave">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<link rel="stylesheet" href="<%- domain %>/css/logging.css">

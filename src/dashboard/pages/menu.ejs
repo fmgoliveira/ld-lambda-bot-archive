@@ -1,0 +1,48 @@
+<div class="servers">
+    <% user.guilds.forEach(guild=> {
+        const permsOnGuild = new perms(guild.permissions_new)
+        if (!permsOnGuild.has("MANAGE_GUILD")) { return } %>
+
+        <% if (guild.icon) { iconUrl=`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=512` } else {
+            iconurl="https://cdn.glitch.com/82fe990a-7942-42e3-9790-39807ccdb9f6%2Ficon-404-dark.png?v=1602427904949"
+            }%>
+
+            <% if (bot.guilds.cache.get(guild.id)) { %>
+                <div class="server">
+                    <div class="guild-info">
+                        <img src="<%- iconUrl %>" alt="<%- guild.name %>" class="guild-icon">
+                        <p class="guild-name">
+                            <%- guild.name %>
+                        </p>
+                    </div>
+                    <a href="/dashboard/<%- guild.id %>" class="button dash">Dashboard <span
+                            class="material-icons-round">
+                            arrow_forward
+                        </span></a>
+                </div>
+                <% } }) %>
+
+                    <% user.guilds.forEach(guild=> {
+                        const permsOnGuild = new perms(guild.permissions_new)
+                        if (!permsOnGuild.has("MANAGE_GUILD")) { return } %>
+
+                        <% if (guild.icon) {
+                            iconUrl=`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=512` } else {
+                            iconurl="https://cdn.glitch.com/82fe990a-7942-42e3-9790-39807ccdb9f6%2Ficon-404-dark.png?v=1602427904949"
+                            }%>
+
+                            <% if (!bot.guilds.cache.get(guild.id)) { %>
+                                <div class="server">
+                                    <div class="guild-info">
+                                        <img src="<%- iconUrl %>" alt="<%- guild.name %>" class="guild-icon">
+                                        <p class="guild-name">
+                                            <%- guild.name %>
+                                        </p>
+                                    </div>
+                                    <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=900398063607242762&scope=bot%20applications.commands&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent(`${domain}/window`)}&permissions=8` %>"
+                                        class="button invite">Add Bot <span class="material-icons-round">
+                                            add
+                                        </span></a>
+                                </div>
+                                <% } }) %>
+</div>

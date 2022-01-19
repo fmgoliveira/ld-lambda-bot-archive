@@ -16,6 +16,7 @@ module.exports = class extends Command {
             .setDescription(`Developed by <:logo:921033010764218428> **Lambda Development** Group`)
             .addField("Version", `\`${process.env.BOT_VERSION}\``)
             .addField("Creator", "<@549619189271494676> (`@DrMonocle#4948`)")
+            .addField("Links", `[Invite](https://bot.lambdadev.xyz/invite)\n[Support](https://bot.lambdadev.xyz/support)\n[Wiki](https://wiki.lambdadev.xyz/bot)\n[Dashboard](https://bot.lambdadev.xyz/dashboard)`)
             .setThumbnail(this.client.user.avatarURL())
             .setTimestamp()
             .setFooter("Requested by: " + message.member.user.username, this.client.user.avatarURL())

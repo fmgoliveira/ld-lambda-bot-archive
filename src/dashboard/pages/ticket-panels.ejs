@@ -1,0 +1,59 @@
+<form method="post">
+    <h1 style="text-align: center;">
+        <%- pageName %>
+    </h1>
+    <div class="ticket-panel-container">
+        <div class="content card">
+            <div class="embed add-edit-container active">
+                <%- include("../partials/components/category-select-notnull.ejs", { id: 36, guild, bot, domain,
+                    label: "Category" , selected: ticketPanel.category, value: "ticketPanelCategory" , data:
+                    ticketPanel.category }) %>
+                    <%- include("../partials/components/role-select-notnull.ejs", { id: 29, guild, bot, domain,
+                        label: "Support Role" , selected: ticketPanel.supportRole, value: "ticketPanelSupportRole" , data:
+                        ticketPanel.supportRole }) %>
+
+                        <h3>Label</h3>
+                        <div class="label">
+                            <input type="text" name="ticketPanelTitle" id="ticketPanelTitle"
+                                placeholder="Open a ticket" value="<%- ticketPanel.label %>">
+                        </div>
+                        <div class="max-tickets">
+                            <h3 style=" margin-top: .6rem;">Maximum tickets per user</h3>
+                            <input type="number" min="0" name="ticketPanelMaxTickets" id="ticketPanelMaxTickets"
+                                value=<%- ticketPanel.maxTickets %>>
+                            <div class="placeholders">
+                                <span class="material-icons-round">info</span>
+                                <small class="text-muted">
+                                    Set to 0 to disable
+                                </small>
+                            </div>
+                        </div>
+                        <h3 style="margin-top: .8rem;">Welcome Message</h3>
+                        <textarea name="ticketPanelsWelcomeMessageMessage" id="ticketPanelsWelcomeMessageMessage"
+                            rows="3" placeholder="Welcome Message"><%- ticketPanel.welcomeMessage.message %></textarea>
+                        <div class="placeholders">
+                            <span class="material-icons-round">info</span>
+                            <small class="text-muted">
+                                Learn more about the
+                                <a href="<%- domain %>/placeholders" target="_blank" rel="noopener noreferrer">
+                                    placeholders
+                                    <span class="material-icons-round">launch</span>
+                                </a>
+                            </small>
+                        </div>
+                        <div class="color-timestamp">
+                            <div class="color">
+                                <h3 style=" margin-top: .6rem;">Welcome message embed color</h3>
+                                <input type="color" name="ticketPanelWelcomeMessageColor" id="ticketPanelWelcomeMessageColor"
+                                    value="<%- ticketPanel.welcomeMessage.color %>">
+                            </div>
+                        </div>
+
+                        <div class="submit">
+                            <button name="ticketPanelEdit" type="submit">Save</button>
+                        </div>
+            </div>
+        </div>
+    </div>
+</form>
+<link rel="stylesheet" href="<%- domain %>/css/ticket-panel.css">

@@ -1,0 +1,83 @@
+.content {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 1.8rem;
+}
+
+.members-div {
+    margin-top: 1rem;
+}
+
+.members-div table {
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    text-align: left;
+    box-shadow: var(--box-shadow);
+    transition: all .3s ease;
+}
+
+.members-div table:hover {
+    box-shadow: none;
+}
+
+.members-div table tbody td {
+    height: 3.5rem;
+    border-bottom: 1px solid var(--color-light);
+    transition: all .3s ease;
+    line-height: 1.7rem;
+}
+
+.members-div table tbody tr:last-child td {
+    border: none;
+}
+
+.members-div table tbody tr td:last-child {
+    max-width: 26rem;
+}
+.members-div table tbody tr td:nth-child(3) {
+    width: 16rem;
+}
+
+.members-div .roleBox {
+    padding: 2px 5px;
+    border-radius: var(--border-radius-1);
+    background-color: var(--bg);
+    color: var(--clr);
+    font-size: 75%;
+}
+
+.members-div .userId {
+    display: none;
+    transition: all .6s ease;
+    cursor: pointer;
+}
+.members-div .userId span {
+    font-size: small;
+    margin-bottom: 0;
+}
+
+.members-div table tr:hover td .userId {
+    display: contents;
+}
+
+.user-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.members-div table img {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+}
+
+@media screen and (max-width: 1200px) {
+    .members-div table thead tr th:nth-child(4), 
+    .members-div table tbody tr td:nth-child(4) {
+        display: none;
+    }
+}

@@ -1,8 +1,15 @@
 const { Schema, model } = require("mongoose")
 
 const userSchema = new Schema({
-    _id: String,
-    blacklisted: Boolean
+    userId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    blacklisted: {
+        type: Boolean,
+        default: false
+    }
 })
 
 module.exports = model("users", userSchema)

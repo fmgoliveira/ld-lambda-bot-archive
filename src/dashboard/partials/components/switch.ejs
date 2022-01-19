@@ -1,0 +1,59 @@
+<label class="switch<%- id %>">
+    <% if (selected) { %>
+        <input type="checkbox" name="<%- value %>" id="<%- value %>" checked>
+        <% } else { %>
+            <input type="checkbox" name="<%- value %>" id="<%- value %>">
+            <% } %>
+                <span class="slider<%- id %> "></span>
+</label>
+
+<style>
+    .switch<%- id %> {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+
+    .switch<%- id %>input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider<%- id %> {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--color-light);
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 24px !important;
+    }
+
+    .slider<%- id %>:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: var(--color-dark);
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50% !important;
+    }
+
+    .switch<%- id %> input:checked+.slider<%- id %> {
+        background-color: var(--color-primary);
+    }
+
+    .switch<%- id %> :checked+.slider<%- id %>:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+</style>

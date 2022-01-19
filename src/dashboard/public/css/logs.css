@@ -1,0 +1,70 @@
+.content {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 1.8rem;
+}
+
+.logs-div {
+    margin-top: 1rem;
+}
+
+.logs-div table {
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    text-align: left;
+    box-shadow: var(--box-shadow);
+    transition: all .3s ease;
+}
+
+.logs-div table:hover {
+    box-shadow: none;
+}
+
+.logs-div table tbody td {
+    height: 3.5rem;
+    border-bottom: 1px solid var(--color-light);
+    transition: all .3s ease;
+    line-height: 1.7rem;
+}
+
+.logs-div table tbody tr:last-child td {
+    border: none;
+}
+
+.logs-div table tbody tr td:nth-child(2) {
+    width: 22rem;
+}
+.logs-div table tbody tr td:nth-child(1) {
+    width: 3rem;
+}
+
+.logs-div .roleBox {
+    padding: 2px 5px;
+    border-radius: var(--border-radius-1);
+    background-color: var(--bg);
+    color: var(--clr);
+    font-size: 75%;
+}
+
+.logs-div .userId {
+    display: none;
+    transition: all .6s ease;
+    cursor: pointer;
+}
+.logs-div .userId span {
+    font-size: small;
+    margin-bottom: 0;
+}
+
+.logs-div table tr:hover td .userId {
+    display: contents;
+}
+
+.logs-div table img {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+}

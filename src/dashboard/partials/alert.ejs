@@ -1,0 +1,29 @@
+<div class="alert"
+    style="--clr: rgba(var(--clr-<%- alert.type %>-r), var(--clr-<%- alert.type %>-g), var(--clr-<%- alert.type %>-b), .3)">
+    <div class="head">
+        <% if (alert.type==="danger" ) { %>
+            <span class="material-icons-round danger">error</span>
+            <h3 class="danger">Error</h3>
+            <% } else if (alert.type==="warning" ) { %>
+                <span class="material-icons-round warning">warning</span>
+                <h3 class="warning">Warning</h3>
+                <% } else if (alert.type==="success" ) { %>
+                    <span class="material-icons-round success">check_circle</span>
+                    <h3 class="success">Success</h3>
+                    <% } else if (alert.type==="info" ) { %>
+                        <span class="material-icons-round blue">info</span>
+                        <h3 class="blue">Info</h3>
+                        <% } %>
+                            <span class="material-icons-round close">close</span>
+    </div>
+    <div class="info">
+        <%- alert.msg %>
+    </div>
+    <div class="progress">
+        <div class="bar" style="background-color: var(--color-<%- alert.type !== " info" ? alert.type : "blue" %>);">
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="<%- domain %>/css/alert.css">
+<script src="<%- domain %>/js/alert.js"></script>

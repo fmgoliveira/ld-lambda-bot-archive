@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="lambda bot discord moderation utilty multipurpose multifunctional">
+    <meta name="description" content="Lambda is a bot created to be free of charge. 
+Every Discord user needs a bot to be happy. Every single one.
+And this is how a discord bot is born.
+And it is born epic.
+Just epic.">
+    <title>Lambda Bot</title>
+
+    <meta name="theme-color" content="#ffa726">
+    <meta property="og:title" content="Home">
+    <meta property="og:description" content="Lambda is a bot created to be free of charge. 
+Every Discord user needs a bot to be happy. Every single one.
+And this is how a discord bot is born.
+And it is born epic.
+Just epic.">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="<%- domain %>/css/base.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <%- include("../partials/aside.ejs", { domain, guild, pageName }) %>
+            <main>
+                <div class="topbar">
+                    <%- include("../partials/topbar.ejs", { user, guild }) %>
+                </div>
+                <div class="content">
+                    <%- include(`../pages/${template}.ejs`, { data }) %>
+                </div>
+            </main>
+    </div>
+    <% if (data.alert) { %>
+        <%- include("../partials/alert.ejs", { alert }) %>
+            <% } %>
+                <script src="<%- domain %>/js/dashboard.js"></script>
+</body>
+
+</html>

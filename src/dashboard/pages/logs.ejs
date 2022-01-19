@@ -1,0 +1,46 @@
+<div class="left">
+    <h1>
+        <%- pageName %>
+    </h1>
+    <div class="logs-div">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>User</th>
+                    <th>Date <small>(GMT+00)</small></th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% actions.reverse().forEach(action=> {
+                    if (action.user.avatar) {
+                    iconUrl=`https://cdn.discordapp.com/avatars/${action.user.id}/${action.user.avatar}.png?size=512` }
+                    else {
+                    iconurl="https://cdn.glitch.com/82fe990a-7942-42e3-9790-39807ccdb9f6%2Ficon-404-dark.png?v=1602427904949"
+                    }%>
+                    <tr>
+                        <td><img src="<%- iconUrl %>"></td>
+                        <td>
+                            <%- action.user.tag %><small class="text-muted userId" onclick="copyId(this)"><br>
+                                    <%- action.user.id %>
+                                        <span class="material-icons-round">
+                                            content_copy
+                                        </span>
+                                </small>
+                        </td>
+                        <td>
+                            <% const date=new Date(Number(action.date)) %>
+                                <%- date.toString().split(" GMT")[0].substring(4) %>
+                        </td>
+                        <td>
+                            <%- `${action.action[0].toUpperCase()}${action.action.substring(1).toLowerCase()}` %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link rel="stylesheet" href="<%- domain %>/css/logs.css">

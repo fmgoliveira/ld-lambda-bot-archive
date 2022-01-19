@@ -4,7 +4,7 @@ const { cwd } = require("process")
 const Models = require("../database/models/Models")
 const Ascii = require("ascii-table");
 const { readdirSync } = require("fs");
-const createWebServer = require("../server/index")
+const createWebServer = require("../dashboard/index")
 
 module.exports = class extends Client {
     constructor(options) {

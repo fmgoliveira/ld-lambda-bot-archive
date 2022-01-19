@@ -30,7 +30,8 @@ module.exports = class extends Command {
                     required: false
                 }
             ],
-            permissions: [ "MODERATE_MEMBERS" ]
+            permissions: ["MODERATE_MEMBERS"],
+            requireDatabase: true
         })
     }
 
@@ -99,21 +100,37 @@ module.exports = class extends Command {
                     .setColor("RED")
             ],
             ephemeral: true,
-            components: [ new inviteButton() ]
+            components: [new inviteButton()]
         })
 
         member.timeout(timeInMs, reason)
+
+        if (message.guild.db.moderation.dm.ban) {
+            try {
+                user.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Banned")
+                            .setColor("RED")
+                            .setDescription(`You were banned from **${message.guild.name}**.`)
+                            .addField("Reason", reason)
+                            .addField("Moderator", message.member.user.tag)
+                            .setFooter(this.client.user.username, this.client.user.avatarURL())
+                            .setTimestamp()
+                    ]
+                })
+            } catch {
+                console.log("Could not send message to user.")
+            }
+        }
 
         return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Success")
-                    .setDescription(`User has been timed out. | ${reason}`)
-                    .setFooter(this.client.user.username, this.client.user.avatarURL())
-                    .setTimestamp()
+                    .setDescription(`<@${user.id}> has been timed out. ${message.guild.db.moderation.includeReason ? "| " + reason : ""}`)
                     .setColor("#fff59d")
             ]
         })
-
     }
 }

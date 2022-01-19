@@ -19,7 +19,7 @@ module.exports = async (client, interaction) => {
         if (interaction.guild.members.cache.get(user.id).roles.cache.has(role.id)) return interaction.reply({
             embeds: [new MessageEmbed()
                 .setTitle("Error")
-                .setDescription("The user already have this role.")
+                .setDescription("The user already hs this role.")
                 .setColor("RED")
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())

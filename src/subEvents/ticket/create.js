@@ -1,11 +1,12 @@
 const { MessageEmbed, MessageActionRow, MessageButton, Permissions } = require("discord.js")
+const placeholderReplace = require("../../structures/utils/placeholderReplace")
 
-module.exports = (client, interaction, database) => {
-    if (!database.tickets?.category || database.tickets?.category === "") return interaction.reply({
+module.exports = async (client, interaction, database) => {
+    if (!database.tickets.active) return interaction.reply({
         embeds: [
             new MessageEmbed()
                 .setTitle("Error")
-                .setDescription("Ticket category is not set yet. Please ask a server administrator to set it using `/config tickets category <category>`.")
+                .setDescription("Tickets module is not enabled. Please enable it first in the [dashboard](https://bot.lambdadev.xyz/dashboard).")
                 .setColor("RED")
                 .setTimestamp()
                 .setFooter(client.user.username, client.user.avatarURL())
@@ -22,15 +23,52 @@ module.exports = (client, interaction, database) => {
         ]
     })
 
-    const category = client.channels.cache.get(database.tickets.category)
+    const panel = await client.db.ticketPanels.findById(interaction.customId.split("-")[2])
+
+    if (!panel) return interaction.reply({
+        embeds: [
+            new MessageEmbed()
+                .setTitle("Error")
+                .setDescription("There was an error when trying to create a ticket in that category. Please check with the server admins if the panels are fully configurated in the [dashboard](https://bot.lambdadev.xyz/dashboard).")
+                .setColor("RED")
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.avatarURL())
+        ],
+        ephemeral: true,
+        components: [
+            new MessageActionRow().addComponents(
+                new MessageButton()
+                    .setEmoji("<:logo:921033010764218428>")
+                    .setLabel("Join Lambda Development")
+                    .setURL(process.env.SERVER_LINK)
+                    .setStyle("LINK")
+            )
+        ]
+    })
+
+    const category = panel.category
 
     var length
 
-    if (database.tickets?.ticketCount) length = database.tickets.ticketCount
+    if (database.tickets.ticketCount) length = database.tickets.ticketCount
     else length = 0
 
+    const tickets = await client.db.tickets.find({ category: panel._id, user: interaction.user.id, opened: true })
+
+    if (panel.maxTickets > 0 && tickets.length >= panel.maxTickets) return interaction.reply({
+        embeds: [
+            new MessageEmbed()
+                .setTitle("Error")
+                .setDescription("You have exceeded your maximum amount of tickets in this category.")
+                .setColor("RED")
+                .setTimestamp()
+                .setFooter(client.user.username, client.user.avatarURL())
+        ],
+        ephemeral: true
+    })
+
     try {
-        category.createChannel(`ticket-${length + 1}`, {
+        interaction.guild.channels.cache.get(category).createChannel(`ticket-${length + 1}`, {
             topic: `Ticket Channel for ${interaction.member.user.tag}`,
             permissionOverwrites: [
                 {
@@ -42,15 +80,15 @@ module.exports = (client, interaction, database) => {
                     deny: [Permissions.FLAGS.VIEW_CHANNEL]
                 }
             ]
-        }).then((channel) => {
-            if (database.tickets.log_channel) {
+        }).then(async (channel) => {
+            if (database.tickets.logChannel) {
                 try {
-                    const log_channel = interaction.guild.channels.cache.get(database.tickets.log_channel)
+                    const log_channel = interaction.guild.channels.cache.get(database.tickets.logChannel)
                     log_channel.send({
                         embeds: [
                             new MessageEmbed()
                                 .setTitle("Ticket Created")
-                                .setDescription(`Ticket \`${channel.name}\` was **created** by ${interaction.member.user.tag}.`)
+                                .setDescription(`Ticket <#${channel.id}> was **created** by ${interaction.member.user.tag} in the category with label \`${panel.label}\`.`)
                                 .setFooter(client.user.username, client.user.avatarURL())
                                 .setTimestamp()
                                 .setColor("GREEN")
@@ -59,22 +97,28 @@ module.exports = (client, interaction, database) => {
                 } catch (err) { console.log(err) }
             }
 
-            let roleMsg
-            const role = database.tickets?.support_role
-            if (role) roleMsg = `<@&${role}>, `
-            else roleMsg = ""
+            let role = panel.supportRole
+            channel.send(`<@&${role}>`).then(msg => {
+                setTimeout(() => { msg.delete() }, 1500)
+            }).catch(err => console.log(err))
 
-            if (role) {
-                channel.permissionOverwrites.create(role, { "VIEW_CHANNEL": true, "SEND_MESSAGES": true })
-            }
+            channel.permissionOverwrites.create(role, { "VIEW_CHANNEL": true, "SEND_MESSAGES": true })
+            channel.permissionOverwrites.create(interaction.guild.id, { "VIEW_CHANNEL": false, "SEND_MESSAGES": false })
+            channel.permissionOverwrites.create(interaction.member.id, { "VIEW_CHANNEL": true, "SEND_MESSAGES": true })
+
+            await client.db.tickets.create({
+                id: channel.id,
+                guildId: interaction.guild.id,
+                category: panel._id,
+                user: interaction.member.id
+            })
 
             channel.send({
-                content: `${roleMsg}<@${interaction.member.id}> opened a ticket.`,
                 embeds: [
                     new MessageEmbed()
-                        .setTitle("Support Ticket")
-                        .setDescription(`The support team of **${interaction.guild.name}** will be here as soon as possible. Please provide all the information you can and wait for a staff member.`)
-                        .setColor("#ffa726")
+                        .setTitle(panel.label)
+                        .setDescription(placeholderReplace(panel.welcomeMessage.message, interaction.guild, interaction.member.user))
+                        .setColor(panel.welcomeMessage.color)
                         .setFooter(client.user.username, client.user.avatarURL())
                         .setTimestamp()
                 ],
@@ -121,7 +165,9 @@ module.exports = (client, interaction, database) => {
                 databaseSave(database)
             })
         })
-    } catch {
+    } catch (err) {
+        console.log(err)
+        
         return interaction.reply({
             embeds: [
                 new MessageEmbed()

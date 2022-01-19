@@ -1,0 +1,313 @@
+.content {
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: auto 23rem;
+    gap: 1.8rem;
+}
+
+.insights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+}
+
+.insights > div {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    margin-top: 1rem;
+    box-shadow: var(--box-shadow);
+    transition: all .3s ease;
+}
+
+.insights > div:hover {
+    box-shadow: none;
+}
+
+.insights > div span.icon {
+    padding: .5rem;
+    border-radius: 50%;
+    color: var(--color-white);
+    font-size: 2rem;
+}
+
+.insights > div.members span.icon {
+    background: var(--color-blue);
+}
+
+.insights > div.channels span.icon {
+    background: var(--color-danger);
+}
+
+.insights > div.roles span.icon {
+    background: var(--color-success);
+}
+
+.insights > div .middle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.insights h3 {
+    margin: 1rem 0 .6rem;
+    font-size: 1rem;
+}
+
+.insights .progress {
+    position: relative;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+}
+
+.insights svg {
+    width: 7rem;
+    height: 7rem;
+    z-index: 1;
+}
+
+.insights svg circle {
+    fill: none;
+    stroke: var(--clr);
+    stroke-width: 20;
+    transform: translate(9px, 9px);
+    stroke-dasharray: var(--dasharray);
+    stroke-dashoffset: var(--dashoffset);
+}
+
+.insights small {
+    margin-top: 1.6rem;
+    display: block;
+}
+
+.recent-members {
+    margin-top: 2rem;
+}
+
+.recent-members h2 {
+    margin-bottom: .8rem;
+}
+
+.recent-members table {
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    text-align: left;
+    box-shadow: var(--box-shadow);
+    transition: all .3s ease;
+}
+
+/* .recent-members table tbody tr td {
+    text-align: left;
+} */
+
+.recent-members table:hover {
+    box-shadow: none;
+}
+
+.recent-members table tbody td {
+    height: 2.8rem;
+    border-bottom: 1px solid var(--color-light);
+    color: var(--color-dark);
+    transition: all .3s ease;
+}
+
+.recent-members table tbody td:last-child {
+    max-width: 26rem;
+}
+.recent-members table tbody td:nth-child(2) {
+    width: 14rem;
+}
+
+.recent-members table tbody tr:last-child td {
+    border: none;
+}
+
+.recent-members a {
+    text-align: center;
+    display: block;
+    margin: 1rem auto;
+    color: var(--color-primary);
+}
+
+.recent-members .roleBox {
+    padding: 2px 5px;
+    border-radius: var(--border-radius-1);
+    background-color: var(--bg);
+    color: var(--clr);
+    font-size: 75%;
+}
+
+.recent-members .userId {
+    display: none;
+    transition: all .6s ease;
+    cursor: pointer;
+}
+.recent-members .userId span {
+    font-size: small;
+    margin-bottom: 0;
+}
+
+.recent-members table tr:hover td .userId {
+    display: contents;
+}
+
+.container {
+    margin-top: 1.4rem;
+}
+
+.profile {
+    display: flex;
+    gap: 1rem;
+    text-align: right;
+    align-items: center;
+}
+
+.right .recent-actions {
+    margin-top: 1rem;
+}
+
+.right .recent-actions h2 {
+    margin-bottom: .8rem;
+}
+
+.right .recent-actions .actions {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all .3s ease;
+}
+
+.right .recent-actions .actions:hover {
+    box-shadow: none;
+}
+
+.right .recent-actions .actions .action {
+    display: grid;
+    grid-template-columns: 2.6rem auto;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.right .recent-actions .actions .action .message {
+    text-justify: auto;
+}
+
+.right .member-stats {
+    margin-top: 2rem;
+}
+
+.right .member-stats h2 {
+    margin-bottom: .8rem;
+}
+
+.right .member-stats .item {
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .7rem;
+    padding: 1.4rem var(--card-padding);
+    border-radius: var(--border-radius-3);
+    box-shadow: var(--box-shadow);
+    transition: all .3s ease;
+}
+
+.right .member-stats .item:hover {
+    box-shadow: none;
+}
+
+.right .member-stats .item .right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+}
+
+.right .member-stats .item .icon {
+    padding: .6rem;
+    color: var(--color-white);
+    border-radius: 50%;
+    display: flex;
+}
+
+.right .member-stats .item.joins .icon {
+    background: var(--color-success);
+}
+
+.right .member-stats .item.leaves .icon {
+    background: var(--color-danger);
+}
+
+.right .member-stats .item .number {
+    font-size: 2rem;
+    padding-right: 1rem;
+}
+
+
+@media screen and (max-width: 1600px) {
+    .insights {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .recent-members {
+        width: 94%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 2rem 0rem 0 15.8rem;
+    }
+    .recent-members table {
+        width: calc(94vw - 15.8rem);
+    }
+    .recent-members a {
+        width: calc(94vw - 15.8rem);
+        margin-left: 0;
+    }
+    .recent-members table thead tr th:nth-child(3), 
+    .recent-members table tbody tr td:nth-child(3) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .insights {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .recent-members {
+        width: 94%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 2rem 0 0 8.8rem;
+    }
+    .recent-members table {
+        width: 81vw;
+    }
+    .recent-members table thead tr th:nth-child(3), 
+    .recent-members table tbody tr td:nth-child(3) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 974px) {
+    .content {
+        width: 100%;
+        grid-template-columns: 1fr !important;
+    }
+    
+    .recent-members {
+        position: relative;
+        margin: 3rem 0 0 0;
+        width: 100%;
+    }
+    .recent-members table {
+        width: 100%;
+        margin: 0;
+    }
+}

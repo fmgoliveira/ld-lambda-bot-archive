@@ -1,0 +1,53 @@
+.alert {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    min-width: 22rem;
+    min-height: 8rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--clr);
+    border-radius: var(--border-radius-2);
+    box-shadow: var(--box-shadow);
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.alert .head {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.alert .head h3 {
+    font-size: 1.2rem;
+}
+.alert .head span {
+    font-size: 2rem;
+}
+.alert .head span.close {
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+}
+
+.alert .info {
+    font-size: 1rem;
+    margin-left: 6px;
+    position: relative;
+}
+
+.alert .progress {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.alert .progress .bar {
+    width: 100%;
+    height: 8px;
+    border-top-right-radius: var(--border-radius-2);
+    border-bottom-right-radius: var(--border-radius-2);
+}

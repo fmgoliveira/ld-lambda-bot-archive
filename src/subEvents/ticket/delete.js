@@ -1,54 +1,51 @@
 const { MessageEmbed, MessageActionRow, MessageButton, Util } = require("discord.js")
 const fs = require("fs")
 
-module.exports = (client, interaction, database) => {
+module.exports = async (client, interaction, database) => {
     try {
-        if (database.tickets.log_channel) {
+        if (database.tickets.logChannel) {
             interaction.channel.send({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Ticket Delete")
                         .setDescription("Ticket will be deleted in 5 seconds...")
-                        .setFooter("If you want to instantly delete the tickets not using a closed category, please remove the config using `/config tickets closed_category_reset`.")
+                        .setFooter("If you want to instantly delete the tickets not using a closed category, set the closed category to 'None' in the dashboard.")
                         .setColor("RED")
                 ]
             })
 
             setTimeout(async () => {
                 try {
-                    interaction.channel.delete().then((ch) => {
-                        client.db.transcripts.findById(ch.id, async (err, data) => {
-                            if (err) console.log(err)
-                            if (data) {
-                                let content = ""
-                                data.content.forEach(msg => {
-                                    if (msg.content) content += `**${msg.author.tag}** (\`${msg.author.id}\`) >> ${msg.content}\n`
-                                })
+                    interaction.channel.delete().then(async (ch) => {
+                        const ticket = await client.db.tickets.findOne({ id: ch.id })
 
-                                try {
-                                    client.channels.cache.get(database.tickets.log_channel).send({
-                                        embeds: [
-                                            new MessageEmbed()
-                                                .setTitle("Ticket Deleted")
-                                                .setDescription(`Ticket \`${ch.id}\` was **deleted** by ${interaction.member.user.tag}.`)
-                                                .setFooter(client.user.username, client.user.avatarURL())
-                                                .setTimestamp()
-                                                .setColor("RED"),
-                                            new MessageEmbed()
-                                                .setTitle("Ticket Transcript")
-                                                .setDescription(content)
-                                                .setFooter(client.user.username, client.user.avatarURL())
-                                                .setTimestamp()
-                                                .setColor("BLACK")
-                                        ]
-                                    })
-                                } catch (err) {
-                                    console.log(err)
-                                }
-
-                                client.db.transcripts.findOneAndDelete({ _id: ch.id })
-                            }
+                        let content = ""
+                        ticket.content.forEach(msg => {
+                            if (msg.content) content += `**${msg.author.tag}** (\`${msg.author.id}\`) >> ${msg.content}\n`
                         })
+
+                        try {
+                            client.channels.cache.get(database.tickets.logChannel).send({
+                                embeds: [
+                                    new MessageEmbed()
+                                        .setTitle("Ticket Deleted")
+                                        .setDescription(`Ticket \`${ch.id}\` was **deleted** by ${interaction.member.user.tag}.`)
+                                        .setFooter(client.user.username, client.user.avatarURL())
+                                        .setTimestamp()
+                                        .setColor("RED"),
+                                    new MessageEmbed()
+                                        .setTitle("Ticket Transcript")
+                                        .setDescription(content)
+                                        .setFooter(client.user.username, client.user.avatarURL())
+                                        .setTimestamp()
+                                        .setColor("BLACK")
+                                ]
+                            })
+                        } catch (err) {
+                            console.log(err)
+                        }
+
+                        await client.db.tickets.findOneAndDelete({ id: ch.id })
                     })
                 } catch (err) { console.log(err) }
             }, 5000)
@@ -58,12 +55,13 @@ module.exports = (client, interaction, database) => {
                     new MessageEmbed()
                         .setTitle("Ticket Delete")
                         .setDescription("Ticket will be deleted in 5 seconds...")
-                        .setFooter("If you want to instantly delete the tickets not using a closed category, please remove the config using `/config tickets closed_category_reset`.")
+                        .setFooter("If you want to instantly delete the tickets not using a closed category, set the closed category to 'None' in the dashboard.")
                         .setColor("RED")
                 ]
             })
             setTimeout(async () => {
                 interaction.channel.delete()
+                await client.db.tickets.findOneAndDelete({ id: interaction.channel.id })
             }, 5000)
         }
     } catch {

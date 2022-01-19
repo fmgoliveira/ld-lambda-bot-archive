@@ -1,0 +1,55 @@
+<div class="left">
+    <h1>
+        <%- pageName %>
+    </h1>
+    <div class="members-div">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>User</th>
+                    <th>Tag</th>
+                    <th>Joined at <small>(GMT+00)</small></th>
+                    <th>Roles</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% guild.members.cache.forEach(member=> {
+                    if (member.user.avatar) {
+                    iconUrl=`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png?size=512` }
+                    else {
+                    iconurl="https://cdn.glitch.com/82fe990a-7942-42e3-9790-39807ccdb9f6%2Ficon-404-dark.png?v=1602427904949"
+                    }%>
+                    <tr style="color: <%- member.displayHexColor === "#000000" ? "var(--color-dark)" :
+                        member.displayHexColor %>
+                        ;">
+                        <td><img src="<%- iconUrl %>"></td>
+                        <td>
+                            <%- member.user.username %>
+                        </td>
+                        <td>
+                            <%- member.user.tag %><small class="text-muted userId" onclick="copyId(this)"><br>
+                                    <%- member.user.id %>
+                                        <span class="material-icons-round">
+                                            content_copy
+                                        </span>
+                                </small>
+                        </td>
+                        <td>
+                            <%- member.joinedAt.toString().split(" GMT")[0].substring(4) %>
+                        </td>
+                        <td>
+                            <% member.roles.cache.filter(r=> r.name !== "@everyone").forEach(role => { %>
+                                <span class="roleBox" style="--clr: <%- role.hexColor === "#000000"
+                                    ? "var(--color-dark)" : role.hexColor %>; --bg: <%- role.hexColor==="#000000"
+                                        ? "#ffffff0f" : `${role.hexColor}1a` %>; ">@<%- role.name %></span>
+                                <% }) %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link rel="stylesheet" href="<%- domain %>/css/members.css">

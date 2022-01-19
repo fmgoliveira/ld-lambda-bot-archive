@@ -23,7 +23,7 @@ module.exports = class extends Command {
                 }
             ],
             requireDatabase: true,
-            permissions: [ "MODERATE_MEMBERS" ]
+            permissions: ["MODERATE_MEMBERS"]
         })
     }
 
@@ -52,33 +52,32 @@ module.exports = class extends Command {
             upsert: true
         })
 
-        try {
-            user.send({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Warned")
-                        .setColor("RED")
-                        .setDescription(`You have been warned in **${message.guild.name}**.`)
-                        .addField("Reason", reason)
-                        .addField("Moderator", message.member.user.tag)
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setTimestamp()
-                ]
-            })
-        } catch {
-            console.log("Could not send message to user.")
+        if (message.guild.db.moderation.dm.ban) {
+            try {
+                user.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Warn")
+                            .setColor("RED")
+                            .setDescription(`You have been warned in **${message.guild.name}**.`)
+                            .addField("Reason", reason)
+                            .addField("Moderator", message.member.user.tag)
+                            .setFooter(this.client.user.username, this.client.user.avatarURL())
+                            .setTimestamp()
+                    ]
+                })
+            } catch {
+                console.log("Could not send message to user.")
+            }
         }
 
         return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Success")
-                    .setDescription(`<@${user.id}> was warned | ${reason}`)
+                    .setDescription(`<@${user.id}> was warned. ${message.guild.db.moderation.includeReason ? "| " + reason : ""}`)
                     .setColor("#fff59d")
-                    .setTimestamp()
-                    .setFooter(this.client.user.username, this.client.user.avatarURL())
             ]
         })
-
     }
 }

@@ -1,0 +1,69 @@
+<aside>
+    <div class="top">
+        <a class="logo" href="<%- domain %>" target="_blank">
+            <img src="<%- domain %>/images/favicon1.png" alt="Lambda Bot">
+            <h2><span>LAMBDA</span> BOT</h2>
+        </a>
+        <div class="close" id="close-btn">
+            <span class="material-icons-round">close</span>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="<%- domain %>/dashboard/<%- guild.id %>" class="home">
+            <span class="material-icons-round">home</span>
+            <h3>Home</h3>
+        </a>
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/members" class="members">
+            <span class="material-icons-round">people</span>
+            <h3>Members</h3>
+        </a>
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/logs" class="logs">
+            <span class="material-icons-round">notes</span>
+            <h3>Action Logs</h3>
+        </a>
+        <span class="separator"></span>
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/welcome" class="welcome">
+            <span class="material-icons-round">waving_hand</span>
+            <h3>Welcome</h3>
+        </a>
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/tickets" class="tickets">
+            <span class="material-icons-round">confirmation_number</span>
+            <h3>Tickets</h3>
+        </a>
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/moderation" class="moderation">
+            <span class="material-icons-round">handyman</span>
+            <h3>Moderation</h3>
+        </a>
+        <!-- <a href="<%- domain %>/dashboard/<%- guild.id %>/alt-detector" class="alt-detector">
+            <span class="material-icons-round">person</span>
+            <h3>Alt Detector</h3>
+        </a> -->
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/logging" class="logging">
+            <span class="material-icons-round">description</span>
+            <h3>Logging</h3>
+        </a>
+        <!-- <a href="<%- domain %>/dashboard/<%- guild.id %>/reaction-roles" class="reaction-roles">
+            <span class="material-icons-round">support</span>
+            <h3>Reaction Roles</h3>
+        </a> -->
+        <!-- <span class="separator"></span>
+        <a href="<%- domain %>/dashboard/<%- guild.id %>/embeds" class="embeds">
+            <span class="material-icons-round">collections</span>
+            <h3>Embeds</h3>
+        </a> -->
+
+        <div class="down">
+            <a href="<%- domain %>/dashboard">
+                <span class="material-icons-round">grid_view</span>
+                <h3>My servers</h3>
+            </a>
+            <a href="<%- domain %>/logout">
+                <span class="material-icons-round">logout</span>
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </div>
+</aside>
+
+<link rel="stylesheet" href="<%- domain %>/css/aside.css">

@@ -23,7 +23,8 @@ module.exports = class extends Command {
             ],
             category: "moderation",
             usage: "<user> (reason)",
-            permissions: [ "KICK_MEMBERS" ]
+            permissions: ["KICK_MEMBERS"],
+            requireDatabase: true
         })
     }
 
@@ -66,14 +67,35 @@ module.exports = class extends Command {
         const reason = message.options.getString('reason') || 'No reason specified.'
 
         message.guild.members.kick(user, { reason })
-            .then(() => message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Success")
-                        .setDescription(`User \`${user.tag}\` kicked successfully. | ${reason}`)
-                        .setColor("#fff59d")
-                ]
-            }))
+            .then(() => {
+                if (message.guild.db.moderation.dm.kick) {
+                    try {
+                        user.send({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setTitle("Kicked")
+                                    .setColor("RED")
+                                    .setDescription(`You were kicked from **${message.guild.name}**.`)
+                                    .addField("Reason", reason)
+                                    .addField("Moderator", message.member.user.tag)
+                                    .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                    .setTimestamp()
+                            ]
+                        })
+                    } catch {
+                        console.log("Could not send message to user.")
+                    }
+                }
+
+                message.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("Success")
+                            .setDescription(`User \`${user.tag}\` banned successfully. ${message.guild.db.moderation.includeReason ? "| " + reason : ""}`)
+                            .setColor("#fff59d")
+                    ]
+                })
+            })
             .catch(() => message.reply({
                 embeds: [
                     new MessageEmbed()
@@ -84,7 +106,7 @@ module.exports = class extends Command {
                         .setTimestamp()
                 ],
                 ephemeral: true,
-                components: [ new inviteButton() ], ephemeral: true
+                components: [new inviteButton()], ephemeral: true
             }))
     }
 }

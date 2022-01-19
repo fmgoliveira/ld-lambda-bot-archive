@@ -1,0 +1,213 @@
+<form action="/dashboard/<%- guild.id %>/welcome" method="post" id="form">
+    <div class="left">
+        <h1>
+            <%- pageName %>
+        </h1>
+        <div class="welcome-container">
+            <div class="welcome-leave-container">
+                <div class="card welcome">
+                    <div class="title">
+                        <h2>Welcome</h2>
+                        <div class="slider">
+                            On / Off
+                            <%- include("../partials/components/switch.ejs", { id: 0, guild, bot, domain, selected:
+                                welcome.active, value: "welcomeActive" }) %>
+                        </div>
+                    </div>
+
+                    <%- include("../partials/components/channel-select.ejs", { id: 0, guild, bot, domain,
+                        label: "Welcome Channel" , selected: welcome.channel, value: "welcomeChannel" , data: welcome })
+                        %>
+
+                        <div class="togglers">
+                            <div class="slider">
+                                Embed
+                                <%- include("../partials/components/switch.ejs", { id: 2, guild, bot, domain, selected:
+                                    welcome.embed.active, value: "welcomeEmbed" }) %>
+                            </div>
+                            <div class="slider">
+                                DM User
+                                <%- include("../partials/components/switch.ejs", { id: 3, guild, bot, domain, selected:
+                                    welcome.dm, value: "welcomeDM" }) %>
+                            </div>
+                        </div>
+
+                        <div class="message welcomeMessage <%- welcome.embed.active ? "" : "active" %>">
+                            <h3>Message</h3>
+                            <textarea name="welcomeMessage" id="welcomeMessage"
+                                rows="3"><%- welcome.message %></textarea>
+                        </div>
+
+                        <div class="embed welcomeEmbed <%- welcome.embed.active ? "active" : "" %>">
+                            <h3>Author</h3>
+                            <div class="author">
+                                <input type="text" name="welcomeEmbedAuthorAvatar" id="welcomeEmbedAuthorAvatar"
+                                    placeholder="Avatar URL" value="<%- welcome.embed.authorAvatar %>">
+                                <input type="text" name="welcomeEmbedAuthor" id="welcomeEmbedAuthor" placeholder="Name"
+                                    value="<%- welcome.embed.author %>">
+                                <input type="text" name="welcomeEmbedAuthorUrl" id="welcomeEmbedAuthorUrl"
+                                    placeholder="URL" value="<%- welcome.embed.authorUrl %>">
+                            </div>
+                            <h3 style=" margin-top: .6rem;">Title</h3>
+                            <div class="title">
+                                <input type="text" name="welcomeEmbedTitle" id="welcomeEmbedTitle"
+                                    placeholder="Title cannot be empty" value="<%- welcome.embed.title %>">
+                                <input type="text" name="welcomeEmbedTitleUrl" id="welcomeEmbedTitleUrl"
+                                    placeholder="URL" value="<%- welcome.embed.titleUrl %>">
+                            </div>
+                            <h3 style=" margin-top: .6rem;">Description</h3>
+                            <textarea name="welcomeEmbedDescription" id="welcomeEmbedDescription" rows="3"
+                                placeholder="Description"><%- welcome.embed.description %></textarea>
+                            <h3 style=" margin-top: .6rem;">Thumbnail</h3>
+                            <input type="text" name="welcomeEmbedThumbnail" id="welcomeEmbedThumbnail" placeholder="URL"
+                                value="<%- welcome.embed.thumbnail %>">
+                            <h3 style=" margin-top: .6rem;">Image</h3>
+                            <input type="text" name="welcomeEmbedImage" id="welcomeEmbedImage" placeholder="URL"
+                                value="<%- welcome.embed.image %>">
+                            <h3 style=" margin-top: .6rem;">Footer</h3>
+                            <div class="footer">
+                                <input type="text" name="welcomeEmbedFooterIcon" id="welcomeEmbedFooterIcon"
+                                    placeholder="Icon URL" value="<%- welcome.embed.footerIcon %>">
+                                <input type="text" name="welcomeEmbedFooterText" id="welcomeEmbedFooterText"
+                                    placeholder="Text" value="<%- welcome.embed.footerText %>">
+                            </div>
+                            <div class="color">
+                                <h3 style=" margin-top: .6rem;">Color</h3>
+                                <input type="color" name="welcomeEmbedColor" id="welcomeEmbedColor"
+                                    value="<%- welcome.embed.color %>">
+                            </div>
+                        </div>
+
+                        <div class="placeholders">
+                            <span class="material-icons-round">info</span>
+                            <small class="text-muted">
+                                Learn more about the
+                                <a href="<%- domain %>/placeholders" target="_blank" rel="noopener noreferrer">
+                                    placeholders
+                                    <span class="material-icons-round">launch</span>
+                                </a>
+                            </small>
+                        </div>
+
+                        <div class="submit">
+                            <button name="welcomeSave" type="submit">Save</button>
+                        </div>
+                </div>
+
+
+                <div class="card leave">
+
+
+                    <div class="title">
+                        <h2>Leave</h2>
+                        <div class="slider">
+                            On / Off
+                            <%- include("../partials/components/switch.ejs", { id: 1, guild, bot, domain, selected:
+                                leave.active, value: "leaveActive" }) %>
+                        </div>
+                    </div>
+
+                    <%- include("../partials/components/channel-select.ejs", { id: 1, guild, bot, domain,
+                        label: "Leave Channel" , selected: leave.channel, value: "leaveChannel" , data: leave }) %>
+
+                        <div class="togglers">
+                            <div class="slider">
+                                Embed
+                                <%- include("../partials/components/switch.ejs", { id: 4, guild, bot, domain, selected:
+                                    leave.embed.active, value: "leaveEmbed" }) %>
+                            </div>
+                            <div class="slider">
+                                DM User
+                                <%- include("../partials/components/switch.ejs", { id: 5, guild, bot, domain, selected:
+                                    leave.dm, value: "leaveDM" }) %>
+                            </div>
+                        </div>
+
+                        <div class="message leaveMessage <%- leave.embed.active ? "" : "active" %>">
+                            <h3>Message</h3>
+                            <textarea name="leaveMessage" id="leaveMessage" rows="3"><%- leave.message %></textarea>
+                        </div>
+
+
+                        <div class="embed leaveEmbed <%- leave.embed.active ? "active" : "" %>">
+                            <h3>Author</h3>
+                            <div class="author">
+                                <input type="text" name="leaveEmbedAuthorAvatar" id="leaveEmbedAuthorAvatar"
+                                    placeholder="Avatar URL" value="<%- leave.embed.authorAvatar %>">
+                                <input type="text" name="leaveEmbedAuthor" id="leaveEmbedAuthor" placeholder="Name"
+                                    value="<%- leave.embed.author %>">
+                                <input type="text" name="leaveEmbedAuthorUrl" id="leaveEmbedAuthorUrl" placeholder="URL"
+                                    value="<%- leave.embed.authorUrl %>">
+                            </div>
+                            <h3 style=" margin-top: .6rem;">Title</h3>
+                            <div class="title">
+                                <input type="text" name="leaveEmbedTitle" id="leaveEmbedTitle"
+                                    placeholder="Title cannot be empty" value="<%- leave.embed.title %>">
+                                <input type="text" name="leaveEmbedTitleUrl" id="leaveEmbedTitleUrl" placeholder="URL"
+                                    value="<%- leave.embed.titleUrl %>">
+                            </div>
+                            <h3 style=" margin-top: .6rem;">Description</h3>
+                            <textarea name="leaveEmbedDescription" id="leaveEmbedDescription" rows="3"
+                                placeholder="Description"><%- leave.embed.description %></textarea>
+                            <h3 style=" margin-top: .6rem;">Thumbnail</h3>
+                            <input type="text" name="leaveEmbedThumbnail" id="leaveEmbedThumbnail" placeholder="URL"
+                                value="<%- leave.embed.thumbnail %>">
+                            <h3 style=" margin-top: .6rem;">Image</h3>
+                            <input type="text" name="leaveEmbedImage" id="leaveEmbedImage" placeholder="URL"
+                                value="<%- leave.embed.image %>">
+                            <h3 style=" margin-top: .6rem;">Footer</h3>
+                            <div class="footer">
+                                <input type="text" name="leaveEmbedFooterIcon" id="leaveEmbedFooterIcon"
+                                    placeholder="Icon URL" value="<%- leave.embed.footerIcon %>">
+                                <input type="text" name="leaveEmbedFooterText" id="leaveEmbedFooterText"
+                                    placeholder="Text" value="<%- leave.embed.footerText %>">
+                            </div>
+                            <div class="color">
+                                <h3 style=" margin-top: .6rem;">Color</h3>
+                                <input type="color" name="leaveEmbedColor" id="leaveEmbedColor"
+                                    value="<%- leave.embed.color %>">
+                            </div>
+                        </div>
+
+                        <div class="placeholders">
+                            <span class="material-icons-round">info</span>
+                            <small class="text-muted">
+                                Learn more about the
+                                <a href="<%- domain %>/placeholders" target="_blank" rel="noopener noreferrer">
+                                    placeholders
+                                    <span class="material-icons-round">launch</span>
+                                </a>
+                            </small>
+                        </div>
+
+                        <div class="submit">
+                            <button name="leaveSave" type="submit">Save</button>
+                        </div>
+                </div>
+
+            </div>
+
+            <div class="auto-role card">
+                <div class="title">
+                    <h2>Auto Role</h2>
+                    <div class="slider">
+                        On / Off
+                        <%- include("../partials/components/switch.ejs", { id: 6, guild, bot, domain, selected:
+                            autorole.active, value: "autoroleActive" }) %>
+                    </div>
+                </div>
+
+                <%- include("../partials/components/role-select.ejs", { id: 7, guild, bot, domain,
+                    label: "Role to assign to new members" , selected: autorole.id, value: "autoroleId" , data: autorole
+                    }) %>
+
+                    <div class="submit">
+                        <button name="autoroleSave" type="submit">Save</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<link rel="stylesheet" href="<%- domain %>/css/welcome.css">
+<script src="<%- domain %>/js/welcome.js"></script>
