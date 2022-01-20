@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dr-monocle/lambda-beta.git"
+    "url": "git+https://github.com/dr-monocle/lambda-bot.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dr-monocle/lambda-beta/issues"
+    "url": "https://github.com/dr-monocle/lambda-bot/issues"
   },
-  "homepage": "https://github.com/dr-monocle/lambda-beta#readme",
+  "homepage": "https://github.com/dr-monocle/lambda-bot#readme",
   "dependencies": {
     "ascii-table": "^0.0.9",
     "body-parser": "^1.19.1",

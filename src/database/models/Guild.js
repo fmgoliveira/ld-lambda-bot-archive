@@ -297,10 +297,6 @@ const guildSchema = new Schema({
                     type: Boolean,
                     default: false
                 },
-                emojis: {
-                    type: Boolean,
-                    default: false
-                },
                 joinVoiceChannel: {
                     type: Boolean,
                     default: false

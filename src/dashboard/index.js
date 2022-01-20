@@ -112,21 +112,21 @@ module.exports = async (client) => {
         let usersSuffix = ""
         let guildsSuffix = ""
 
-        if (memberCountStr.length >= 7) {
-            memberCountStr = `${memberCountStr.slice(0, -6)}`
-            usersSuffix = "K+"
-        }
         if (memberCountStr.length >= 4) {
             memberCountStr = `${memberCountStr.slice(0, -3)}`
+            usersSuffix = "K+"
+        }
+        if (memberCountStr.length >= 7) {
+            memberCountStr = `${memberCountStr.slice(0, -6)}`
             usersSuffix = "M+"
         }
 
-        if (guildCountStr.length >= 7) {
-            guildCountStr = `${guildCountStr.slice(0, -6)}`
-            guildsSuffix = "K+"
-        }
         if (guildCountStr.length >= 4) {
             guildCountStr = `${guildCountStr.slice(0, -3)}`
+            guildsSuffix = "K+"
+        }
+        if (guildCountStr.length >= 7) {
+            guildCountStr = `${guildCountStr.slice(0, -6)}`
             guildsSuffix = "M+"
         }
 
@@ -1761,7 +1761,6 @@ module.exports = async (client) => {
 
             if (!data.ban) data.ban = false
             if (!data.kick) data.kick = false
-            if (!data.roles) data.roles = false
             if (!data.clear) data.clear = false
             if (!data.warn) data.warn = false
             if (!data.timeout) data.timeout = false
@@ -1780,14 +1779,6 @@ module.exports = async (client) => {
                 await settings.save()
             } else {
                 settings.logging.active.moderation.kick = false
-                await settings.save()
-            }
-
-            if (data.roles === "on") {
-                settings.logging.active.moderation.roles = true
-                await settings.save()
-            } else {
-                settings.logging.active.moderation.roles = false
                 await settings.save()
             }
 
@@ -1875,7 +1866,6 @@ module.exports = async (client) => {
             if (!data.roleCreateDelete) data.roleCreateDelete = false
             if (!data.roleUpdate) data.roleUpdate = false
             if (!data.guildUpdate) data.guildUpdate = false
-            if (!data.emojis) data.emojis = false
             if (!data.joinVoiceChannel) data.joinVoiceChannel = false
             if (!data.moveVoiceChannel) data.moveVoiceChannel = false
             if (!data.leaveVoiceChannel) data.leaveVoiceChannel = false
@@ -1925,14 +1915,6 @@ module.exports = async (client) => {
                 await settings.save()
             } else {
                 settings.logging.active.serverEvents.guildUpdate = false
-                await settings.save()
-            }
-
-            if (data.emojis === "on") {
-                settings.logging.active.serverEvents.emojis = true
-                await settings.save()
-            } else {
-                settings.logging.active.serverEvents.emojis = false
                 await settings.save()
             }
 
