@@ -6,4 +6,4 @@ const client = new Client({
 })
 
 
-client.login(process.env.BETA_TOKEN)
+client.login(process.env.TOKEN)
