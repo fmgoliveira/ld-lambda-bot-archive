@@ -8,7 +8,7 @@ module.exports = class extends Event {
     }
 
     run = async (member) => {
-        const settings = this.client.db.guilds.findOne({ guildId: member.guild.id }) || new this.client.db.guilds({ guildId: member.guild.id })
+        const settings = await this.client.db.guilds.findOne({ guildId: member.guild.id }) || new this.client.db.guilds({ guildId: member.guild.id })
         const leave = settings.leave
 
         if (!leave.active) return
