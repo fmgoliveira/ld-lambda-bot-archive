@@ -301,10 +301,8 @@ module.exports = async (client) => {
             members.set(member.id, member)
         })
 
-        console.log(members)
-
-        if (members.length > 0) {
-            for (let index = 0; index < 7; index++) {
+        for (let index = 0; index < 7; index++) {
+            if (members.length > 0) {
                 const member = members.reduce((prev, next) => (prev.createdAt > next.createdAt) ? prev : next)
                 members.delete(member.id)
                 recentMembers.push(member)
