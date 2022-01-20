@@ -1,4 +1,6 @@
 const Event = require("../../structures/Event")
+const { MessageEmbed } = require("discord.js")
+const placeholderReplace = require("../../structures/utils/placeholderReplace")
 
 module.exports = class extends Event {
     constructor(client) {
