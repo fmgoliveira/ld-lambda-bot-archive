@@ -301,10 +301,14 @@ module.exports = async (client) => {
             members.set(member.id, member)
         })
 
-        for (let index = 0; index < 7; index++) {
-            const member = members.reduce((prev, next) => (prev.createdAt > next.createdAt) ? prev : next)
-            members.delete(member.id)
-            recentMembers.push(member)
+        console.log(members)
+
+        if (members.length > 0) {
+            for (let index = 0; index < 7; index++) {
+                const member = members.reduce((prev, next) => (prev.createdAt > next.createdAt) ? prev : next)
+                members.delete(member.id)
+                recentMembers.push(member)
+            }
         }
 
         const actions = await client.db.logs.find({ guildId: guild.id })
