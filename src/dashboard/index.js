@@ -302,13 +302,10 @@ module.exports = async (client) => {
         })
 
         for (let index = 0; index < 7; index++) {
-            try {
+            if (members.size > 0) {
                 const member = members.reduce((prev, next) => (prev.createdAt > next.createdAt) ? prev : next)
                 members.delete(member.id)
                 recentMembers.push(member)
-            } catch (err) {
-                console.log(err)
-                continue
             }
         }
 
