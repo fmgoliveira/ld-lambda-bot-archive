@@ -11,7 +11,7 @@ module.exports = class extends Event {
 
     run = async (member) => {
         const settings = this.client.db.guilds.findOne({ guildId: member.guild.id }) || new this.client.db.guilds({ guildId: member.guild.id })
-        const welcomeSettings = settings.welcome
+        const welcome = settings.welcome
 
         if (!welcome.active) return
 
