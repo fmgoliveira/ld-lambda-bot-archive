@@ -10,7 +10,7 @@ module.exports = class extends Event {
     }
 
     run = async (oldChannel, newChannel) => {
-        const settings = await this.client.db.guilds.findOne({ guildId: member.guild.id }) || new this.client.db.guilds({ guildId: member.guild.id })
+        const settings = await this.client.db.guilds.findOne({ guildId: newChannel.guild.id }) || new this.client.db.guilds({ guildId: newChannel.guild.id })
         const logging = settings.logging
 
         if (!logging.active.serverEvents.channelUpdate) return

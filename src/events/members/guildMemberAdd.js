@@ -16,7 +16,7 @@ module.exports = class extends Event {
         if (!welcome.active) return
 
         let message
-        
+
         if (welcome.embed.active) {
             let { author, authorAvatar, authorUrl, title, titleUrl, description, thumbnail, image, footerText, footerIcon, color } = welcome.embed
 
@@ -28,7 +28,7 @@ module.exports = class extends Event {
                 .setTitle(title)
                 .setColor(color)
                 .setDescription(description)
-            
+
             if (author) {
                 embed.setAuthor(author, authorAvatar, authorUrl)
             }
@@ -46,7 +46,7 @@ module.exports = class extends Event {
             }
 
             message = {
-                embeds: [ embed ]
+                embeds: [embed]
             }
         } else {
             message = placeholderReplace(welcome.message, member.guild, member.user)
@@ -66,7 +66,7 @@ module.exports = class extends Event {
         if (settings.autorole.active) {
             if (settings.autorole.id) {
                 try {
-                    member.roles.add(settings.autorole.id)
+                    member.roles.add(settings.autorole.id).catch(err => console.log(err))
                 } catch (err) { console.log(err) }
             }
         }
@@ -86,7 +86,7 @@ module.exports = class extends Event {
                 } catch (err) { console.log(err) }
             }
         }
-        
+
         return
     }
 }

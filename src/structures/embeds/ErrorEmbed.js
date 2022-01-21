@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 
-class ErrorEmbed {
+module.exports =  {
     missingUserPermissions(client, permissions) {
         return {
             embeds: [
@@ -22,7 +22,7 @@ class ErrorEmbed {
                 )
             ]
         }
-    }
+    },
 
     missingClientPermissions(client, permissions) {
         return {
@@ -47,5 +47,3 @@ class ErrorEmbed {
         }
     }
 }
-
-module.exports = ErrorEmbed

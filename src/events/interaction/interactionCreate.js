@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js")
 const Event = require("../../structures/Event")
 const inviteButton = require("../../structures/components/inviteButton")
-const ms = require("ms")
+const ErrorEmbed = require("../../structures/embeds/ErrorEmbed")
 
 module.exports = class extends Event {
     constructor(client) {

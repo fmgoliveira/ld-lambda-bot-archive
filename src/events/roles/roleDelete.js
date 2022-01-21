@@ -10,7 +10,7 @@ module.exports = class extends Event {
     }
 
     run = async (role) => {
-        const settings = await this.client.db.guilds.findOne({ guildId: member.guild.id }) || new this.client.db.guilds({ guildId: member.guild.id })
+        const settings = await this.client.db.guilds.findOne({ guildId: role.guild.id }) || new this.client.db.guilds({ guildId: role.guild.id })
         const logging = settings.logging
 
         if (!logging.active.serverEvents.roleCreateDelete) return
