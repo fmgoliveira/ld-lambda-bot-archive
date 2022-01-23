@@ -296,18 +296,6 @@ const guildSchema = new Schema({
                 guildUpdate: {
                     type: Boolean,
                     default: false
-                },
-                joinVoiceChannel: {
-                    type: Boolean,
-                    default: false
-                },
-                moveVoiceChannel: {
-                    type: Boolean,
-                    default: false
-                },
-                leaveVoiceChannel: {
-                    type: Boolean,
-                    default: false
                 }
             },
             memberEvents: {

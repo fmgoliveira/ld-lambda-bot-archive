@@ -1,7 +1,4 @@
 {
-  "engines": {
-    "node": "16.10.x"
-  },
   "name": "bot-beta",
   "version": "1.0.0",
   "main": "index.js",
