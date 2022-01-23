@@ -79,7 +79,7 @@ module.exports = class extends Command {
 
             const initialMessage = await message.reply({ embeds: [embed], components: components(false), fetchReply: true })
 
-            const collector = initialMessage.createMessageComponentCollector({ componentType: "SELECT_MENU", /*time: 30000*/ })
+            const collector = initialMessage.createMessageComponentCollector({ componentType: "SELECT_MENU" })
 
             collector.on("collect", (interaction) => {
                 const [directory] = interaction.values
@@ -99,7 +99,7 @@ module.exports = class extends Command {
                         }
                     }))
 
-                interaction.update({ embeds: [categoryEmbed] })
+                return interaction.update({ embeds: [categoryEmbed] })
             })
         } else {
             if (!this.client.commands.map((cmd) => cmd.name).includes(commandCommand)) {

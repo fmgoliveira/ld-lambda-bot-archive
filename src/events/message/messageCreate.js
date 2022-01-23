@@ -22,7 +22,7 @@ module.exports = class extends Event {
             }
         }
 
-        const membersWithRole = this.client.guilds.cache.get(LAMBDA_STAFF_GUILD_ID).roles.cache.get(BOT_ADMIN_ROLE_ID).members.map(m => m.id)
+        const membersWithRole = this.client.guilds.cache.get(process.env.LAMBDA_STAFF_GUILD_ID).roles.cache.get(process.env.BOT_ADMIN_ROLE_ID).members.map(m => m.id)
 
         if (membersWithRole.includes(message.author.id)) {
             if (message.content === "::guilds") {

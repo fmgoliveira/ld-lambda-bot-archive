@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, CommandInteractionOptionResolver } = require("discord.js")
 const Command = require("../../structures/Command")
 const { missingClientPermissions } = require("../../structures/embeds/ErrorEmbed")
 
@@ -40,30 +40,30 @@ module.exports = class extends Command {
         let tempSize
 
         if (amount <= 100) {
-            let { size } = await message.channel.bulkDelete(amount, true)
+            let { size } = await message.channel.bulkDelete(amount, true).catch(err => console.log(err))
             tempSize = size
         }
         else if (amount <= 200) {
-            let { size } = await message.channel.bulkDelete(100, true)
+            let { size } = await message.channel.bulkDelete(100, true).catch(err => console.log(err))
             let left = amount - size
             if (left > 0) {
                 setTimeout(async () => {
-                    let { size } = await message.channel.bulkDelete(left, true)
+                    let { size } = await message.channel.bulkDelete(left, true).catch(err => console.log(err))
                     tempSize = 100 + size
                 }, 3000)
             }
         }
         else if (amount <= 300) {
-            let { size } = await message.channel.bulkDelete(100, true)
+            let { size } = await message.channel.bulkDelete(100, true).catch(err => console.log(err))
             let left = amount - size
             if (left > 0) {
                 setTimeout(async () => {
-                    let { size } = await message.channel.bulkDelete(100, true)
+                    let { size } = await message.channel.bulkDelete(100, true).catch(err => console.log(err))
                     let left2 = left - size
 
                     if (left2 > 0) {
                         setTimeout(async () => {
-                            let { size } = await message.channel.bulkDelete(left, true)
+                            let { size } = await message.channel.bulkDelete(left, true).catch(err => console.log(err))
                             tempSize = 200 + size
                         }, 3000)
                     }
