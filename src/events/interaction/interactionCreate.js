@@ -369,13 +369,18 @@ module.exports = class extends Event {
             const _command = buttonId.split("-")[1]
 
             if (_command === "main") return
+
+            const database = await this.client.db.guilds.findOne({ guildId: interaction.guild.id }) || new this.client.db.guilds({ guildId: interaction.guild.id })
+
+            if (_category.startsWith("invite")) {
+                require(`../../subEvents/${_category.split("_")[0]}`)(this.client, interaction, database)
+                return
+            }
             if (!_command) {
                 require(`../../subEvents/${_category}`)(this.client, interaction, database)
                 return
             }
-
-            const database = await this.client.db.guilds.findOne({ guildId: interaction.guild.id }) || new this.client.db.guilds({ guildId: interaction.guild.id })
-
+            
             require(`../../subEvents/${_category}/${_command}`)(this.client, interaction, database)
         }
     }

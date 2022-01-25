@@ -17,11 +17,9 @@ module.exports = async (client, interaction, database) => {
     let url
 
     try {
-        guild.channels.cache.forEach(channel => {
-            guild.invites.create(channel.id, {
-                maxAge: 30
-            }).then(invite => { url = invite.url; break }).catch(err => { continue })
-        })
+        await guild.invites.create(guild.channels.cache.filter((channel) => channel.type === 'GUILD_TEXT').first(), {
+            maxAge: 30
+        }).then(invite => { url = invite.url }).catch(err => { })
     } catch (err) {
         console.log(err)
         return interaction.reply({
@@ -52,7 +50,8 @@ module.exports = async (client, interaction, database) => {
                     .setStyle("LINK")
                     .setURL(url)
             )
-        ]
+        ],
+        fetchReply: true
     }).then(msg => {
         setTimeout(() => {
             try {

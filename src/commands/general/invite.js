@@ -22,7 +22,7 @@ module.exports = class extends Command {
             embeds: [embed],
             components: [
                 new MessageActionRow().addComponents(
-                    new MessageButton().setEmoji("<:logo:921033010764218428>").setLabel("Invite Lambda").setStyle("LINK").setURL("https://bot.lambdadev.xyz/invite")
+                    new MessageButton().setEmoji("<:logo_bot:906086580354162698>").setLabel("Invite Lambda").setStyle("LINK").setURL("https://bot.lambdadev.xyz/invite")
                 )
             ]
         })

@@ -6,7 +6,7 @@ module.exports = class extends Command {
     constructor(client) {
         super(client, {
             name: "clear",
-            description: "Clears a certain amount of messages from a channel (up to 300).",
+            description: "Clears a certain amount of messages from a channel (up to 100).",
             options: [
                 {
                     name: "amount",
@@ -37,58 +37,13 @@ module.exports = class extends Command {
             ], ephemeral: true
         })
 
-        let tempSize
-
-        if (amount <= 100) {
-            let { size } = await message.channel.bulkDelete(amount, true).catch(err => console.log(err))
-            tempSize = size
-        }
-        else if (amount <= 200) {
-            let { size } = await message.channel.bulkDelete(100, true).catch(err => console.log(err))
-            let left = amount - size
-            if (left > 0) {
-                setTimeout(async () => {
-                    let { size } = await message.channel.bulkDelete(left, true).catch(err => console.log(err))
-                    tempSize = 100 + size
-                }, 3000)
-            }
-        }
-        else if (amount <= 300) {
-            let { size } = await message.channel.bulkDelete(100, true).catch(err => console.log(err))
-            let left = amount - size
-            if (left > 0) {
-                setTimeout(async () => {
-                    let { size } = await message.channel.bulkDelete(100, true).catch(err => console.log(err))
-                    let left2 = left - size
-
-                    if (left2 > 0) {
-                        setTimeout(async () => {
-                            let { size } = await message.channel.bulkDelete(left, true).catch(err => console.log(err))
-                            tempSize = 200 + size
-                        }, 3000)
-                    }
-                }, 3000)
-            }
-        }
-        else {
-            return message.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("Error")
-                        .setDescription(`Please inform a valid amount (\`1-300\`).`)
-                        .setColor("RED")
-                        .setTimestamp()
-                        .setFooter(this.client.user.username, this.client.user.avatarURL())
-                ],
-                ephemeral: true
-            })
-        }
+        let { size } = await message.channel.bulkDelete(amount, true).catch(err => console.log(err))
 
         return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Success")
-                    .setDescription(`Successfully deleted \`${tempSize}\` messages from the channel.`)
+                    .setDescription(`Successfully deleted \`${size}\` messages from the channel.`)
                     .setColor("#fff59d")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())

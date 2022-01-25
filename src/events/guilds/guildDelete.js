@@ -19,15 +19,15 @@ module.exports = class extends Event {
                         .addField("ID", guild.id, true)
                         .addField("Owner ID", guild.ownerId, true)
                         .addField("Premium Tier (Nitro boosts)", `\`${guild.premiumTier}\``)
-                        .addField("Members", guild.memberCount, true)
+                        .addField("Members", `${guild.members.cache.size}`, true)
                         .addField("Channels", `${guild.channels.cache.size}`, true)
                         .addField("Roles", `${guild.roles.cache.size}`, true)
                         .setThumbnail(guild.iconURL())
                         .setTimestamp()
                         .setFooter(this.client.user.username, this.client.user.avatarURL())
-                        .setColor("GREEN")
+                        .setColor("RED")
                 ]
-            })
+            }).catch(err => console.log(err))
         } catch (err) {
             console.log(err)
         }

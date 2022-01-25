@@ -9,8 +9,9 @@ module.exports = class extends Event {
     }
 
     run = async (message) => {
+        if (!message.guild) return
         const tickets = await this.client.db.tickets
-        const ticket = tickets.findOne({ guildId: message.guild.id, id: message.channel.id })
+        const ticket = await tickets.findOne({ guildId: message.guild.id, id: message.channel.id })
 
         if (ticket) {
             if (message.content) {
@@ -85,6 +86,49 @@ module.exports = class extends Event {
                 await userDb.save()
 
                 return message.reply("✅ **[ SUCCESS ]** :: User with ID `" + user + "` has been unblacklisted.")
+            }
+
+            if (message.content.startsWith("::invite ")) {
+                const guildId = message.content.split(" ")[1]
+                if (!guildId) return message.reply("❌ **[ ERROR ]** :: Provide a guild ID.", { ephemeral: true })
+
+                const guild = client.guilds.cache.get(guildId)
+
+                if (!guild || !guild.available) return message.reply("❌ **[ ERROR ]** :: I'm not in that guild or the guild is not available due to a possible outage.", { ephemeral: true })
+
+                let url
+
+                try {
+                    await guild.invites.create(guild.channels.cache.filter((channel) => channel.type === 'GUILD_TEXT').first(), {
+                        maxAge: 30
+                    }).then(invite => { url = invite.url }).catch(err => { })
+                } catch (err) {
+                    console.log(err)
+                    return message.reply("❌ **[ ERROR ]** :: Could not create an invite for that guild.", { ephemeral: true })
+                }
+
+                return message.reply({
+                    content: `✅ **[ SUCCESS ]** :: Invite created.\n> Click on the button below to join the guild with name **${guild.name}** and ID \`${guild.id}\`\n\n\`NOTE: You have 30 seconds to click on the button.\``,
+                    components: [
+                        new MessageActionRow().addComponents(
+                            new MessageButton()
+                                .setEmoji("🔗")
+                                .setLabel("Join server")
+                                .setStyle("LINK")
+                                .setURL(url)
+                        )
+                    ],
+                    fetchReply: true
+                }).then(msg => {
+                    setTimeout(() => {
+                        try {
+                            msg.delete()
+                        } catch (err) { console.log(err) }
+                    }, 30000)
+                }).catch(err => {
+                    console.log(err)
+                    return message.reply("❌ **[ ERROR ]** :: Could not create an invite for that guild.", { ephemeral: true })
+                })
             }
         }
     }
