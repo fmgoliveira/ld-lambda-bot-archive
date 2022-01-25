@@ -57,7 +57,7 @@ module.exports = async (client, interaction, database) => {
             try {
                 msg.delete()
             } catch (err) { console.log(err) }
-        }, 30)
+        }, 30000)
     }).catch(err => {
         console.log(err)
         return interaction.reply({
