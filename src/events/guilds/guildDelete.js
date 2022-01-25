@@ -4,7 +4,7 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 module.exports = class extends Event {
     constructor(client) {
         super(client, {
-            name: "guildCreate"
+            name: "guildDelete"
         })
     }
 

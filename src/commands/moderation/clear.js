@@ -11,7 +11,7 @@ module.exports = class extends Command {
                 {
                     name: "amount",
                     type: "NUMBER",
-                    description: "The amount of messages you want to purge you want to kick from the server.",
+                    description: "The amount of messages you want to purge in this channel.",
                     required: true
                 }
             ],
@@ -37,13 +37,17 @@ module.exports = class extends Command {
             ], ephemeral: true
         })
 
-        let { size } = await message.channel.bulkDelete(amount, true).catch(err => console.log(err))
+        let size
+
+        try {
+            size = (await message.channel.bulkDelete(amount, true).catch(err => console.log(err))).size
+        } catch (err) { console.log(err) }
 
         return message.reply({
             embeds: [
                 new MessageEmbed()
                     .setTitle("Success")
-                    .setDescription(`Successfully deleted \`${size}\` messages from the channel.`)
+                    .setDescription(`Successfully deleted \`${size ? size : 0}\` messages from the channel.`)
                     .setColor("#fff59d")
                     .setTimestamp()
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
