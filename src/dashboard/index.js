@@ -16,7 +16,7 @@ const dataDir = path.join(process.cwd(), "src/dashboard").replaceAll("\\", "/")
 const app = express()
 app.set("view engine", "ejs")
 
-module.exports = async (client) => {
+module.exports = async(client) => {
     // Configuration
     app.use((req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
@@ -48,13 +48,13 @@ module.exports = async (client) => {
     app.use(bodyParser.urlencoded({ extended: false }))
 
     // Functions
-    const checkAuth = async (req, res, next) => {
+    const checkAuth = async(req, res, next) => {
         if (req.isAuthenticated()) return next();
         req.session.backURL = req.url;
         res.redirect("/login");
     }
 
-    const checkPerms = async (req, res, next) => {
+    const checkPerms = async(req, res, next) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
         try {
@@ -153,7 +153,7 @@ module.exports = async (client) => {
         failWithError: true,
         failureFlash: "There was an error logging you in",
         failureRedirect: "/"
-    }), async (req, res) => {
+    }), async(req, res) => {
         const loginLogs = new WebhookClient({
             id: process.env.DASH_WEBHOOK_ID,
             token: process.env.DASH_WEBHOOK_TOKEN,
@@ -169,26 +169,26 @@ module.exports = async (client) => {
                 loginLogs.send({
                     embeds: [
                         new MessageEmbed()
-                            .setColor("GREEN")
-                            .setTitle("Login Log")
-                            .setDescription("A user has logged in into his/her account")
-                            .addField("User", `${req.user.username}#${req.user.discriminator} (\`${req.user.id}\`)`)
-                            .addField("Time", `${new Date()}`)
-                            .setFooter("Lambda Dashboard Logs", client.user.avatarURL())
-                            .setTimestamp()
+                        .setColor("GREEN")
+                        .setTitle("Login Log")
+                        .setDescription("A user has logged in into his/her account")
+                        .addField("User", `${req.user.username}#${req.user.discriminator} (\`${req.user.id}\`)`)
+                        .addField("Time", `${new Date()}`)
+                        .setFooter("Lambda Dashboard Logs", client.user.avatarURL())
+                        .setTimestamp()
                     ]
                 })
             } else {
                 loginLogs.send({
                     embeds: [
                         new MessageEmbed()
-                            .setColor("GREEN")
-                            .setTitle("Login Log")
-                            .setDescription("A user has logged in into his/her account")
-                            .addField("User", `${req.user.username}#${req.user.discriminator} (\`${req.user.id}\`)`)
-                            .addField("Time", `${new Date()}`)
-                            .setFooter("Lambda Dashboard Logs", client.user.avatarURL())
-                            .setTimestamp()
+                        .setColor("GREEN")
+                        .setTitle("Login Log")
+                        .setDescription("A user has logged in into his/her account")
+                        .addField("User", `${req.user.username}#${req.user.discriminator} (\`${req.user.id}\`)`)
+                        .addField("Time", `${new Date()}`)
+                        .setFooter("Lambda Dashboard Logs", client.user.avatarURL())
+                        .setTimestamp()
                     ]
                 })
 
@@ -201,7 +201,7 @@ module.exports = async (client) => {
     })
 
     // Logout endpoint
-    app.get("/logout", async (req, res) => {
+    app.get("/logout", async(req, res) => {
         const logoutLogs = new WebhookClient({
             id: process.env.DASH_WEBHOOK_ID,
             token: process.env.DASH_WEBHOOK_TOKEN,
@@ -212,13 +212,13 @@ module.exports = async (client) => {
             logoutLogs.send({
                 embeds: [
                     new MessageEmbed()
-                        .setColor("RED")
-                        .setTitle("Logout Log")
-                        .setDescription("A user has logged out from his/her account")
-                        .addField("User", `${req.user.username}#${req.user.discriminator} (\`${req.user.id}\`)`)
-                        .addField("Time", `${new Date()}`)
-                        .setFooter("Lambda Dashboard Logs", client.user.avatarURL())
-                        .setTimestamp()
+                    .setColor("RED")
+                    .setTitle("Logout Log")
+                    .setDescription("A user has logged out from his/her account")
+                    .addField("User", `${req.user.username}#${req.user.discriminator} (\`${req.user.id}\`)`)
+                    .addField("Time", `${new Date()}`)
+                    .setFooter("Lambda Dashboard Logs", client.user.avatarURL())
+                    .setTimestamp()
                 ]
             })
         }
@@ -245,7 +245,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -254,7 +254,7 @@ module.exports = async (client) => {
 
         guild.members.cache.forEach(member => {
             if (member.user.bot) bots++
-            else humans++
+                else humans++
         })
 
         let botPercent = (bots * 226.19) / guild.memberCount
@@ -268,8 +268,7 @@ module.exports = async (client) => {
             if (["GUILD_TEXT", "GUILD_NEWS"].includes(channel.type)) {
                 channelCount++
                 textChannels++
-            }
-            else if (["GUILD_VOICE", "GUILD_STAGE_VOICE"].includes(channel.type)) {
+            } else if (["GUILD_VOICE", "GUILD_STAGE_VOICE"].includes(channel.type)) {
                 channelCount++
                 voiceChannels++
             }
@@ -327,7 +326,7 @@ module.exports = async (client) => {
         const leave1 = []
         const leave2 = []
 
-        guild.members.cache.forEach(async (user) => {
+        guild.members.cache.forEach(async(user) => {
             let day = 7 * 86400000
             let x = Date.now() - user.joinedAt
             let created = Math.floor(x / 86400000)
@@ -346,7 +345,7 @@ module.exports = async (client) => {
 
         if (!storedSettings.leaves) storedSettings.leaves = []
 
-        storedSettings.leaves.forEach(async (leave) => {
+        storedSettings.leaves.forEach(async(leave) => {
             let xx = leave - Date.now()
 
             if (Date.now() > leave) {
@@ -390,7 +389,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/members", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/members", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -400,7 +399,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/logs", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/logs", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -413,7 +412,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/welcome", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/welcome", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -438,7 +437,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/tickets", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/tickets", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -462,7 +461,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/tickets/categories/:panelId", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/tickets/categories/:panelId", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
         let panel
@@ -480,7 +479,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/moderation", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/moderation", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -501,7 +500,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.get("/dashboard/:guildId/logging", checkAuth, checkPerms, async (req, res) => {
+    app.get("/dashboard/:guildId/logging", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -549,7 +548,7 @@ module.exports = async (client) => {
     // })
 
     // POST methods
-    app.post("/dashboard/:guildId/welcome", checkAuth, checkPerms, async (req, res) => {
+    app.post("/dashboard/:guildId/welcome", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -573,7 +572,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.post("/dashboard/:guildId/tickets", checkAuth, checkPerms, async (req, res) => {
+    app.post("/dashboard/:guildId/tickets", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -603,7 +602,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.post("/dashboard/:guildId/tickets/categories/:panelId", checkAuth, checkPerms, async (req, res) => {
+    app.post("/dashboard/:guildId/tickets/categories/:panelId", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
         let panel
@@ -621,7 +620,7 @@ module.exports = async (client) => {
         res.redirect(`/dashboard/${req.params.guildId}/tickets`)
     })
 
-    app.post("/dashboard/:guildId/moderation", checkAuth, checkPerms, async (req, res) => {
+    app.post("/dashboard/:guildId/moderation", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -645,7 +644,7 @@ module.exports = async (client) => {
         })
     })
 
-    app.post("/dashboard/:guildId/logging", checkAuth, checkPerms, async (req, res) => {
+    app.post("/dashboard/:guildId/logging", checkAuth, checkPerms, async(req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
 
@@ -670,7 +669,7 @@ module.exports = async (client) => {
     })
 
     // Auxiliar functions
-    const welcomeValid = async (data, settings, guild, req) => {
+    const welcomeValid = async(data, settings, guild, req) => {
         if (Object.prototype.hasOwnProperty.call(data, "welcomeSave")) {
             if (data.welcomeChannel !== "null" && data.welcomeChannel) {
                 let welcomeChannelValid = await guild.channels.cache.find((ch) => ch.id === data.welcomeChannel)
@@ -1009,7 +1008,7 @@ module.exports = async (client) => {
         }
     }
 
-    const ticketsValid = async (data, settings, guild, req, ticketPanels, ticketPanelsDb) => {
+    const ticketsValid = async(data, settings, guild, req, ticketPanels, ticketPanelsDb) => {
         if (Object.prototype.hasOwnProperty.call(data, "ticketsSettingsSave")) {
             if (data.ticketsLogChannel !== "null" && data.ticketsLogChannel) {
                 let ticketsLogChannelValid = await guild.channels.cache.find((ch) => ch.id === data.ticketsLogChannel)
@@ -1157,10 +1156,10 @@ module.exports = async (client) => {
                 ticketPanels.forEach(panel => {
                     components.addComponents(
                         new MessageButton()
-                            .setCustomId(`ticket-create-${panel._id}`)
-                            .setLabel(panel.label)
-                            .setEmoji("📨")
-                            .setStyle("SECONDARY")
+                        .setCustomId(`ticket-create-${panel._id}`)
+                        .setLabel(panel.label)
+                        .setEmoji("📨")
+                        .setStyle("SECONDARY")
                     )
                 })
             }
@@ -1168,7 +1167,7 @@ module.exports = async (client) => {
             guild.channels.cache.get(settings.tickets.panelMessage.channel).send({
                 embeds: [embed],
                 components: components ? [components] : null
-            }).then(async (msg) => {
+            }).then(async(msg) => {
                 settings.tickets.panelMessage.id = msg.id
                 settings.tickets.panelMessage.url = msg.url
                 await settings.save()
@@ -1269,10 +1268,10 @@ module.exports = async (client) => {
                 ticketPanels.forEach(panel => {
                     components.addComponents(
                         new MessageButton()
-                            .setCustomId(`ticket-create-${panel._id}`)
-                            .setLabel(panel.label)
-                            .setEmoji("📨")
-                            .setStyle("SECONDARY")
+                        .setCustomId(`ticket-create-${panel._id}`)
+                        .setLabel(panel.label)
+                        .setEmoji("📨")
+                        .setStyle("SECONDARY")
                     )
                 })
             }
@@ -1280,7 +1279,7 @@ module.exports = async (client) => {
             guild.channels.cache.get(settings.tickets.panelMessage.channel).send({
                 embeds: [embed],
                 components: components ? [components] : null
-            }).then(async (msg) => {
+            }).then(async(msg) => {
                 settings.tickets.panelMessage.id = msg.id
                 settings.tickets.panelMessage.url = msg.url
                 await settings.save()
@@ -1434,10 +1433,10 @@ module.exports = async (client) => {
                 ticketPanels.forEach(panel => {
                     components.addComponents(
                         new MessageButton()
-                            .setCustomId(`ticket-create-${panel._id}`)
-                            .setLabel(panel.label)
-                            .setEmoji("📨")
-                            .setStyle("SECONDARY")
+                        .setCustomId(`ticket-create-${panel._id}`)
+                        .setLabel(panel.label)
+                        .setEmoji("📨")
+                        .setStyle("SECONDARY")
                     )
                 })
             }
@@ -1446,7 +1445,7 @@ module.exports = async (client) => {
                 guild.channels.cache.get(settings.tickets.panelMessage.channel).send({
                     embeds: [embed],
                     components: components ? [components] : null
-                }).then(async (msg) => {
+                }).then(async(msg) => {
                     settings.tickets.panelMessage.id = msg.id
                     settings.tickets.panelMessage.url = msg.url
                     await settings.save()
@@ -1502,10 +1501,10 @@ module.exports = async (client) => {
                 ticketPanels.forEach(panel => {
                     components.addComponents(
                         new MessageButton()
-                            .setCustomId(`ticket-create-${panel._id}`)
-                            .setLabel(panel.label)
-                            .setEmoji("📨")
-                            .setStyle("SECONDARY")
+                        .setCustomId(`ticket-create-${panel._id}`)
+                        .setLabel(panel.label)
+                        .setEmoji("📨")
+                        .setStyle("SECONDARY")
                     )
                 })
             }
@@ -1514,7 +1513,7 @@ module.exports = async (client) => {
                 guild.channels.cache.get(settings.tickets.panelMessage.channel).send({
                     embeds: [embed],
                     components: components ? [components] : null
-                }).then(async (msg) => {
+                }).then(async(msg) => {
                     settings.tickets.panelMessage.id = msg.id
                     settings.tickets.panelMessage.url = msg.url
                     await settings.save()
@@ -1540,7 +1539,7 @@ module.exports = async (client) => {
         }
     }
 
-    const ticketsPanelValid = async (data, settings, guild, req) => {
+    const ticketsPanelValid = async(data, settings, guild, req) => {
         if (Object.prototype.hasOwnProperty.call(data, "ticketPanelEdit")) {
             let ticketPanelCategoryValid = await guild.channels.cache.find((ch) => ch.id === data.ticketPanelCategory)
 
@@ -1616,10 +1615,10 @@ module.exports = async (client) => {
                 ticketPanels.forEach(panel => {
                     components.addComponents(
                         new MessageButton()
-                            .setCustomId(`ticket-create-${panel._id}`)
-                            .setLabel(panel.label)
-                            .setEmoji("📨")
-                            .setStyle("SECONDARY")
+                        .setCustomId(`ticket-create-${panel._id}`)
+                        .setLabel(panel.label)
+                        .setEmoji("📨")
+                        .setStyle("SECONDARY")
                     )
                 })
             }
@@ -1628,7 +1627,7 @@ module.exports = async (client) => {
                 guild.channels.cache.get(settings.tickets.panelMessage.channel).send({
                     embeds: [embed],
                     components: components ? [components] : null
-                }).then(async (msg) => {
+                }).then(async(msg) => {
                     settings.tickets.panelMessage.id = msg.id
                     settings.tickets.panelMessage.url = msg.url
                     await settings.save()
@@ -1654,7 +1653,7 @@ module.exports = async (client) => {
         }
     }
 
-    const moderationValid = async (data, settings, guild, req) => {
+    const moderationValid = async(data, settings, guild, req) => {
         if (Object.prototype.hasOwnProperty.call(data, "moderationSave")) {
             if (data.moderatorRole !== "null" && data.moderatorRole !== "on" && data.moderatorRole) {
                 let moderatorRoleValid = await guild.roles.cache.find((ch) => ch.id === data.moderatorRole)
@@ -1740,7 +1739,7 @@ module.exports = async (client) => {
         }
     }
 
-    const loggingValid = async (data, settings, guild, req) => {
+    const loggingValid = async(data, settings, guild, req) => {
         if (Object.prototype.hasOwnProperty.call(data, "moderationSave")) {
             if (data.moderationChannel !== "null" && data.moderationChannel !== "on" && data.moderationChannel) {
                 let moderationChannelValid = await guild.channels.cache.find((ch) => ch.id === data.moderationChannel)
@@ -2132,11 +2131,11 @@ module.exports = async (client) => {
         res.redirect("https://wiki.lambdadev.xyz/bot/faq")
     })
     app.get("/placeholders", (req, res) => {
-        res.redirect("https://wiki.lambdadev.xyz/bot/placeholders")
-    })
-    app.get("/embeds", (req, res) => {
-        res.redirect("https://wiki.lambdadev.xyz/bot/embeds")
-    })
+            res.redirect("https://wiki.lambdadev.xyz/bot/dashboard/placeholders")
+        })
+        // app.get("/embeds", (req, res) => {
+        //     res.redirect("https://wiki.lambdadev.xyz/bot/embeds")
+        // })
     app.get("/policy", (req, res) => {
         res.redirect("https://wiki.lambdadev.xyz/legal/policy")
     })
