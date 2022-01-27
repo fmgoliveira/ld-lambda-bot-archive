@@ -10,7 +10,7 @@ module.exports = class extends Event {
     }
 
     run = async (oldGuild, newGuild) => {
-        if (!guild?.available) return
+        if (!newGuild?.available) return
         const settings = await this.client.db.guilds.findOne({ guildId: newGuild.id }) || new this.client.db.guilds({ guildId: newGuild.id })
         const logging = settings.logging
 
