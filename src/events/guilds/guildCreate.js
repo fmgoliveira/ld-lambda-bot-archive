@@ -9,6 +9,7 @@ module.exports = class extends Event {
     }
 
     run = async (guild) => {
+        if (!guild?.available) return
         try {
             this.client.channels.cache.get(process.env.LAMBDA_GUILD_LOGS).send({
                 embeds: [
