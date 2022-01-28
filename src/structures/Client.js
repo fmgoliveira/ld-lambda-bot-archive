@@ -22,7 +22,7 @@ module.exports = class extends Client {
                 headers: {
                     'Authorization': process.env.SCARPS_BOTLIST_TOKEN
                 }
-            }).then(res => res.json()).then(data => {
+            }).then(res => console.log(res)).then(res => res.json()).then(data => {
                 if (data) {
                     if (data.users) {
                         let list = []
