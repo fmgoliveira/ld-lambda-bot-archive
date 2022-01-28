@@ -28,7 +28,7 @@ module.exports = class extends Event {
             })
             if (logging.active.memberEvents.rolesUpdate) {
                 try {
-                    channel.guild.channels.cache.get(logging.channel.memberEvents).send({
+                    newMember.guild.channels.cache.get(logging.channel.memberEvents).send({
                         embeds: [
                             new MessageEmbed()
                                 .setTitle("Member updated")
@@ -48,7 +48,7 @@ module.exports = class extends Event {
         if (oldMember.nickname !== newMember.nickname) {
             if (logging.active.memberEvents.nicknameUpdate) {
                 try {
-                    channel.guild.channels.cache.get(logging.channel.memberEvents).send({
+                    newMember.guild.channels.cache.get(logging.channel.memberEvents).send({
                         embeds: [
                             new MessageEmbed()
                                 .setTitle("Member updated")

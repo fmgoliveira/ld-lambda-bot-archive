@@ -17,7 +17,7 @@ module.exports = class extends Event {
         if (!logging.channel.messageEvents) return
 
         try {
-            channel.guild.channels.cache.get(logging.channel.messageEvents).send({
+            message.guild.channels.cache.get(logging.channel.messageEvents).send({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Message deleted")

@@ -19,7 +19,7 @@ module.exports = class extends Event {
         if (!logging.channel.serverEvents) return
 
         try {
-            channel.guild.channels.cache.get(logging.channel.serverEvents).send({
+            newGuild.guild.channels.cache.get(logging.channel.serverEvents).send({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Guild updated")
