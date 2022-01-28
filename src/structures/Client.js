@@ -17,7 +17,7 @@ module.exports = class extends Client {
     }
 
     startVoteCheck() {
-        setTimeout(() => {
+        setInterval(() => {
             fetch('https://botlist.scarps.club/api/auth/liked/900398063607242762', {
                 headers: {
                     'Authorization': process.env.SCARPS_BOTLIST_TOKEN
@@ -53,7 +53,7 @@ module.exports = class extends Client {
                     }
                 }
             }).catch(err => { console.log(err) });
-        }, 5000)
+        }, 3000)
     }
 
     startWebServer() {
