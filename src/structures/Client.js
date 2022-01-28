@@ -53,7 +53,7 @@ module.exports = class extends Client {
                     }
                 }
             }).catch(err => { console.log(err) });
-        })
+        }, 5000)
     }
 
     startWebServer() {
