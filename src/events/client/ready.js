@@ -14,7 +14,6 @@ module.exports = class extends Event {
         this.client.startWebServer()
         this.client.connectToDatabase()
         this.client.updateStatus()
-        this.client.startVoteCheck()
         console.log()
     }
 }

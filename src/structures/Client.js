@@ -16,46 +16,6 @@ module.exports = class extends Client {
         this.loadCommands()
     }
 
-    startVoteCheck() {
-        setInterval(() => {
-            fetch('https://botlist.scarps.club/api/auth/liked/900398063607242762', {
-                headers: {
-                    'Authorization': process.env.SCARPS_BOTLIST_TOKEN
-                }
-            }).then(res => console.log(res)).then(res => res.json()).then(data => {
-                if (data) {
-                    if (data.users) {
-                        let list = []
-                        data.users.forEach(user => {
-                            const userInGuild = this.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(user.userid)
-                            if (userInGuild) {
-                                const userHasRole = userInGuild.roles.cache.has(process.env.VOTED_ROLE)
-                                if (!userHasRole) {
-                                    try {
-                                        userInGuild.roles.add(process.env.VOTED_ROLE)
-                                    } catch (err) { console.log(err) }
-                                }
-                            }
-                            list.push(user.userid)
-                        })
-
-                        const membersWithRole = this.guilds.cache.get(process.env.LAMBDA_GUILD_ID).roles.cache.get(process.env.VOTED_ROLE).members.map(m => m)
-                        membersWithRole.forEach(member => {
-                            if (!list.includes(member.id)) {
-                                const userHasRole = member.roles.cache.has(process.env.VOTED_ROLE)
-                                if (!userHasRole) {
-                                    try {
-                                        member.roles.remove(process.env.VOTED_ROLE)
-                                    } catch (err) { console.log(err) }
-                                }
-                            }
-                        })
-                    }
-                }
-            }).catch(err => { console.log(err) });
-        }, 3000)
-    }
-
     startWebServer() {
         createWebServer(this)
     }
