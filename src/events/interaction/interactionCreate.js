@@ -359,7 +359,7 @@ module.exports = class extends Event {
                 }
 
                 try {
-                    if (!interaction.guild.me.permissions.has("ADMINISTRATOR")) await interaction.followUp({
+                    if (!interaction.guild.me.permissions.has("ADMINISTRATOR")) interaction.followUp({
                         embeds: [
                             new MessageEmbed()
                                 .setTitle("WARNING")
