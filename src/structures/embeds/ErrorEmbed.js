@@ -29,7 +29,7 @@ module.exports =  {
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription(`I do not have permission to run this command. Please contact one of the server's administrators to fix my permissions.`)
+                    .setDescription(`I do not have permission to run this command. Please contact one of the server's administrators to fix my permissions.\nI need the following permissions to do that:\`\`\`${permissions.join(",")}\`\`\``)
                     .setFooter(client.user.username, client.user.avatarURL())
                     .setTimestamp()
                     .setColor("RED")

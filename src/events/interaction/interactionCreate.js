@@ -358,6 +358,21 @@ module.exports = class extends Event {
                     }
                 }
 
+                try {
+                    if (!interaction.guild.me.permissions.has("ADMINISTRATOR")) await interaction.followUp({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("WARNING")
+                                .setDescription("I don't have Administrator permissions in this server. There can be some commands that won't respond or won't work well.\nTo fix this, invite me from [this link](https://bot.lambdadev.xyz/invite)")
+                                .setThumbnail(this.client.user.avatarURL())
+                                .setFooter(this.client.user.username, this.client.user.avatarURL())
+                                .setColor("GOLD")
+                        ]
+                    })
+                } catch (err) {
+                    console.log(err)
+                }
+
             }
         }
 
@@ -380,7 +395,7 @@ module.exports = class extends Event {
                 require(`../../subEvents/${_category}`)(this.client, interaction, database)
                 return
             }
-            
+
             require(`../../subEvents/${_category}/${_command}`)(this.client, interaction, database)
         }
     }
