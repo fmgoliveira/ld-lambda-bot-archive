@@ -359,7 +359,7 @@ module.exports = class extends Event {
                 }
 
                 try {
-                    if (!interaction.guild.me.permissions.has("ADMINISTRATOR")) await interaction.reply({
+                    if (!interaction.guild.me.permissions.has("ADMINISTRATOR")) interaction.channel.send({
                         embeds: [
                             new MessageEmbed()
                                 .setTitle("WARNING")
@@ -367,7 +367,10 @@ module.exports = class extends Event {
                                 .setThumbnail(this.client.user.avatarURL())
                                 .setFooter(this.client.user.username, this.client.user.avatarURL())
                                 .setColor("GOLD")
-                        ]
+                        ],
+                        fetchReply: true
+                    }).then(msg => {
+                        setTimeout(() => { msg.delete() }, 5000)
                     })
                 } catch (err) {
                     console.log(err)
