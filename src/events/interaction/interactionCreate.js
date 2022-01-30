@@ -363,7 +363,7 @@ module.exports = class extends Event {
                         embeds: [
                             new MessageEmbed()
                                 .setTitle("__**WARNING**__")
-                                .setDescription("I don't have Administrator permissions in this server. There can be some commands that won't respond or won't work well.\nTo fix this, invite me from [this link](https://bot.lambdadev.xyz/invite).")
+                                .setDescription("I don't have `ADMINISTRATOR` permissions in this server. There can be some commands that won't respond or won't work well.\nTo fix this, give me `ADMINISTRATOR` permissions or invite me from [this link](https://bot.lambdadev.xyz/invite).")
                                 .setThumbnail(this.client.user.avatarURL())
                                 .setFooter(this.client.user.username, this.client.user.avatarURL())
                                 .setColor("GOLD")
