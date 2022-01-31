@@ -59,6 +59,7 @@ module.exports = class extends Command {
 
                 embed.addField(`${category.directory}`, commands, true)
             }
+            embed.addField("Links zone", `[Invite me](https://bot.lambdadev.xyz/invite) • [Support Server](${process.env.SERVER_LINK}) • [Dashboard](https://bot.lambdadev.xyz/dashboard) • [Upvote](https://discord.com/channels/878935240377241701/936677696300253204/937720075320979516)`)
 
             const components = (state) => [
                 new MessageActionRow().addComponents(
@@ -89,7 +90,6 @@ module.exports = class extends Command {
                     .setTitle(`${formatString(directory)} Category`)
                     .setDescription(`The commands listed below are the commands from \`${directory.toUpperCase()}\` category. Use \`/help <command>\` to see some info about the command.`)
                     .setFooter(this.client.user.username, this.client.user.avatarURL())
-                    .addField("Links zone", `[Invite me](https://bot.lambdadev.xyz/invite) • [Support Server](${process.env.SERVER_LINK}) • [Dashboard](https://bot.lambdadev.xyz/dashboard) • [Upvote](https://discord.com/channels/878935240377241701/936677696300253204/937720075320979516)`)
                     .setTimestamp()
                     .setColor("#ffa726")
                     .addFields(category.commands.map((cmd) => {
