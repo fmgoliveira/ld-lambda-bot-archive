@@ -4,8 +4,8 @@ const Command = require("../../structures/Command")
 module.exports = class extends Command {
     constructor(client) {
         super(client, {
-            name: "info",
-            description: "Show information about the bot.",
+            name: "vote",
+            description: "Show information about upvoting the bot.",
             category: "general"
         })
     }
