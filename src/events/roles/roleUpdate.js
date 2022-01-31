@@ -22,7 +22,7 @@ module.exports = class extends Event {
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Role updated")
-                        .setDescription(`An existing channel was updated: <@&${newRole.id}>.`)
+                        .setDescription(`An existing role was updated: <@&${newRole.id}>.`)
                         .addField("Name", `Old: \`${oldRole.name}\`\nNew: \`${newRole.name}\``)
                         .addField("Colour", `Old: \`${oldRole.hexColor === "#000000" ? oldRole.hexColor : "Not set"}\`\nNew: \`${newRole.hexColor === "#000000" ? newRole.hexColor : "Not set"}\``)
                         .addField("Raw position", `Old: \`${oldRole.rawPosition}\`\nNew: \`${newRole.rawPosition}\``)
