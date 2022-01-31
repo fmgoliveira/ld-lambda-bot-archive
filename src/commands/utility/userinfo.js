@@ -26,7 +26,10 @@ module.exports = class extends Command {
         let staff = false
         let dev = false
         let owner = false
-        let voted = false
+        let voted1 = false
+        let voted2 = false
+        let voted3 = false
+        let voted4 = false
         let roles = ""
         let statusStr
         let status
@@ -59,8 +62,17 @@ module.exports = class extends Command {
             if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.DEV_ROLE)) {
                 dev = true
             }
-            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.VOTED_ROLE)) {
-                voted = true
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.VOTED1_ROLE)) {
+                voted1 = true
+            }
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.VOTED2_ROLE)) {
+                voted2 = true
+            }
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.VOTED3_ROLE)) {
+                voted3 = true
+            }
+            if (this.client.guilds.cache.get(process.env.LAMBDA_GUILD_ID).members.cache.get(id).roles.cache.has(process.env.VOTED4_ROLE)) {
+                voted4 = true
             }
         }
 
@@ -80,9 +92,21 @@ module.exports = class extends Command {
             if (acknowledgements === "") acknowledgements += "<:owner:919935193861718036> Bot Owner"
             else acknowledgements += ", <:owner:919935193861718036> Bot Owner"
         }
-        if (voted) {
-            if (acknowledgements === "") acknowledgements += "<:voted:919935193832362044> Voted"
-            else acknowledgements += ", <:voted:919935193832362044> Voted"
+        if (voted1) {
+            if (acknowledgements === "") acknowledgements += "<:voted:937668445640724480> Voted"
+            else acknowledgements += ", <:voted:937668445640724480> Voted"
+        }
+        if (voted2) {
+            if (acknowledgements === "") acknowledgements += "<:double_voted:937668445695266867> Double Voted"
+            else acknowledgements += ", <:double_voted:937668445695266867> Double Voted"
+        }
+        if (voted3) {
+            if (acknowledgements === "") acknowledgements += "<:triple_voted:937668445728800808> Triple Voted"
+            else acknowledgements += ", <:triple_voted:937668445728800808> Triple Voted"
+        }
+        if (voted4) {
+            if (acknowledgements === "") acknowledgements += "<:dominating_votes:937668445686878208> Dominating Votes"
+            else acknowledgements += ", <:dominating_votes:937668445686878208> Dominating Votes"
         }
         if (message.guild.ownerId === id) {
             if (acknowledgements === "") acknowledgements += "Server Owner"
