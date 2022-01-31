@@ -13,39 +13,46 @@
 
                     <div class="inputs">
                         <div class="input">
-                            <input type="checkbox" name="ban" id="ban" <%- logging.active.moderation.ban ? "checked" : "" %>>
+                            <input type="checkbox" name="ban" id="ban" <%- logging.active.moderation.ban ? "checked"
+                                : "" %>>
                             <label for="ban">Ban/Unban action</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="kick" id="kick" <%- logging.active.moderation.kick ? "checked" : "" %>>
+                            <input type="checkbox" name="kick" id="kick" <%- logging.active.moderation.kick ? "checked"
+                                : "" %>>
                             <label for="kick">Kick action</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="clear" id="clear" <%- logging.active.moderation.clear ? "checked" : "" %>>
+                            <input type="checkbox" name="clear" id="clear" <%- logging.active.moderation.clear
+                                ? "checked" : "" %>>
                             <label for="clear">Purged messages (<code>/clear</code>)</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="warn" id="warn" <%- logging.active.moderation.warn ? "checked" : "" %>>
+                            <input type="checkbox" name="warn" id="warn" <%- logging.active.moderation.warn ? "checked"
+                                : "" %>>
                             <label for="warn">Warn action</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="timeout" id="timeout" <%- logging.active.moderation.timeout ? "checked" : "" %>>
+                            <input type="checkbox" name="timeout" id="timeout" <%- logging.active.moderation.timeout
+                                ? "checked" : "" %>>
                             <label for="timeout">Timeout action</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="slowmode" id="slowmode" <%- logging.active.moderation.slowmode ? "checked" : "" %>>
+                            <input type="checkbox" name="slowmode" id="slowmode" <%- logging.active.moderation.slowmode
+                                ? "checked" : "" %>>
                             <label for="slowmode">Slowmode changes</label>
                         </div>
                     </div>
 
                     <div class="color">
                         <h3 style=" margin-top: .6rem;">Color</h3>
-                        <input type="color" name="moderationColor" id="moderationColor" value="<%- logging.color.moderation %>">
+                        <input type="color" name="moderationColor" id="moderationColor"
+                            value="<%- logging.color.moderation %>">
                     </div>
 
                     <%- include("../partials/components/channel-select-logging.ejs", { id: 54680, guild, bot, domain,
@@ -64,34 +71,39 @@
 
                     <div class="inputs">
                         <div class="input">
-                            <input type="checkbox" name="channelCreate" id="channelCreate" <%- logging.active.serverEvents.channelCreate ? "checked" : "" %>>
+                            <input type="checkbox" name="channelCreate" id="channelCreate" <%-
+                                logging.active.serverEvents.channelCreate ? "checked" : "" %>>
                             <label for="channelCreate">Channel created</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="channelUpdate" id="channelUpdate" <%- logging.active.serverEvents.channelUpdate ? "checked" : "" %>>
+                            <input type="checkbox" name="channelUpdate" id="channelUpdate" <%-
+                                logging.active.serverEvents.channelUpdate ? "checked" : "" %>>
                             <label for="channelUpdate">Channel updated</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="channelDelete" id="channelDelete" <%- logging.active.serverEvents.channelDelete ? "checked" : "" %>>
+                            <input type="checkbox" name="channelDelete" id="channelDelete" <%-
+                                logging.active.serverEvents.channelDelete ? "checked" : "" %>>
                             <label for="channelDelete">Channel deleted</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="roleCreateDelete" id="roleCreateDelete" <%- logging.active.serverEvents.roleCreateDelete ? "checked" : "" %>>
+                            <input type="checkbox" name="roleCreateDelete" id="roleCreateDelete" <%-
+                                logging.active.serverEvents.roleCreateDelete ? "checked" : "" %>>
                             <label for="roleCreateDelete">Role created/deleted</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="roleUpdate" id="roleUpdate" <%- logging.active.serverEvents.roleUpdate ? "checked" : "" %>>
+                            <input type="checkbox" name="roleUpdate" id="roleUpdate" <%-
+                                logging.active.serverEvents.roleUpdate ? "checked" : "" %>>
                             <label for="roleUpdate">Role updated</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="guildUpdate" id="guildUpdate" <%- logging.active.serverEvents.guildUpdate ? "checked" : "" %>>
+                            <input type="checkbox" name="guildUpdate" id="guildUpdate" <%-
+                                logging.active.serverEvents.guildUpdate ? "checked" : "" %>>
                             <label for="guildUpdate">Guild updated</label>
-                        </div>
                         </div>
                     </div>
 
@@ -117,22 +129,26 @@
 
                     <div class="inputs">
                         <div class="input">
-                            <input type="checkbox" name="memberJoin" id="memberJoin" <%- logging.active.memberEvents.memberJoin ? "checked" : "" %>>
+                            <input type="checkbox" name="memberJoin" id="memberJoin" <%-
+                                logging.active.memberEvents.memberJoin ? "checked" : "" %>>
                             <label for="memberJoin">Member joined</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="memberLeave" id="memberLeave" <%- logging.active.memberEvents.memberLeave ? "checked" : "" %>>
+                            <input type="checkbox" name="memberLeave" id="memberLeave" <%-
+                                logging.active.memberEvents.memberLeave ? "checked" : "" %>>
                             <label for="memberLeave">Member left</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="rolesUpdate" id="rolesUpdate" <%- logging.active.memberEvents.rolesUpdate ? "checked" : "" %>>
+                            <input type="checkbox" name="rolesUpdate" id="rolesUpdate" <%-
+                                logging.active.memberEvents.rolesUpdate ? "checked" : "" %>>
                             <label for="rolesUpdate">Roles updated</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="nicknameUpdate" id="nicknameUpdate" <%- logging.active.memberEvents.nicknameUpdate ? "checked" : "" %>>
+                            <input type="checkbox" name="nicknameUpdate" id="nicknameUpdate" <%-
+                                logging.active.memberEvents.nicknameUpdate ? "checked" : "" %>>
                             <label for="nicknameUpdate">Nickname updated</label>
                         </div>
                     </div>
@@ -157,12 +173,14 @@
 
                     <div class="inputs">
                         <div class="input">
-                            <input type="checkbox" name="messageDelete" id="messageDelete" <%- logging.active.messageEvents.messageDelete ? "checked" : "" %>>
+                            <input type="checkbox" name="messageDelete" id="messageDelete" <%-
+                                logging.active.messageEvents.messageDelete ? "checked" : "" %>>
                             <label for="messageDelete">Deleted message</label>
                         </div>
 
                         <div class="input">
-                            <input type="checkbox" name="messageEdit" id="messageEdit" <%- logging.active.messageEvents.messageEdit ? "checked" : "" %>>
+                            <input type="checkbox" name="messageEdit" id="messageEdit" <%-
+                                logging.active.messageEvents.messageEdit ? "checked" : "" %>>
                             <label for="messageEdit">Edited message</label>
                         </div>
                     </div>

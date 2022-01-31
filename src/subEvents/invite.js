@@ -69,7 +69,8 @@ module.exports = async (client, interaction, database) => {
                         .setColor("RED")
                         .setFooter(client.user.username, client.user.avatarURL())
                         .setDescription("Could not create an invite for that guild.")
-                ]
+                ],
+                ephemeral: true
             })
         })
     } catch (err) {
@@ -81,7 +82,8 @@ module.exports = async (client, interaction, database) => {
                     .setColor("RED")
                     .setFooter(client.user.username, client.user.avatarURL())
                     .setDescription("Could not create an invite for that guild.")
-            ]
+            ],
+            ephemeral: true
         })
     }
 }
