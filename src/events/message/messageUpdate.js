@@ -21,7 +21,7 @@ module.exports = class extends Event {
         const Original = oldMessage.content.slice(0, count) + (oldMessage.content.lenght > count ? "..." : "")
         const Edited = newMessage.content.slice(0, count) + (newMessage.content.lenght > count ? "..." : "")
 
-        console.log(Original, " | ", Edited)
+        console.log(newMessage.url)
 
         try {
             newMessage.guild.channels.cache.get(logging.channel.messageEvents).send({
