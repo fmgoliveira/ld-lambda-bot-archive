@@ -12,7 +12,9 @@ module.exports = class extends Command {
                     name: "amount",
                     type: "NUMBER",
                     description: "The amount of messages you want to purge in this channel.",
-                    required: true
+                    required: true,
+                    minValue: 1,
+                    maxValue: 100
                 }
             ],
             category: "moderation",
@@ -26,17 +28,6 @@ module.exports = class extends Command {
         if (!message.guild.members.cache.get(this.client.user.id).permissionsIn(message.channel).has("MANAGE_MESSAGES")) return message.reply(missingClientPermissions(this.client, ["MANAGE_MESSAGES"]))
 
         var amount = message.options.getNumber('amount')
-        if (amount === 0 || amount < 0) return message.reply({
-            embeds: [
-                new MessageEmbed()
-                    .setTitle("Error")
-                    .setDescription("Please insert a valid amount of messages to purge.")
-                    .setColor("RED")
-                    .setTimestamp()
-                    .setFooter(this.client.user.username, this.client.user.avatarURL())
-            ], ephemeral: true
-        })
-
         let size
 
         try {
