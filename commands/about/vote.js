@@ -22,7 +22,7 @@ module.exports = {
             .setFooter(client.footer)
             .setColor(client.color)
 
-        return message.reply({
+        return interaction.reply({
             embeds: [embed],
             components: [
                 new MessageActionRow().addComponents(
