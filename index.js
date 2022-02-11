@@ -76,4 +76,4 @@ require("./systems/errorSystem");
     require(`./handlers/${handler}`)(client, PG, Ascii)
 })
 
-client.login(process.env.BETA_TOKEN)
+client.login(process.env.TOKEN)
