@@ -1,0 +1,117 @@
+.logging-content .cards {
+    display: grid;
+    gap: 1.4rem;
+    grid-template-columns: calc(96% / 3) calc(96% / 3) calc(96% / 3);
+    margin-top: 1.4rem;
+}
+
+.logging-content .last-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.logging-content .card h2 {
+    margin-bottom: 1.2rem;
+}
+
+.logging-content .card h3 {
+    margin-bottom: .6rem;
+}
+
+.logging-content .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    margin-bottom: 1rem;
+}
+
+.logging-content .input {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.logging-content .input label {
+    cursor: pointer;
+}
+
+.logging-content .input input {
+    cursor: pointer;
+}
+
+.logging-content .input input {
+    appearance: none;
+    font: inherit;
+    background: var(--color-light);
+    width: 1.15rem;
+    height: 1.15rem;
+    border: .15rem solid var(--color-light);
+    border-radius: .15rem;
+    transform: translateY(-0.075rem);
+    display: grid;
+    place-content: center;
+}
+
+.logging-content .input input::before {
+    content: "";
+    width: .65rem;
+    height: .65rem;
+    transform: scale(0);
+    transition: transform .12s ease-in-out;
+    box-shadow: inset 1rem 1rem var(--color-primary);
+    border-radius: .12rem;
+}
+
+.logging-content .input input:checked::before {
+    transform: scale(1);
+}
+
+.logging-content .color {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: .6rem;
+}
+
+input[type="color"] {
+    padding: 6px;
+    border: none;
+    width: 4rem;
+    height: 2rem;
+    background: var(--color-light);
+    border-radius: var(--border-radius-1);
+    font-family: Poppins, sans-serif;
+    color: var(--color-dark);
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+}
+
+.logging-content button {
+    border: none;
+    padding: 10px 24px;
+    width: 6rem;
+    background: var(--color-light);
+    color: var(--color-dark);
+    border-radius: var(--border-radius-1);
+    font-family: Poppins, sans-serif;
+    cursor: pointer;
+    transition: all .3s ease;
+    margin-top: 1.2rem;
+}
+
+.logging-content button:hover {
+    background: var(--color-primary);
+}
+
+@media screen and (max-width: 900px) {
+    .logging-content .cards {
+        grid-template-columns: 1fr;
+    }
+}

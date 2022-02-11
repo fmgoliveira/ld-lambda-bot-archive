@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="lambda bot discord moderation utilty multipurpose multifunctional">
+    <meta name="description" content="Lambda is a bot created to be free of charge. 
+Every Discord user needs a bot to be happy. Every single one.
+And this is how a discord bot is born.
+And it is born epic.
+Just epic.">
+    <title>Lambda Bot</title>
+
+    <meta name="theme-color" content="#ffa726">
+    <meta property="og:title" content="Home">
+    <meta property="og:description" content="Lambda is a bot created to be free of charge. 
+Every Discord user needs a bot to be happy. Every single one.
+And this is how a discord bot is born.
+And it is born epic.
+Just epic.">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="<%- domain %>/css/base.css">
+    <link rel="stylesheet" href="<%- domain %>/css/dashboard.css">
+    <link rel="stylesheet" href="<%- domain %>/css/menu.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+
+<body class="body-menu">
+    <div class="right">
+        <div class="topbar">
+            <%- include("../partials/topbar-menu.ejs", { user }) %>
+        </div>
+    </div>
+    <div class="container">
+        <%- include(`../pages/menu.ejs`, { user, perms, bot, domain }) %>
+    </div>
+    <% if (!userExists) { %> 
+        <%- include("../partials/alert.ejs", { alert: {
+            msg: "Looks like you aren't in our Support Server, <a href=\"support\" style=\"text-decoration: underline;\">join here</a>!",
+            type: "info"
+        } }) %>
+    <% } %> 
+    <script src="<%- domain %>/js/menu.js"></script>
+</body>
+
+</html>

@@ -1,80 +1,79 @@
 require("dotenv").config()
-const { WebhookClient, MessageEmbed } = require("discord.js")
+const { promisify } = require("util")
+const { glob } = require("glob")
+const PG = promisify(glob)
+const Ascii = require("ascii-table")
 
-const Client = require("./src/structures/Client")
+const { Client, Collection } = require("discord.js")
 const client = new Client({
-    intents: 32767
+    intents: 6143
 })
 
-const errorLogs = new WebhookClient({
-    id: process.env.ERROR_WEBHOOK_ID,
-    token: process.env.ERROR_WEBHOOK_TOKEN,
-    url: process.env.ERROR_WEBHOOK_URL,
+client.commands = new Collection()
+client.color = "#ffa726"
+client.updateStatus = (_client) => {
+    require("./systems/statsSystem")(_client)
+
+    let memberCount = 0
+    _client.guilds.cache.forEach(guild => {
+        if (guild.members.cache.has(_client.user.id)) memberCount += guild.memberCount
+    })
+
+    let currentIndex = 0
+    const activities = [
+        {
+            name: `/help`,
+            type: "LISTENING"
+        },
+        {
+            name: `${memberCount} users`,
+            type: "LISTENING"
+        },
+        {
+            name: `${_client.guilds.cache.size} servers`,
+            type: "WATCHING"
+        },
+        {
+            name: `${_client.channels.cache.size} channels`,
+            type: "WATCHING"
+        },
+    ]
+
+    setInterval(() => {
+        const activity = activities[currentIndex]
+
+        _client.user.setPresence({ activities: [activity] })
+
+        currentIndex = currentIndex >= activities.length - 1 ? 0 : currentIndex + 1
+    }, 10000)
+}
+
+const { DisTube } = require("distube")
+const { SpotifyPlugin } = require('@distube/spotify')
+const { SoundCloudPlugin } = require('@distube/soundcloud')
+
+client.distube = new DisTube(client, {
+    emitNewSongOnly: true,
+    leaveOnFinish: true,
+    leaveOnEmpty: true,
+    leaveOnStop: false,
+    emitNewSongOnly: true,
+    emitAddSongWhenCreatingQueue: false,
+    emitAddListWhenCreatingQueue: false,
+    plugins: [
+        new SpotifyPlugin({
+            emitEventsAfterFetching: true
+        }),
+        new SoundCloudPlugin()
+    ]
+})
+module.exports = client
+
+require("./systems/giveawaySystem")(client)
+require("./systems/errorSystem");
+
+["events", "commands"].forEach(handler => {
+    require(`./handlers/${handler}`)(client, PG, Ascii)
 })
 
-process.on('uncaughtException', (err) => {
-    console.log(err);
-    try {
-        errorLogs.send({
-            embeds: [
-                new MessageEmbed()
-                    .setTitle("**[ ERROR ]** " + err.name)
-                    .setDescription(`\`\`\`${err.message}\`\`\``)
-                    .addField("File Name", err.fileName)
-                    .addField("Line Number", err.lineNumber, true)
-                    .addField("Column Number", err.columnNumber, true)
-                    .setColor("RED")
-                    .setTimestamp()
-            ]
-        }).catch(() => {
-            try {
-                errorLogs.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle("**[ ERROR ]** " + err.name)
-                            .setDescription(`\`\`\`${err.message}\`\`\``)
-                            .setColor("RED")
-                            .setTimestamp()
-                    ]
-                })
-            } catch (err) {
-                console.log(err)
-            }
-        })
-    } catch (err) { console.log(err) }
-})
-
-process.on('unhandledRejection', (err) => {
-    console.log(err);
-    try {
-        errorLogs.send({
-            embeds: [
-                new MessageEmbed()
-                    .setTitle("**[ ERROR ]** " + err.name)
-                    .setDescription(`\`\`\`${err.message}\`\`\``)
-                    .addField("File Name", err.fileName)
-                    .addField("Line Number", err.lineNumber, true)
-                    .addField("Column Number", err.columnNumber, true)
-                    .setColor("RED")
-                    .setTimestamp()
-            ]
-        }).catch(() => {
-            try {
-                errorLogs.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle("**[ ERROR ]** " + err.name)
-                            .setDescription(`\`\`\`${err.message}\`\`\``)
-                            .setColor("RED")
-                            .setTimestamp()
-                    ]
-                })
-            } catch (err) {
-                console.log(err)
-            }
-        })
-    } catch (err) { console.log(err) }
-})
-
-
-client.login(process.env.BOT_TOKEN)
+client.login(process.env.BETA_TOKEN)

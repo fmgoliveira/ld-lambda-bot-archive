@@ -1,0 +1,88 @@
+<form action="/dashboard/<%- guild.id %>/moderation" method="post" id="form">
+    <div class="moderation-content">
+        <h1>
+            <%- pageName %>
+        </h1>
+        <div class="contents">
+            <div class="card">
+                <div class="title">
+                    <h2>Settings</h2>
+                </div>
+                <div class="selecter">
+
+                    <%- include("../partials/components/role-select-mod.ejs", { id: 7654650, guild, bot, domain,
+                        label: "Moderation role" , selected: moderation.moderatorRole, value: "moderatorRole" , data:
+                        moderation }) %>
+                </div>
+                <div class="togglers">
+                    <div class="slider">
+                        Include reason on chat
+                        <%- include("../partials/components/switch.ejs", { id: 685436, guild, bot, domain, selected:
+                            moderation.includeReason, value: "moderationIncludeReason" }) %>
+                    </div>
+                    <div class="dm-sliders">
+                        <h3 style="margin-bottom: .6rem;">DM User:</h3>
+                        <div class="sliders">
+                            <div class="slider">
+                                On Ban action
+                                <%- include("../partials/components/switch.ejs", { id: 3864, guild, bot, domain,
+                                    selected: moderation.dm.ban, value: "moderationDmBan" }) %>
+                            </div>
+                            <div class="slider">
+                                On Kick action
+                                <%- include("../partials/components/switch.ejs", { id: 35459, guild, bot, domain,
+                                    selected: moderation.dm.kick, value: "moderationDmKick" }) %>
+                            </div>
+                            <div class="slider">
+                                On Warn action
+                                <%- include("../partials/components/switch.ejs", { id: 653, guild, bot, domain,
+                                    selected: moderation.dm.warn , value: "moderationDmWarn" }) %>
+                            </div>
+                            <div class="slider">
+                                On Timeout action
+                                <%- include("../partials/components/switch.ejs", { id: 65465341, guild, bot, domain,
+                                    selected: moderation.dm.timeout, value: "moderationDmTimeout" }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit">
+                    <button name="moderationSave" type="submit">Save</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="title">
+                    <h2>Chat Filter</h2>
+                    <div class="slider">
+                        On / Off
+                        <%- include("../partials/components/switch.ejs", { id: 354355, guild, bot, domain, selected:
+                            filter.active, value: "filterActive" }) %>
+                    </div>
+                </div>
+
+                <div class="selecter">
+                    <%- include("../partials/components/channel-select-logging.ejs", { id: 453587, guild, bot, domain,
+                        label: "Log Channel" , selected: filter.logChannel, value: "filterChannel" , data: moderation })
+                        %>
+                </div>
+                <h3 style="margin-bottom: -.6rem;">Forbidden Words</h3>
+                <textarea name="filterWords" id="filterWords" rows="3" placeholder="Type the words separated by a space..."><%- filter.words.join(" ") %></textarea>
+
+                <div class="placeholders" style="margin-top: -1rem;">
+                    <span class="material-icons-round">info</span>
+                    <small class="text-muted">
+                        Separate the words with a space. Eg: "word1 word2 word3"
+                    </small>
+                </div>
+
+                <div class="submit">
+                    <button name="filterSave" type="submit">Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<link rel="stylesheet" href="<%- domain %>/css/moderation.css">
