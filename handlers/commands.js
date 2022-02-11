@@ -46,6 +46,7 @@ module.exports = async (client, PG, Ascii) => {
         client.mainGuild = client.guilds.cache.get(process.env.LAMBDA_GUILD_ID)
         client.staffGuild = client.guilds.cache.get(process.env.LAMBDA_STAFF_GUILD_ID)
 
+        client.application.commands.set(commandsArray)
         client.staffGuild.commands.set(commandsArray)
     })
 }
