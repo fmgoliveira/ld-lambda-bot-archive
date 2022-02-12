@@ -2200,6 +2200,7 @@ module.exports = async (client) => {
     const topggWebhook = new Topgg.Webhook(process.env.TOP_GG_WEBHOOK_TOKEN)
 
     app.post("/dblwebhook", topggWebhook.listener(async (vote) => {
+        console.log(vote)
         const { user } = vote
 
         const timestamp = Date.now()

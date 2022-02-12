@@ -12,8 +12,6 @@ const client = new Client({
 client.commands = new Collection()
 client.color = "#ffa726"
 client.updateStatus = (_client) => {
-    require("./systems/statsSystem")(_client)
-
     let memberCount = 0
     _client.guilds.cache.forEach(guild => {
         if (guild.members.cache.has(_client.user.id)) memberCount += guild.memberCount
