@@ -7,7 +7,9 @@ const errorLogs = new WebhookClient({
 })
 
 process.on('uncaughtException', (err) => {
-    console.log(err);
+    console.log(err)
+    if (err.message === "Cannot read properties of undefined (reading 'users')") return
+    if (err.message === "Unexpected token '<'") return
     try {
         errorLogs.send({
             embeds: [
@@ -47,7 +49,9 @@ process.on('uncaughtException', (err) => {
 })
 
 process.on('unhandledRejection', (err) => {
-    console.log(err);
+    console.log(err)
+    if (err.message === "Cannot read properties of undefined (reading 'users')") return
+    if (err.message === "Unexpected token '<'") return
     try {
         errorLogs.send({
             embeds: [
