@@ -2199,10 +2199,15 @@ module.exports = async (client) => {
 
     const topggWebhook = new Topgg.Webhook(process.env.TOP_GG_WEBHOOK_TOKEN)
 
-    app.post("/dblwebhook", topggWebhook.listener(async (vote) => {
-        console.log(vote)
-        const { user } = vote
+    app.post("/dblwebhook", bodyParser.json(), async (req, res) => {
+        if (!req.headers.authorization || (req.headers.authorization !== process.env.TOP_GG_WEBHOOK_TOKEN)) return res.sendStatus(403)
+        res.sendStatus(200)
 
+        if (!req.body) return
+
+        const { user, bot } = req.body
+
+        if (bot !== process.env.APPLICATION_ID) return
         const timestamp = Date.now()
 
         await client.db.votes.create({
@@ -2210,7 +2215,7 @@ module.exports = async (client) => {
             timestamp,
             list: "topgg"
         })
-    }))
+    })
 
     app.listen(PORT, () => console.log(`🌐 Webserver started at port ${PORT} successfully`))
 }

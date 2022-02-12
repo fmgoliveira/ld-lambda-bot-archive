@@ -41,6 +41,6 @@ module.exports = (client) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ "server_count": client.guilds.cache.size })
-        }).then(response => response.json().then(res => console.log(res))).catch(console.error)
+        }).then(response => response.text()).catch(console.error)
     }, 60000)
 }
