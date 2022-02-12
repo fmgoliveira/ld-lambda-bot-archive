@@ -358,7 +358,7 @@ module.exports = {
                             .setColor("RED")
                             .setTitle("Error")
                             .setDescription("*An unknown error occurred while trying to run that command.*\nThis incident has been reported to the Team.")
-                            .addField("Error Log", `${e.name}: ${e.message}`.split(0, 1024))
+                            .addField("Error Log", `\`\`\`` + `${e.name}: ${e.message}`.split(0, 1018) + `\`\`\``)
                             .setFooter(client.footer)
                     ],
                     ephemeral: true,
