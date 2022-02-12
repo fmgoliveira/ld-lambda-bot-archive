@@ -56,7 +56,7 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setTitle("Error")
-                    .setDescription("I can't kick this user, one of his roles is above my highest one.")
+                    .setDescription("I can't timeout this user, one of his roles is above my highest one.")
                     .setColor("RED")
                     .setTimestamp()
                     .setFooter(client.footer)
@@ -99,7 +99,7 @@ module.exports = {
         return interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`<@${user.id}> has been timed out. ${message.guild.db.moderation.includeReason ? "| " + reason : ""}`)
+                    .setDescription(`<@${user.id}> has been timed out. ${interaction.guild.db.moderation.includeReason ? "| " + reason : ""}`)
                     .setColor(client.color)
             ]
         })
