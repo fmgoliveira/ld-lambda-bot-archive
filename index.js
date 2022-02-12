@@ -45,7 +45,7 @@ client.updateStatus = (_client) => {
         _client.user.setPresence({ activities: [activity] })
 
         currentIndex = currentIndex >= activities.length - 1 ? 0 : currentIndex + 1
-    }, 10000)
+    }, 60000)
 }
 
 const { DisTube } = require("distube")
