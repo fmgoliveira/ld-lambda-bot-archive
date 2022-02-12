@@ -246,7 +246,7 @@ module.exports = async (client) => {
             embeds.push(lastEmbed)
         }
         
-        webhook.editMessage("942075988492308561", {
+        webhook.editMessage("942095760747540491", {
             content: null,
             embeds
         })
