@@ -10,9 +10,9 @@ module.exports = async (client) => {
         const db = await client.db.votes.find({})
 
         db.forEach(doc => {
-            const time = doc.time * 1000
+            const time = doc.time
             const now = Date.now() - 43200000
-            if (time >= now) db.delete({ _id: doc.id })
+            if (time >= now) db.deleteOne({ _id: doc._id })
         })
 
         const scarpsRes = await fetch('https://botlist.scarps.club/api/auth/liked/900398063607242762', {
