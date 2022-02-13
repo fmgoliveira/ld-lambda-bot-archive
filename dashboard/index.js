@@ -1722,12 +1722,11 @@ module.exports = async (client) => {
                 msg: "Successfully updated the moderation module settings."
             }
         } else if (Object.prototype.hasOwnProperty.call(data, "filterSave")) {
-            console.log(data)
             if (data.filterChannel !== "null" && data.filterChannel !== "on" && data.filterChannel) {
                 let filterChannelValid = await guild.channels.cache.find((ch) => ch.id === data.filterChannel)
 
                 if (filterChannelValid) {
-                    settings.filter.filterChannel = data.filterChannel
+                    settings.filter.logChannel = data.filterChannel
                     await settings.save()
                 } else {
                     return {
