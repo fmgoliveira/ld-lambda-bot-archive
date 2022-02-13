@@ -329,7 +329,7 @@ module.exports = {
             }
 
             if (command.premiumLevel) {
-                const memberDb = await client.db.users.get(interaction.member.id)
+                const memberDb = await client.db.users.findOne(interaction.member.id)
                 if (memberDb) {
                     const amount = memberDb.voteAmount
                     if (!memberDb.voted || amount === 0) return interaction.reply({
