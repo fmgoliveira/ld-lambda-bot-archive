@@ -16,7 +16,7 @@ module.exports = {
         const filter = db.filter.words
         const logChannel = db.filter.logChannel
 
-        const messageContent = content.toLowerCase().split("")
+        const messageContent = content.toLowerCase().split(" ")
 
         if (filter.length <= 0) return
 
