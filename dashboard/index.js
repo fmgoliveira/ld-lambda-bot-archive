@@ -2205,9 +2205,10 @@ module.exports = async (client) => {
 
         if (!req.body) return
 
-        const { user, bot } = req.body
+        const { user, bot, type } = req.body
 
         if (bot !== process.env.APPLICATION_ID) return
+        if (type === "test") return
         const timestamp = Date.now()
 
         await client.db.votes.create({
