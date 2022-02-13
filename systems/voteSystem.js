@@ -245,11 +245,38 @@ module.exports = async (client) => {
             lastEmbed.setDescription(string)
             embeds.push(lastEmbed)
         }
-        
+
         webhook.editMessage("942095760747540491", {
             content: null,
             embeds
         })
+    }
+
+    const updateDatabase = async (votedMembers) => {
+        const DB = client.db.users
+        const votedDb = await DB.find({ voted: true })
+
+        votedDb.forEach(user => {
+            if (!votedMembers.has(user.userId)) {
+                user.voted = false
+                user.voteAmount = 0
+                user.save()
+            }
+        })
+
+        votedMembers.forEach(async (member) => {
+            await DB.findOneAndUpdate({
+                userId: member.user.id
+            }, {
+                userId: member.user.id,
+                voted: true,
+                voteAmount: member.amount
+            }, {
+                upsert: true,
+                new: true
+            })
+        })
+
     }
 
 
@@ -257,5 +284,6 @@ module.exports = async (client) => {
         const votedMembers = await getVotedMembers()
         updateMemberRoles(votedMembers)
         updateVotedMessage(votedMembers)
+        updateDatabase(votedMembers)
     }, 10000)
 }

@@ -13,6 +13,14 @@ const userSchema = new Schema({
     acceptedPolicy: {
         type: Boolean,
         default: true
+    },
+    voted: {
+        type: Boolean,
+        default: false
+    },
+    voteAmount: {
+        type: Number,
+        default: 0
     }
 })
 
