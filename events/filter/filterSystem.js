@@ -33,10 +33,10 @@ module.exports = {
         if (shouldDelete) message.delete.catch(() => { })
 
         if (logChannel && wordsUsed.length) {
-            const channel = client.channels.cache.get(logChannel)
-            if (!channel) return
+            const channelObj = client.channels.cache.get(logChannel)
+            if (!channelObj) return
 
-            channel.send({
+            channelObj.send({
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Chat Filter System")
