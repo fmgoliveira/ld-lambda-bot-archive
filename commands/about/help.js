@@ -43,7 +43,7 @@ module.exports = {
 
             embed.addField(`${category.directory}`, commands, true)
         }
-        embed.addField("Links zone", `[Invite me](https://bot.lambdadev.xyz/invite) • [Support Server](${process.env.LAMBDA_GUILD_LINK}) • [Dashboard](https://bot.lambdadev.xyz/dashboard) • [Upvote](https://discord.com/channels/878935240377241701/936677696300253204/937720075320979516)`)
+        embed.addField("Links zone", `[Invite me](https://bot.lambdadev.xyz/invite) • [Support Server](${process.env.LAMBDA_GUILD_LINK}) • [Dashboard](https://bot.lambdadev.xyz/dashboard) • [Upvote](https://discord.com/channels/878935240377241701/936677696300253204/942354990817767454)`)
 
         const components = (state) => [
             new MessageActionRow().addComponents(
@@ -86,7 +86,7 @@ module.exports = {
 
                     categoryEmbed.addField(`${category.directory}`, commands, true)
                 }
-                categoryEmbed.addField("Links zone", `[Invite me](https://bot.lambdadev.xyz/invite) • [Support Server](${process.env.LAMBDA_GUILD_LINK}) • [Dashboard](https://bot.lambdadev.xyz/dashboard) • [Upvote](https://discord.com/channels/878935240377241701/936677696300253204/937720075320979516)`)
+                categoryEmbed.addField("Links zone", `[Invite me](https://bot.lambdadev.xyz/invite) • [Support Server](${process.env.LAMBDA_GUILD_LINK}) • [Dashboard](https://bot.lambdadev.xyz/dashboard) • [Upvote](https://discord.com/channels/878935240377241701/936677696300253204/942354990817767454)`)
 
                 return i.update({ embeds: [categoryEmbed] })
             } else {
