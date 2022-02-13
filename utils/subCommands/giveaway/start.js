@@ -42,8 +42,19 @@ module.exports = (interaction, client) => {
         messages: {
             giveaway: "🎉 **Giveaway Started** 🎉",
             giveawayEnded: "🎊 **Giveaway Ended** 🎊",
-            winMessage: "Congratulations, {winners}! You won **{this.prize}**!"
-        }
+            winMessage: "Congratulations, {winners}! You won **{this.prize}**!",
+            hostedBy: 'Hosted by: {this.hostedBy}',
+            drawing: 'Drawing: {timestamp}',
+            dropMessage: 'Be the first to react with 🎉!',
+            inviteToParticipate: 'React with 🎉 to participate!',
+            noWinner: 'Giveaway cancelled, no valid participations.'
+        },
+        bonusEntries: [
+            {
+                bonus: (member) => member.roles.cache.some(r => r.id === process.env.VOTED1_ROLE) ? 2 : null,
+                cumulative: false
+            }
+        ]
     }).then(async () => {
         return interaction.reply({
             embeds: [
