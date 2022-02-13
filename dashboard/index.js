@@ -2200,9 +2200,7 @@ module.exports = async (client) => {
     const topggWebhook = new Topgg.Webhook(process.env.TOP_GG_WEBHOOK_TOKEN)
 
     app.post("/dblwebhook", bodyParser.json(), async (req, res) => {
-        
-console.log(req.body)
- if (!req.headers.authorization || (req.headers.authorization !== process.env.TOP_GG_WEBHOOK_TOKEN)) return res.sendStatus(403)
+        if (!req.headers.authorization || (req.headers.authorization !== process.env.TOP_GG_WEBHOOK_TOKEN)) return res.sendStatus(403)
         res.sendStatus(200)
 
         if (!req.body) return
