@@ -11,9 +11,10 @@ module.exports = {
      */
     async execute(interaction, client) {
         const userDb = await client.db.users.findOne({ userId: interaction.member.id })
-        var status = ""
 
-        if (userDb) {
+        const getVoteStatus = (userDb) => {
+            if (!userDb) return status = "You haven't voted me."
+            let status = ""
             const voted = userDb.voted
             const amount = userDb.amount
 
@@ -21,16 +22,18 @@ module.exports = {
             else {
                 switch (amount) {
                     case 1: {
-                        status = "You have voted me **once**."
+                        return status = "You have voted me **once**."
                     } case 2: {
-                        status = "You have voted me **twice**."
+                        return status = "You have voted me **twice**."
                     } case 3: {
-                        status = "You have voted me **three times**."
+                        return status = "You have voted me **three times**."
                     } case 4: {
-                        status = "You have voted me **four times**."
+                        return status = "You have voted me **four times**."
                     }
                 }
             }
+
+            return status
         }
 
         const embed = new MessageEmbed()
@@ -40,7 +43,7 @@ module.exports = {
             .addField("What is a vote streak?", "A vote streak is __the amount of votes you have in a certain moment__ (you can have up to 4 votes simultaneously by voting in all the links below)\n\n_ _")
             .addField("What are the voters roles and badges available?", `• **1** single vote: <:voted:937668445640724480> @Voted\n• **2** votes streak: <:double_voted:937668445695266867> @Double Voted\n• **3** votes streak: <:triple_voted:937668445728800808> @Triple Voted\n• **4** votes streak: <:dominating_votes:937668445686878208> @Dominating Votes\n\n_ _`)
             .addField("Where can I upvote the bot?", `You can upvote the bot in any of the links listed below:\n\n:link: [Top.gg](https://top.gg/bot/900398063607242762/vote)\n:link: [Scarps Bot List](https://botlist.scarps.club/bots/like/900398063607242762)\n:link: [Discord Labs](https://bots.discordlabs.org/bot/900398063607242762?vote)\n:link: [Bots for Discord](https://discords.com/bots/bot/900398063607242762/vote)\n\n_ _`)
-            .addField("Your current status", status)
+            .addField("Your current status", getVoteStatus(userDb))
             .setThumbnail(client.user.avatarURL())
             .setTimestamp()
             .setFooter(client.footer)
