@@ -45,7 +45,7 @@ module.exports = {
                             name: author.tag,
                             iconURL: author.displayAvatarURL({ dynamic: true })
                         })
-                        .setDescription(`<@${author.id}> (\`${author.tag}\`) used ${wordsUsed.length} blacklisted word(s) in ${channel}.\n**Used words:**\n\`\`\`\n${wordsUsed.map(w => w)}\n\`\`\``)
+                        .setDescription(`<@${author.id}> (\`${author.tag}\`) used ${wordsUsed.length} blacklisted word(s) in ${channel}.\n\n**Used words:**\n\`\`\`\n${wordsUsed.map(w => w)}\n\`\`\``)
                 ]
             }).catch(() => { })
         }
