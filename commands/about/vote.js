@@ -13,18 +13,16 @@ module.exports = {
         const userDb = await client.db.users.findOne({ userId: interaction.member.id })
 
         const getVoteStatus = (userDb) => {
-            if (!userDb) return status = "You haven't voted me."
-            let status = ""
+            if (!userDb) return "You haven't voted me"
+
             const voted = userDb.voted
             const amount = userDb.amount
 
-            if (!voted || amount === 0) status = "You haven't voted me."
-            if (amount === 1) status = "You have voted me **once**."
-            if (amount === 2) status = "You have voted me **twice**."
-            if (amount === 3) status = "You have voted me **three times**."
-            if (amount === 4) status = "You have voted me **four times**."
-
-            return status
+            if (!voted || amount === 0) return "You haven't voted me"
+            if (amount === 1) return "You have voted me **once**."
+            if (amount === 2) return "You have voted me **twice**."
+            if (amount === 3) return "You have voted me **three times**."
+            if (amount === 4) return "You have voted me **four times**."
         }
 
         const embed = new MessageEmbed()
