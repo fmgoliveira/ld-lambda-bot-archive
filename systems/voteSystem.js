@@ -257,5 +257,5 @@ module.exports = async (client) => {
         const votedMembers = await getVotedMembers()
         updateMemberRoles(votedMembers)
         updateVotedMessage(votedMembers)
-    }, 3000)
+    }, 10000)
 }

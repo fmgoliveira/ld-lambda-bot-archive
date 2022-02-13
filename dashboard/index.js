@@ -8,7 +8,6 @@ const MongoStore = require("connect-mongo")
 const url = require("url")
 const bodyParser = require("body-parser")
 const placeholderReplace = require("../utils/placeholderReplace")
-const Topgg = require("@top-gg/sdk")
 
 const PORT = process.env.PORT || 8080
 const { WebhookClient, MessageEmbed, Permissions, Collection, MessageActionRow, MessageButton, UserManager } = require("discord.js")
@@ -2196,8 +2195,6 @@ module.exports = async (client) => {
             list: "botsfordiscord"
         })
     })
-
-    const topggWebhook = new Topgg.Webhook(process.env.TOP_GG_WEBHOOK_TOKEN)
 
     app.post("/dblwebhook", bodyParser.json(), async (req, res) => {
         if (!req.headers.authorization || (req.headers.authorization !== process.env.TOP_GG_WEBHOOK_TOKEN)) return res.sendStatus(403)
