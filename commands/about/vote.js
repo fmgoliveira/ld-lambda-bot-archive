@@ -1,5 +1,18 @@
 const { CommandInteraction, Client, MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 
+function getVoteStatus(userDb) {
+    if (!userDb) return "You haven't voted me"
+
+    const voted = userDb.voted
+    const amount = userDb.amount
+
+    if (!voted || amount === 0) return "You haven't voted me"
+    if (amount === 1) return "You have voted me **once**."
+    if (amount === 2) return "You have voted me **twice**."
+    if (amount === 3) return "You have voted me **three times**."
+    if (amount === 4) return "You have voted me **four times**."
+}
+
 module.exports = {
     name: "vote",
     description: "Support us by upvoting our bot.",
@@ -11,19 +24,6 @@ module.exports = {
      */
     async execute(interaction, client) {
         const userDb = await client.db.users.findOne({ userId: interaction.member.id })
-
-        const getVoteStatus = (userDb) => {
-            if (!userDb) return "You haven't voted me"
-
-            const voted = userDb.voted
-            const amount = userDb.amount
-
-            if (!voted || amount === 0) return "You haven't voted me"
-            if (amount === 1) return "You have voted me **once**."
-            if (amount === 2) return "You have voted me **twice**."
-            if (amount === 3) return "You have voted me **three times**."
-            if (amount === 4) return "You have voted me **four times**."
-        }
 
         const embed = new MessageEmbed()
             .setTitle("Upvote Bot")
