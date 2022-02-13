@@ -4,9 +4,7 @@ function getVoteStatus(userDb) {
     if (!userDb) return "You haven't voted me"
 
     const voted = userDb.voted
-    const amount = userDb.amount
-
-    console.log(amount)
+    const amount = userDb.voteAmount
 
     if (!voted || amount === 0) return "You haven't voted me"
     if (amount === 1) return "You have voted me **once**."
