@@ -9,6 +9,9 @@ module.exports = {
      */
     async execute(guild, client) {
         if (!guild?.available) return
+
+        if (!(await client.db.guilds.findOne({ guildId: guild.id}))) await client.db.guilds.create({ guildId: guild.id })
+
         const logWebhooks = new WebhookClient({
             id: process.env.BOT_LOGS_WEBHOOK_ID,
             token: process.env.BOT_LOGS_WEBHOOK_TOKEN,
