@@ -4,6 +4,7 @@ module.exports = {
     name: "volume",
     description: "Change the volume.",
     category: "music",
+    premiumLevel: 3,
     options: [
         {
             name: "percentage",

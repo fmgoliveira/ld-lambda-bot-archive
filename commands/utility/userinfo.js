@@ -13,6 +13,7 @@ module.exports = {
         const target = await interaction.guild.members.fetch(interaction.targetId)
 
         const { id, bot, username, discriminator, } = target.user
+        const userDb = await client.db.users.findOne({ userId: id }) || new client.db.users({ userId: id })
         const avatar = target.user.avatarURL({ dynamic: true, size: 512 })
         let staff = false
         let dev = false
@@ -54,16 +55,16 @@ module.exports = {
             if (client.mainGuild.members.cache.get(id).roles.cache.has(process.env.DEV_ROLE)) {
                 dev = true
             }
-            if (client.mainGuild.members.cache.get(id).roles.cache.has(process.env.VOTED1_ROLE)) {
+            if (userDb.voteAmount > 0) {
                 voted1 = true
             }
-            if (client.mainGuild.members.cache.get(id).roles.cache.has(process.env.VOTED2_ROLE)) {
+            if (userDb.voteAmount > 1) {
                 voted2 = true
             }
-            if (client.mainGuild.members.cache.get(id).roles.cache.has(process.env.VOTED3_ROLE)) {
+            if (userDb.voteAmount > 2) {
                 voted3 = true
             }
-            if (client.mainGuild.members.cache.get(id).roles.cache.has(process.env.VOTED4_ROLE)) {
+            if (userDb.voteAmount > 3) {
                 voted4 = true
             }
         }

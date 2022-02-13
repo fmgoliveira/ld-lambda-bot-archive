@@ -327,6 +327,70 @@ module.exports = {
                     return interaction.reply(missingUserPermissions(client, list))
                 }
             }
+
+            if (command.premiumLevel) {
+                const memberDb = await client.db.users.get(interaction.member.id)
+                if (memberDb) {
+                    const amount = memberDb.voteAmount
+                    if (!memberDb.voted || amount === 0) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                            .setTitle("Premium Only Command")
+                            .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command.\n*Check \`/vote\` for more info.*`)
+                            .setColor("RED")
+                            .setFooter(client.footer)
+                        ],
+                        ephemeral: true
+                    })
+                    switch (command.premiumLevel) {
+                        case 1: {
+                            if (amount < 1) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                    .setTitle("Premium Only Command")
+                                    .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
+                                    .setColor("RED")
+                                    .setFooter(client.footer)
+                                ],
+                                ephemeral: true
+                            })
+                        } case 2: {
+                            if (amount < 2) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                    .setTitle("Premium Only Command")
+                                    .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
+                                    .setColor("RED")
+                                    .setFooter(client.footer)
+                                ],
+                                ephemeral: true
+                            })
+                        } case 3: {
+                            if (amount < 3) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                    .setTitle("Premium Only Command")
+                                    .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
+                                    .setColor("RED")
+                                    .setFooter(client.footer)
+                                ],
+                                ephemeral: true
+                            })
+                        } case 4: {
+                            if (amount < 4) return interaction.reply({
+                                embeds: [
+                                    new MessageEmbed()
+                                    .setTitle("Premium Only Command")
+                                    .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
+                                    .setColor("RED")
+                                    .setFooter(client.footer)
+                                ],
+                                ephemeral: true
+                            })
+                        }
+                    }
+                }
+            }
             try {
                 await command.execute(interaction, client)
             } catch (e) {

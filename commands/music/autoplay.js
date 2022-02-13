@@ -4,6 +4,7 @@ module.exports = {
     name: "autoplay",
     description: "Toggle autoplay music mode.",
     category: "music",
+    premiumLevel: 2,
     /**
      * 
      * @param {CommandInteraction} interaction 

@@ -4,6 +4,7 @@ module.exports = {
     name: "repeat",
     description: "Toggle the music repeat mode.",
     category: "music",
+    premiumLevel: 2,
     /**
      * 
      * @param {CommandInteraction} interaction 

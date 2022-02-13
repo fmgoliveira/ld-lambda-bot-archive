@@ -4,6 +4,7 @@ module.exports = {
     name: "shuffle",
     description: "Shuffle the queue (randomize playing).",
     category: "music",
+    premiumLevel: 2,
     /**
      * 
      * @param {CommandInteraction} interaction 

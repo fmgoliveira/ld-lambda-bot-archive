@@ -4,6 +4,7 @@ module.exports = {
     name: "playrelated",
     description: "Play a song related to the one that is playing now.",
     category: "music",
+    premiumLevel: 1,
     /**
      * 
      * @param {CommandInteraction} interaction 
