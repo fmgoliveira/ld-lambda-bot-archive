@@ -30,7 +30,7 @@ module.exports = {
             }
         })
 
-        if (shouldDelete) message.delete.catch(() => { })
+        if (shouldDelete) message.delete().catch(() => { })
 
         if (logChannel && wordsUsed.length) {
             const channelObj = client.channels.cache.get(logChannel)
@@ -45,13 +45,7 @@ module.exports = {
                             name: author.tag,
                             iconURL: author.displayAvatarURL({ dynamic: true })
                         })
-                        .setDescription([
-                            `<@${author.id}> (\`${author.tag}\`) used ${wordsUsed.length} blacklisted word(s) in ${channel}.`,
-                            `**Used words:**`,
-                            `\`\`\``,
-                            `${wordsUsed.map(w => w)}`,
-                            `\`\`\``
-                        ].join("\n").split(0, 4096))
+                        .setDescription(`<@${author.id}> (\`${author.tag}\`) used ${wordsUsed.length} blacklisted word(s) in ${channel}.\n**Used words:**\n\`\`\`\n${wordsUsed.map(w => w)}\n\`\`\``)
                 ]
             }).catch(() => { })
         }
