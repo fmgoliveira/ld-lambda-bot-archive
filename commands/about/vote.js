@@ -19,22 +19,10 @@ module.exports = {
             const amount = userDb.amount
 
             if (!voted || amount === 0) status = "You haven't voted me."
-            else {
-                switch (amount) {
-                    case 1:
-                        return status = "You have voted me **once**."
-                        break
-                    case 2:
-                        return status = "You have voted me **twice**."
-                        break
-                    case 3:
-                        return status = "You have voted me **three times**."
-                        break
-                    case 4:
-                        return status = "You have voted me **four times**."
-                        break
-                }
-            }
+            if (amount === 1) status = "You have voted me **once**."
+            if (amount === 2) status = "You have voted me **twice**."
+            if (amount === 3) status = "You have voted me **three times**."
+            if (amount === 4) status = "You have voted me **four times**."
 
             return status
         }
