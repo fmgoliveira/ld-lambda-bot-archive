@@ -21,15 +21,18 @@ module.exports = {
             if (!voted || amount === 0) status = "You haven't voted me."
             else {
                 switch (amount) {
-                    case 1: {
+                    case 1:
                         return status = "You have voted me **once**."
-                    } case 2: {
+                        break
+                    case 2:
                         return status = "You have voted me **twice**."
-                    } case 3: {
+                        break
+                    case 3:
                         return status = "You have voted me **three times**."
-                    } case 4: {
+                        break
+                    case 4:
                         return status = "You have voted me **four times**."
-                    }
+                        break
                 }
             }
 
