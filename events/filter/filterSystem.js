@@ -9,6 +9,7 @@ module.exports = {
      */
     async execute(message, client) {
         if (message.author.bot) return
+        if (message.channel.type === "DM") return
         const { content, guild, author, channel } = message
         const db = await client.db.guilds.findOne({ guildId: guild.id }) || await client.db.guilds.create({ guildId: guild.id })
 
