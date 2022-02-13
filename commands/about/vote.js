@@ -7,10 +7,10 @@ function getVoteStatus(userDb) {
     const amount = userDb.voteAmount
 
     if (!voted || amount === 0) return "You haven't voted me"
-    if (amount === 1) return "You have voted me **once**."
-    if (amount === 2) return "You have voted me **twice**."
-    if (amount === 3) return "You have voted me **three times**."
-    if (amount === 4) return "You have voted me **four times**."
+    if (amount === 1) return "You have voted me once."
+    if (amount === 2) return "You have voted me twice."
+    if (amount === 3) return "You have voted me three times."
+    if (amount === 4) return "You have voted me four times."
 }
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 
         const embed = new MessageEmbed()
             .setTitle("Upvote Bot")
-            .setAuthor({ name: `Your vote status: ${getVoteStatus(userDb)}`, iconURL: interaction.member.user.avatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${interaction.member.user.username.split(0, 170)}: ${getVoteStatus(userDb)}`, iconURL: interaction.member.user.avatarURL({ dynamic: true }) })
             .setDescription(`By upvoting me, you are helping the Team (a lot) and it's completely free! Each time you vote for me on the sites below, I get more users.`)
             .addField("Why should you upvote Lambda Bot?", `First of all, it's free and doesn't take a lot of time. \nSecondly, you get the following **benefits**:\n\n• Voters role in Lambda Development Discord Server\n• Cool voters badge in the \`/whois\` command and \`User Info\` context command\n• Your name listed on \`#voting\` channel in Lambda Development Discord Server\n• Access to premium-only commands\n• Bonus entry in all giveaways managed by this bot\n\n_ _`)
             .addField("What is a vote streak?", "A vote streak is __the amount of votes you have in a certain moment__ (you can have up to 4 votes simultaneously by voting in all the links below)\n\n_ _")
