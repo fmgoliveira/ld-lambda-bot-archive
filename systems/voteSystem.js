@@ -12,7 +12,7 @@ module.exports = async (client) => {
         db.forEach(doc => {
             const time = doc.time
             const now = Date.now() - 43200000
-            if (time >= now) db.deleteOne({ _id: doc._id })
+            if (time < now) db.deleteOne({ _id: doc._id })
         })
 
         const scarpsRes = await fetch('https://botlist.scarps.club/api/auth/liked/900398063607242762', {
