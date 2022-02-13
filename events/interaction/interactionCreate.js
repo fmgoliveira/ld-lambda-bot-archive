@@ -354,51 +354,52 @@ module.exports = {
                     })
                 }
             }
-        }
-        try {
-            await command.execute(interaction, client)
-        } catch (e) {
-            console.log(e)
-            const errorLogs = new WebhookClient({
-                id: process.env.ERROR_WEBHOOK_ID,
-                token: process.env.ERROR_WEBHOOK_TOKEN,
-                url: process.env.ERROR_WEBHOOK_URL
-            })
-            errorLogs.send({
-                embeds: [
-                    new MessageEmbed()
-                        .setTitle("A user got an error")
-                        .setDescription("A user got an error trying to execute a command.")
-                        .addField("Command", `${interaction.commandName}`)
-                        .addField("User", `<@${interaction.member.id}> (${interaction.member.user.tag} | \`${interaction.member.id}\`)`)
-                        .addField("Guild", `${interaction.guild.name}`)
-                        .addField(`Channel`, `<#${interaction.channel.id}>`)
-                        .setColor("RED")
-                        .setTimestamp(),
-                    new MessageEmbed()
-                        .setTitle("Error Log")
-                        .setDescription(`\`\`\`${e.toString().slice(0, 4000)}\`\`\``)
-                ]
-            })
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setColor("RED")
-                        .setTitle("Error")
-                        .setDescription("*An unknown error occurred while trying to run that command.*\nThis incident has been reported to the Team.")
-                        .addField("Error Log", `\`\`\`` + `${e.name}: ${e.message}`.split(0, 1018) + `\`\`\``)
-                        .setFooter(client.footer)
-                ],
-                ephemeral: true,
-                components: [
-                    new MessageActionRow().addComponents(
-                        new MessageButton()
-                            .setLabel("Support Server")
-                            .setURL(process.env.LAMBDA_GUILD_LINK)
-                            .setStyle("LINK")
-                    )
-                ]
-            })
+
+            try {
+                await command.execute(interaction, client)
+            } catch (e) {
+                console.log(e)
+                const errorLogs = new WebhookClient({
+                    id: process.env.ERROR_WEBHOOK_ID,
+                    token: process.env.ERROR_WEBHOOK_TOKEN,
+                    url: process.env.ERROR_WEBHOOK_URL
+                })
+                errorLogs.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setTitle("A user got an error")
+                            .setDescription("A user got an error trying to execute a command.")
+                            .addField("Command", `${interaction.commandName}`)
+                            .addField("User", `<@${interaction.member.id}> (${interaction.member.user.tag} | \`${interaction.member.id}\`)`)
+                            .addField("Guild", `${interaction.guild.name}`)
+                            .addField(`Channel`, `<#${interaction.channel.id}>`)
+                            .setColor("RED")
+                            .setTimestamp(),
+                        new MessageEmbed()
+                            .setTitle("Error Log")
+                            .setDescription(`\`\`\`${e.toString().slice(0, 4000)}\`\`\``)
+                    ]
+                })
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor("RED")
+                            .setTitle("Error")
+                            .setDescription("*An unknown error occurred while trying to run that command.*\nThis incident has been reported to the Team.")
+                            .addField("Error Log", `\`\`\`` + `${e.name}: ${e.message}`.split(0, 1018) + `\`\`\``)
+                            .setFooter(client.footer)
+                    ],
+                    ephemeral: true,
+                    components: [
+                        new MessageActionRow().addComponents(
+                            new MessageButton()
+                                .setLabel("Support Server")
+                                .setURL(process.env.LAMBDA_GUILD_LINK)
+                                .setStyle("LINK")
+                        )
+                    ]
+                })
+            }
         }
     }
 }
