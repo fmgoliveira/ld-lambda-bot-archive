@@ -12,7 +12,6 @@ module.exports = async (client) => {
         db.forEach(async (doc) => {
             const time = doc.timestamp
             const now = Date.now() - 43200000
-            // console.log(Date.now() - 43200000)
             if (time < now) await client.db.votes.deleteOne({ _id: doc._id })
         })
 
