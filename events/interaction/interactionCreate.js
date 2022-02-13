@@ -342,100 +342,63 @@ module.exports = {
                         ],
                         ephemeral: true
                     })
-                    switch (command.premiumLevel) {
-                        case 1: {
-                            if (amount < 1) return interaction.reply({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle("Premium Only Command")
-                                        .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
-                                        .setColor("RED")
-                                        .setFooter(client.footer)
-                                ],
-                                ephemeral: true
-                            })
-                        } case 2: {
-                            if (amount < 2) return interaction.reply({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle("Premium Only Command")
-                                        .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
-                                        .setColor("RED")
-                                        .setFooter(client.footer)
-                                ],
-                                ephemeral: true
-                            })
-                        } case 3: {
-                            if (amount < 3) return interaction.reply({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle("Premium Only Command")
-                                        .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
-                                        .setColor("RED")
-                                        .setFooter(client.footer)
-                                ],
-                                ephemeral: true
-                            })
-                        } case 4: {
-                            if (amount < 4) return interaction.reply({
-                                embeds: [
-                                    new MessageEmbed()
-                                        .setTitle("Premium Only Command")
-                                        .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
-                                        .setColor("RED")
-                                        .setFooter(client.footer)
-                                ],
-                                ephemeral: true
-                            })
-                        }
-                    }
+                    if (amount < command.premiumLevel) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setTitle("Premium Only Command")
+                                .setDescription(`You need to upvote the bot at least \`${command.premiumLevel}\` times to use this command (\`${command.premiumLevel - amount}\` more times).\n*Check \`/vote\` for more info.*`)
+                                .setColor("RED")
+                                .setFooter(client.footer)
+                        ],
+                        ephemeral: true
+                    })
                 }
             }
-            try {
-                await command.execute(interaction, client)
-            } catch (e) {
-                console.log(e)
-                const errorLogs = new WebhookClient({
-                    id: process.env.ERROR_WEBHOOK_ID,
-                    token: process.env.ERROR_WEBHOOK_TOKEN,
-                    url: process.env.ERROR_WEBHOOK_URL
-                })
-                errorLogs.send({
-                    embeds: [
-                        new MessageEmbed()
-                            .setTitle("A user got an error")
-                            .setDescription("A user got an error trying to execute a command.")
-                            .addField("Command", `${interaction.commandName}`)
-                            .addField("User", `<@${interaction.member.id}> (${interaction.member.user.tag} | \`${interaction.member.id}\`)`)
-                            .addField("Guild", `${interaction.guild.name}`)
-                            .addField(`Channel`, `<#${interaction.channel.id}>`)
-                            .setColor("RED")
-                            .setTimestamp(),
-                        new MessageEmbed()
-                            .setTitle("Error Log")
-                            .setDescription(`\`\`\`${e.toString().slice(0, 4000)}\`\`\``)
-                    ]
-                })
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor("RED")
-                            .setTitle("Error")
-                            .setDescription("*An unknown error occurred while trying to run that command.*\nThis incident has been reported to the Team.")
-                            .addField("Error Log", `\`\`\`` + `${e.name}: ${e.message}`.split(0, 1018) + `\`\`\``)
-                            .setFooter(client.footer)
-                    ],
-                    ephemeral: true,
-                    components: [
-                        new MessageActionRow().addComponents(
-                            new MessageButton()
-                                .setLabel("Support Server")
-                                .setURL(process.env.LAMBDA_GUILD_LINK)
-                                .setStyle("LINK")
-                        )
-                    ]
-                })
-            }
+        }
+        try {
+            await command.execute(interaction, client)
+        } catch (e) {
+            console.log(e)
+            const errorLogs = new WebhookClient({
+                id: process.env.ERROR_WEBHOOK_ID,
+                token: process.env.ERROR_WEBHOOK_TOKEN,
+                url: process.env.ERROR_WEBHOOK_URL
+            })
+            errorLogs.send({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle("A user got an error")
+                        .setDescription("A user got an error trying to execute a command.")
+                        .addField("Command", `${interaction.commandName}`)
+                        .addField("User", `<@${interaction.member.id}> (${interaction.member.user.tag} | \`${interaction.member.id}\`)`)
+                        .addField("Guild", `${interaction.guild.name}`)
+                        .addField(`Channel`, `<#${interaction.channel.id}>`)
+                        .setColor("RED")
+                        .setTimestamp(),
+                    new MessageEmbed()
+                        .setTitle("Error Log")
+                        .setDescription(`\`\`\`${e.toString().slice(0, 4000)}\`\`\``)
+                ]
+            })
+            interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor("RED")
+                        .setTitle("Error")
+                        .setDescription("*An unknown error occurred while trying to run that command.*\nThis incident has been reported to the Team.")
+                        .addField("Error Log", `\`\`\`` + `${e.name}: ${e.message}`.split(0, 1018) + `\`\`\``)
+                        .setFooter(client.footer)
+                ],
+                ephemeral: true,
+                components: [
+                    new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setLabel("Support Server")
+                            .setURL(process.env.LAMBDA_GUILD_LINK)
+                            .setStyle("LINK")
+                    )
+                ]
+            })
         }
     }
 }
