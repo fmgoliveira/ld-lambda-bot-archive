@@ -15,7 +15,7 @@ module.exports = {
         const channelsAllowed = guildDb.chatbotChannels
 
         if (!channelsAllowed.includes(message.channel.id)) return
-        console.log("here")
+
         chatSend(message)
     }
 }

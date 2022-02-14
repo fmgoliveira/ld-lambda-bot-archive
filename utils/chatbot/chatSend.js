@@ -9,7 +9,7 @@ const chatSend = async (message) => {
         message.channel.sendTyping()
         await axios.get(`http://api.brainshop.ai/get?bid=${bid}&key=${key}&uid=${uid}&msg=${msg}`)
             .then(res => {
-                let data = res.data;
+                let data = res.data
                 let reply = data.cnt
                 if (reply) {
                     message.reply({
@@ -20,7 +20,7 @@ const chatSend = async (message) => {
                     })
                 } else if (!reply) {
                     message.reply({
-                        content: "Api did not respond at time [TIME OUT]",
+                        content: "API did not respond at time [TIME OUT]",
                         allowedMentions: {
                             repliedUser: false
                         }
