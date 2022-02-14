@@ -405,6 +405,10 @@ const guildSchema = new Schema({
             type: Boolean,
             default: false
         },
+        role: {
+            type: String,
+            default: null
+        },
         channel: {
             type: String,
             default: null
@@ -412,6 +416,10 @@ const guildSchema = new Schema({
         message: {
             type: String,
             default: "Click the button below to get verified and have access to all channels."
+        },
+        buttonLabel: {
+            type: "String",
+            default: "Verify"
         },
         embed: {
             active: {

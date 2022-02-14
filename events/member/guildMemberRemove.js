@@ -28,6 +28,8 @@ module.exports = {
             }
         }
 
+        client.updateStatus(client)
+
         if (!leave.active) return
 
         let message
@@ -75,7 +77,5 @@ module.exports = {
                 member.send(message)
             } catch (err) { console.log(err) }
         }
-
-        client.updateStatus(client)
     }
 }

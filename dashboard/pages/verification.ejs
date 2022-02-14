@@ -1,0 +1,107 @@
+<form action="/dashboard/<%- guild.id %>/verification" method="post" id="form">
+    <div class="left">
+        <h1>
+            <%- pageName %>
+        </h1>
+        <div class="verification-container">
+            <div class="left-container">
+                <div class="card verification">
+                    <div class="title">
+                        <h2>Settings</h2>
+                        <div class="slider">
+                            On / Off
+                            <%- include("../partials/components/switch.ejs", { id: 657687878, guild, bot, domain,
+                                selected: verification.active, value: "verificationActive" }) %>
+                        </div>
+                    </div>
+
+                    <%- include("../partials/components/channel-select-notnull.ejs", { id: 6587834, guild, bot, domain,
+                        label: "Verification Message Channel" , selected: verification.channel,
+                        value: "verificationChannel" , data: verification }) %>
+
+                    <%- include("../partials/components/role-select-notnull.ejs", { id: 7835, guild, bot, domain,
+                        label: "No-perms Role <span class=\" text-muted\" style=\"font-weigth: 400 !important;\">(should be above all other roles)</span>",
+                        selected: verification.role,
+                        value: "verificationRole" , data: verification.role }) %>
+
+                        <h3>Button Label</h3>
+                        <div class="embed active">
+                            <input type="text" name="verificationButtonLabel" id="verificationButtonLabel"
+                                placeholder="Verify" value="<%- verification.buttonLabel %>">
+                        </div>
+
+                        <div class="submit">
+                            <button name="verificationSettingsSave" type="submit">Save</button>
+                        </div>
+                </div>
+            </div>
+            <div class="card verification-panel-message">
+                <div class="title">
+                    <h2>Panel Message</h2>
+                </div>
+
+                <div class="togglers">
+                    <div class="slider">
+                        Embed
+                        <%- include("../partials/components/switch.ejs", { id: 785, guild, bot, domain, selected:
+                            verification.embed.active, value: "verificationEmbed" }) %>
+                    </div>
+                </div>
+
+                <div class="message verificationMessage <%- verification.embed.active ? "" : " active" %>">
+                    <h3>Message</h3>
+                    <textarea name="verificationMessage" id="verificationMessage"
+                        rows="3"><%- verification.message %></textarea>
+                </div>
+
+                <div class="embed verificationEmbed <%- verification.embed.active ? " active" : "" %>">
+                    <h3>Author</h3>
+                    <div class="author">
+                        <input type="text" name="verificationEmbedAuthorAvatar" id="verificationEmbedAuthorAvatar"
+                            placeholder="Avatar URL" value="<%- verification.embed.authorAvatar %>">
+                        <input type="text" name="verificationEmbedAuthor" id="verificationEmbedAuthor"
+                            placeholder="Name" value="<%- verification.embed.author %>">
+                        <input type="text" name="verificationEmbedAuthorUrl" id="verificationEmbedAuthorUrl"
+                            placeholder="URL" value="<%- verification.embed.authorUrl %>">
+                    </div>
+                    <h3 style=" margin-top: .6rem;">Title</h3>
+                    <div class="title">
+                        <input type="text" name="verificationEmbedTitle" id="verificationEmbedTitle"
+                            placeholder="Title cannot be empty" value="<%- verification.embed.title %>">
+                        <input type="text" name="verificationEmbedTitleUrl" id="verificationEmbedTitleUrl"
+                            placeholder="URL" value="<%- verification.embed.titleUrl %>">
+                    </div>
+                    <h3 style=" margin-top: .6rem;">Description</h3>
+                    <textarea name="verificationEmbedDescription" id="verificationEmbedDescription" rows="3"
+                        placeholder="Description"><%- verification.embed.description %></textarea>
+                    <h3 style=" margin-top: .6rem;">Thumbnail</h3>
+                    <input type="text" name="verificationEmbedThumbnail" id="verificationEmbedThumbnail"
+                        placeholder="URL" value="<%- verification.embed.thumbnail %>">
+                    <h3 style=" margin-top: .6rem;">Image</h3>
+                    <input type="text" name="verificationEmbedImage" id="verificationEmbedImage" placeholder="URL"
+                        value="<%- verification.embed.image %>">
+                    <h3 style=" margin-top: .6rem;">Footer</h3>
+                    <div class="footer">
+                        <input type="text" name="verificationEmbedFooterIcon" id="verificationEmbedFooterIcon"
+                            placeholder="Icon URL" value="<%- verification.embed.footerIcon %>">
+                        <input type="text" name="verificationEmbedFooterText" id="verificationEmbedFooterText"
+                            placeholder="Text" value="<%- verification.embed.footerText %>">
+                    </div>
+                    <div class="color">
+                        <h3 style=" margin-top: .6rem;">Color</h3>
+                        <input type="color" name="verificationEmbedColor" id="verificationEmbedColor"
+                            value="<%- verification.embed.color %>">
+                    </div>
+                </div>
+
+                <div class="submit">
+                    <button name="verificationSend" type="submit">Send</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+<link rel="stylesheet" href="<%- domain %>/css/verification.css">
+<script src="<%- domain %>/js/verification.js"></script>

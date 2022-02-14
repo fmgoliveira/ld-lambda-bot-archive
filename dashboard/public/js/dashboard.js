@@ -42,7 +42,8 @@ const possiblePaths = [
     "alt-detector",
     "logging",
     "reaction-roles",
-    "embeds"
+    "embeds",
+    "verification"
 ]
 
 links.forEach(link => {

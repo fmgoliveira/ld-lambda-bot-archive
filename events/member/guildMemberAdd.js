@@ -11,6 +11,7 @@ module.exports = {
     async execute(member, client) {
         const settings = await client.db.guilds.findOne({ guildId: member.guild.id }) || new client.db.guilds({ guildId: member.guild.id })
         const welcome = settings.welcome
+        const verification = settings.verification
 
         if (settings.logging.channel.memberEvents) {
             if (settings.logging.active.memberEvents.memberJoin) {
@@ -28,57 +29,62 @@ module.exports = {
             }
         }
 
-        if (!welcome.active) return
+        if (welcome.active) {
 
-        let message
+            let message
 
-        if (welcome.embed.active) {
-            let { author, authorAvatar, authorUrl, title, titleUrl, description, thumbnail, image, footerText, footerIcon, color } = welcome.embed
+            if (welcome.embed.active) {
+                let { author, authorAvatar, authorUrl, title, titleUrl, description, thumbnail, image, footerText, footerIcon, color } = welcome.embed
 
-            author = placeholderReplace(author, member.guild, member.user)
-            description = placeholderReplace(description, member.guild, member.user)
-            footerText = placeholderReplace(footerText, member.guild, member.user)
+                author = placeholderReplace(author, member.guild, member.user)
+                description = placeholderReplace(description, member.guild, member.user)
+                footerText = placeholderReplace(footerText, member.guild, member.user)
 
-            const embed = new MessageEmbed()
-                .setTitle(title)
-                .setColor(color)
-                .setDescription(description)
+                const embed = new MessageEmbed()
+                    .setTitle(title)
+                    .setColor(color)
+                    .setDescription(description)
 
-            if (author) {
-                embed.setAuthor({ name: author, iconURL: authorAvatar, url: authorUrl })
+                if (author) {
+                    embed.setAuthor({ name: author, iconURL: authorAvatar, url: authorUrl })
+                }
+                if (titleUrl) {
+                    embed.setURL(titleUrl)
+                }
+                if (thumbnail) {
+                    embed.setThumbnail(thumbnail)
+                }
+                if (image) {
+                    embed.setImage(image)
+                }
+                if (footerText) {
+                    embed.setFooter({ text: footerText, iconURL: footerIcon })
+                }
+
+                message = {
+                    embeds: [embed]
+                }
+            } else {
+                message = placeholderReplace(welcome.message, member.guild, member.user)
             }
-            if (titleUrl) {
-                embed.setURL(titleUrl)
-            }
-            if (thumbnail) {
-                embed.setThumbnail(thumbnail)
-            }
-            if (image) {
-                embed.setImage(image)
-            }
-            if (footerText) {
-                embed.setFooter({ text: footerText, iconURL: footerIcon })
-            }
 
-            message = {
-                embeds: [embed]
+            if (!welcome.dm) {
+                if (!welcome.channel) return
+                member.guild.channels.cache.get(welcome.channel).send(message)
+            } else {
+                try {
+                    member.send(message)
+                } catch (err) { console.log(err) }
             }
-        } else {
-            message = placeholderReplace(welcome.message, member.guild, member.user)
-        }
-
-        if (!welcome.dm) {
-            if (!welcome.channel) return
-            member.guild.channels.cache.get(welcome.channel).send(message)
-        } else {
-            try {
-                member.send(message)
-            } catch (err) { console.log(err) }
         }
 
         client.updateStatus(client)
 
-        if (settings.autorole.active) {
+        if (verification.active && verification.role) {
+            try {
+                member.roles.add(verification.role).catch(err => console.log(err))
+            } catch (err) { console.log(err) }
+        } else if (settings.autorole.active) {
             if (settings.autorole.id) {
                 try {
                     member.roles.add(settings.autorole.id).catch(err => console.log(err))

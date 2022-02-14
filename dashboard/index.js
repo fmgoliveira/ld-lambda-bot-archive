@@ -74,7 +74,7 @@ module.exports = async (client) => {
 
         const baseData = {
             https: "https://",
-            domain: process.env.DOMAIN,
+            domain: process.env.DOMAIN_BETA,
             bot: client,
             hostname,
             pathname,
@@ -82,7 +82,7 @@ module.exports = async (client) => {
             user: req.isAuthenticated() ? req.user : null,
             url: res,
             req: req,
-            image: `${process.env.DOMAIN}/img/favicon1.png`,
+            image: `${process.env.DOMAIN_BETA}/img/favicon1.png`,
             name: client.username,
             tag: client.tag,
             template
@@ -461,6 +461,27 @@ module.exports = async (client) => {
         })
     })
 
+    app.get("/dashboard/:guildId/verification", checkAuth, checkPerms, async (req, res) => {
+        const guild = client.guilds.cache.get(req.params.guildId)
+        if (!guild) return res.redirect("/dashboard")
+
+        let guildSettings = await client.db.guilds.findOne({ guildId: guild.id })
+
+        if (!guildSettings) {
+            const newSettings = await client.db.guilds.create({ guildId: guild.id })
+            await newSettings.save()
+            guildSettings = newSettings
+        }
+
+        const verification = guildSettings.verification
+
+        renderTemplate(req, res, "verification", "dashboard", {
+            guild,
+            pageName: "Verification",
+            verification
+        })
+    })
+
     app.get("/dashboard/:guildId/tickets/categories/:panelId", checkAuth, checkPerms, async (req, res) => {
         const guild = client.guilds.cache.get(req.params.guildId)
         if (!guild) return res.redirect("/dashboard")
@@ -668,6 +689,30 @@ module.exports = async (client) => {
             guild,
             pageName: "Logging",
             logging,
+            alert
+        })
+    })
+
+    app.post("/dashboard/:guildId/verification", checkAuth, checkPerms, async (req, res) => {
+        const guild = client.guilds.cache.get(req.params.guildId)
+        if (!guild) return res.redirect("/dashboard")
+
+        let guildSettings = await client.db.guilds.findOne({ guildId: guild.id })
+
+        if (!guildSettings) {
+            const newSettings = await client.db.guilds.create({ guildId: guild.id })
+            await newSettings.save()
+            guildSettings = newSettings
+        }
+
+        const alert = await verificationValid(req.body, guildSettings, guild, req)
+
+        const verification = guildSettings.verification
+
+        renderTemplate(req, res, "verification", "dashboard", {
+            guild,
+            pageName: "Verification",
+            verification,
             alert
         })
     })
@@ -2139,6 +2184,256 @@ module.exports = async (client) => {
             return {
                 type: "success",
                 msg: "Successfully updated the logging settings; category: message events."
+            }
+        }
+    }
+
+    const verificationValid = async (data, settings, guild, req) => {
+        if (Object.prototype.hasOwnProperty.call(data, "verificationSettingsSave")) {
+            if (data.verificationChannel !== "null" && data.verificationChannel) {
+                let verificationChannelValid = await guild.channels.cache.find((ch) => ch.id === data.verificationChannel)
+
+                if (verificationChannelValid) {
+                    settings.verification.channel = data.verificationChannel
+                    await settings.save()
+                } else {
+                    return {
+                        type: "danger",
+                        msg: "The verification channel specified was not found on this guild."
+                    }
+                }
+            } else {
+                if (data.verificationChannel === "null") {
+                    settings.verification.channel = null
+                    await settings.save()
+                }
+            }
+
+            if (data.verificationRole !== "null" && data.verificationRole) {
+                let verificationRoleValid = await guild.roles.cache.find((ch) => ch.id === data.verificationRole)
+
+                if (verificationRoleValid) {
+                    settings.verification.role = data.verificationRole
+                    await settings.save()
+                } else {
+                    return {
+                        type: "danger",
+                        msg: "The no-perms role specified was not found on this guild."
+                    }
+                }
+            } else {
+                if (data.verificationRole === "null") {
+                    settings.verification.role = null
+                    await settings.save()
+                }
+            }
+
+            if (!data.verificationActive) data.verificationActive = false
+            if (!data.verificationButtonLabel || data.verificationButtonLabel === "") data.verificationButtonLabel = "Verify"
+
+            if (data.verificationActive === "on") {
+                settings.verification.active = true
+                await settings.save()
+            } else {
+                settings.verification.active = false
+                await settings.save()
+            }
+
+            if (data.verificationButtonLabel.length > 80 || data.verificationButtonLabel.length === 0) return {
+                type: "danger",
+                msg: "The button label must have between 1 and 80 characters."
+            }
+
+            settings.verification.buttonLabel = data.verificationButtonLabel
+            await settings.save()
+
+            if (settings.verification.active && !settings.verification.channel) {
+                return {
+                    type: "warning",
+                    msg: "The verification channel is not set."
+                }
+            }
+
+            if (settings.verification.active && !settings.verification.role) {
+                return {
+                    type: "warning",
+                    msg: "The no-perms role is not set."
+                }
+            }
+
+            if (!settings.verification.active && !data.verificationActive) {
+                return {
+                    type: "warning",
+                    msg: "The verification module is not enabled."
+                }
+            }
+
+            await client.db.logs.create({
+                guildId: guild.id,
+                action: "Changed verification settings",
+                date: Date.now(),
+                user: {
+                    id: req.user.id,
+                    username: guild.members.cache.get(req.user.id).user.username,
+                    tag: guild.members.cache.get(req.user.id).user.tag,
+                    avatar: guild.members.cache.get(req.user.id).user.avatar
+                }
+            })
+
+            return {
+                type: "success",
+                msg: "Successfully updated the verification module settings."
+            }
+        } else if (Object.prototype.hasOwnProperty.call(data, "verificationSend")) {
+            if (!settings.verification.active) {
+                return {
+                    type: "danger",
+                    msg: "The verification module is not enabled."
+                }
+            }
+
+            if (!settings.verification.channel) {
+                return {
+                    type: "danger",
+                    msg: "The channel is not set."
+                }
+            }
+
+            if (!settings.verification.role) {
+                return {
+                    type: "danger",
+                    msg: "The no-perms role is not set."
+                }
+            }
+
+            const channel = guild.channels.cache.get(settings.verification.channel)
+
+            if (!channel) return {
+                type: "danger",
+                msg: "The channel specified was not found on this guild."
+            }
+
+            if (!data.verificationEmbed) data.verificationEmbed = false
+
+            let verificationEmbed = data.verificationEmbed === "on" ? true : false
+
+            if (!verificationEmbed) {
+                if (data.verificationMessage.length <= 2000 && data.verificationMessage.length > 0) {
+                    settings.verification.message = data.verificationMessage
+                    settings.verification.embed.active = false
+                    await settings.save()
+                } else {
+                    settings.verification.embed.active = false
+                    await settings.save()
+                    return {
+                        type: "danger",
+                        msg: "The verification message can't be empty nor have more than 2000 characters."
+                    }
+                }
+
+                channel.send({
+                    content: data.verificationMessage,
+                    components: [
+                        new MessageActionRow().setComponents(
+                            new MessageButton()
+                                .setCustomId("verification-verify")
+                                .setLabel(settings.verification.buttonLabel ? settings.verification.buttonLabel : "Verify")
+                                .setEmoji("<:check:942750762256175145>")
+                                .setStyle("SUCCESS")
+                        )
+                    ]
+                }).catch(err => {
+                    console.log(err)
+                    return {
+                        type: "danger",
+                        msg: "Could not send the verification panel message. Make sure I have the correct permissions and try again."
+                    }
+                })
+            } else {
+                const embed = {
+                    active: true,
+                    authorAvatar: data.verificationEmbedAuthorAvatar,
+                    author: data.verificationEmbedAuthor,
+                    authorUrl: data.verificationEmbedAuthorUrl,
+                    title: data.verificationEmbedTitle,
+                    titleUrl: data.verificationEmbedTitleUrl,
+                    description: data.verificationEmbedDescription,
+                    thumbnail: data.verificationEmbedThumbnail,
+                    image: data.verificationEmbedImage,
+                    footerIcon: data.verificationEmbedFooterIcon,
+                    footerText: data.verificationEmbedFooterText,
+                    color: data.verificationEmbedColor
+                }
+
+                if (embed.author.length > 256) {
+                    return {
+                        type: "danger",
+                        msg: "The verification panel embed author can't have more than 256 characters."
+                    }
+                }
+                if (embed.title.length > 256 || embed.title.length === 0) {
+                    return {
+                        type: "danger",
+                        msg: "The verification panel embed title must have between 1 and 256 characters."
+                    }
+                }
+                if (embed.description.length > 4096) {
+                    return {
+                        type: "danger",
+                        msg: "The verification panel embed description can't have more than 4096 characters."
+                    }
+                }
+                if (embed.footerText.length > 2048) {
+                    return {
+                        type: "danger",
+                        msg: "The verification panel embed footer text can't have more than 4096 characters."
+                    }
+                }
+                if ((embed.author.length + embed.description.length + embed.footerText.length + embed.title.length) > 6000) {
+                    return {
+                        type: "danger",
+                        msg: "The sum of all characters of the verification panel embed must not exceed 6000."
+                    }
+                }
+
+                settings.verification.embed = embed
+                await settings.save()
+
+                channel.send({
+                    embeds: [embed],
+                    components: [
+                        new MessageActionRow().setComponents(
+                            new MessageButton()
+                                .setCustomId("verification-verify")
+                                .setLabel(settings.verification.buttonLabel ? settings.verification.buttonLabel : "Verify")
+                                .setEmoji("<:check:942750762256175145>")
+                                .setStyle("SUCCESS")
+                        )
+                    ]
+                }).catch(err => {
+                    console.log(err)
+                    return {
+                        type: "danger",
+                        msg: "Could not send the verification panel message. Make sure I have the correct permissions and try again."
+                    }
+                })
+            }
+
+            await client.db.logs.create({
+                guildId: guild.id,
+                action: "Changed verification panel",
+                date: Date.now(),
+                user: {
+                    id: req.user.id,
+                    username: guild.members.cache.get(req.user.id).user.username,
+                    tag: guild.members.cache.get(req.user.id).user.tag,
+                    avatar: guild.members.cache.get(req.user.id).user.avatar
+                }
+            })
+
+            return {
+                type: "success",
+                msg: "Successfully sent the verification panel."
             }
         }
     }
