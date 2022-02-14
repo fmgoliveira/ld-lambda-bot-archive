@@ -13,7 +13,7 @@ const chatSend = async (message) => {
                 let reply = data.cnt
                 if (reply) {
                     message.reply({
-                        content: reply,
+                        content: reply.slice(0, 2000),
                         allowedMentions: {
                             repliedUser: false
                         }
