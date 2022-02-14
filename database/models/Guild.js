@@ -496,6 +496,11 @@ const guildSchema = new Schema({
             type: String,
             default: null
         }
+    },
+
+    chatbotChannels: {
+        type: Array,
+        default: []
     }
 })
 
