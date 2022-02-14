@@ -169,11 +169,11 @@ module.exports = {
 
             if (command.category === "moderation") {
                 if (moderator_role) {
-                    if (!interaction.member.roles.cache.has(moderator_role)) return interaction.reply(missingUserPermissions(client, [`MODERATOR ROLE - <@&${moderator_role}>`]))
+                    if (!interaction.member.roles.cache.has(moderator_role) && interaction.member.id !== process.env.OWNER_ID) return interaction.reply(missingUserPermissions(client, [`MODERATOR ROLE - <@&${moderator_role}>`]))
                 } else {
                     let list = []
                     command.userPermissions.forEach(perm => {
-                        if (!interaction.member.permissionsIn(interaction.channel).has(perm)) list.push(perm)
+                        if (!interaction.member.permissionsIn(interaction.channel).has(perm) && interaction.member.id !== process.env.OWNER_ID) list.push(perm)
                     })
                     if (list.length > 0) {
                         return interaction.reply(missingUserPermissions(client, list))
@@ -194,7 +194,7 @@ module.exports = {
                 const active = (await client.db.guilds.findOne({ guildId: interaction.guild.id }) || new client.db.guilds({ guildId: interaction.guild.id })).logging.active.moderation
                 const logChannel = interaction.guild.channels.cache.get((await client.db.guilds.findOne({ guildId: interaction.guild.id }) || new client.db.guilds({ guildId: interaction.guild.id })).logging.channel.moderation)
 
-                if (cmdName === "ban" && active.ban && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "ban" && active.ban && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -210,7 +210,7 @@ module.exports = {
                         })
                     } catch (err) { console.log(err) }
                 }
-                if (cmdName === "kick" && active.kick && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "kick" && active.kick && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -226,7 +226,7 @@ module.exports = {
                         })
                     } catch (err) { console.log(err) }
                 }
-                if (cmdName === "clear" && active.clear && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "clear" && active.clear && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -242,7 +242,7 @@ module.exports = {
                         })
                     } catch (err) { console.log(err) }
                 }
-                if (cmdName === "warn" && active.warn && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "warn" && active.warn && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -258,7 +258,7 @@ module.exports = {
                         })
                     } catch (err) { console.log(err) }
                 }
-                if (cmdName === "clearwarns" && active.warn && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "clearwarns" && active.warn && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -273,7 +273,7 @@ module.exports = {
                         })
                     } catch (err) { console.log(err) }
                 }
-                if (cmdName === "timeout" && active.timeout && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "timeout" && active.timeout && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -290,7 +290,7 @@ module.exports = {
                         })
                     } catch (err) { console.log(err) }
                 }
-                if (cmdName === "slowmode" && active.slowmode && logChannel && interaction.member.id !== process.env.OWNER_ID ) {
+                if (cmdName === "slowmode" && active.slowmode && logChannel && interaction.member.id !== process.env.OWNER_ID) {
                     try {
                         logChannel.send({
                             embeds: [
@@ -307,7 +307,6 @@ module.exports = {
                     } catch (err) { console.log(err) }
                 }
             }
-
             if (command.userPermissions && interaction.member.id !== process.env.OWNER_ID && command.category !== "moderation") {
                 let list = []
                 command.userPermissions.forEach(perm => {
