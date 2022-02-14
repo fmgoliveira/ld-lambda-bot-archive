@@ -82,7 +82,7 @@ module.exports = {
                     ephemeral: true
                 })
 
-                guildDb.chatbotChannels.push(channel.id)
+                guildDb.chatbotChannels.remove(channel.id)
                 await guildDb.save()
 
                 return interaction.reply({
