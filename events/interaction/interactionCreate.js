@@ -308,7 +308,7 @@ module.exports = {
                 }
             }
 
-            if (command.userPermissions && !command.category === "moderation") {
+            if (command.userPermissions && command.category !== "moderation") {
                 let list = []
                 command.userPermissions.forEach(perm => {
                     if (!interaction.member.permissionsIn(interaction.channel).has(perm)) list.push(perm)
