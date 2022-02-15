@@ -17,7 +17,7 @@ module.exports = {
             client.guilds.cache.forEach(guild => {
                 guildsMsg += `**${guild.name}** (\`${guild.id}\`) [${guild.memberCount} members]\n`
             })
-            return message.reply(guildsMsg.slice(0, 2000)
+            return message.reply(guildsMsg.slice(0, 2000))
         }
 
         if (message.content.startsWith("::guildinfo ")) {
