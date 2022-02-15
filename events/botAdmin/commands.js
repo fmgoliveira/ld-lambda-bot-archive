@@ -13,7 +13,7 @@ module.exports = {
 
         if (!membersWithRole.includes(message.author.id)) return
         if (message.content === "::guilds") {
-            let guildsMsg = `**Guilds I'm in [ ${client.guilds.cache.size} ]**\n\n`
+            let guildsMsg = `__**GUILDS I'M IN [${client.guilds.cache.size}]**__\n\n`
             client.guilds.cache.forEach(guild => {
                 guildsMsg += `**${guild.name}** (\`${guild.id}\`) [${guild.memberCount} members]\n`
             })
