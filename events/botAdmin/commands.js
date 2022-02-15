@@ -15,9 +15,9 @@ module.exports = {
         if (message.content === "::guilds") {
             let guildsMsg = `**Guilds I'm in [ ${client.guilds.cache.size} ]**\n\n`
             client.guilds.cache.forEach(guild => {
-                guildsMsg += `> **${guild.name}**\n> ID: \`${guild.id}\`\n> Owner ID: \`${guild.ownerId}\`\n> Member Count: \`${guild.memberCount}\`\n\n`
+                guildsMsg += `**${guild.name}** (\`${guild.id}\`) [${guild.memberCount} members]\n`
             })
-            return message.reply(guildsMsg)
+            return message.reply(guildsMsg.slice(0, 2000)
         }
 
         if (message.content.startsWith("::guildinfo ")) {
