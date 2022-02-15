@@ -8,5 +8,6 @@ module.exports = {
     tickets: require("./Ticket"),
     giveaways: require("./Giveaway"),
     afkSystem: require("./Afk"),
-    votes: require("./Vote")
+    votes: require("./Vote"),
+    autoReact: require("./autoReact")
 }

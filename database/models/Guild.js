@@ -473,28 +473,6 @@ const guildSchema = new Schema({
         }
     },
 
-    autoPolls: {
-        active: {
-            type: Boolean,
-            default: false
-        },
-        channel: {
-            type: String,
-            default: null
-        }
-    },
-
-    autoSuggest: {
-        active: {
-            type: Boolean,
-            default: false
-        },
-        channel: {
-            type: String,
-            default: null
-        }
-    },
-
     suggest: {
         active: {
             type: Boolean,

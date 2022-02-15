@@ -3,7 +3,7 @@ const { CommandInteraction, Client, MessageEmbed, MessageActionRow, MessageButto
 module.exports = {
     name: "chatbot",
     description: "Configure the Chatbot functionality.",
-    category: "chatbot",
+    category: "admin",
     userPermissions: ["MANAGE_GUILD"],
     options: [
         {
