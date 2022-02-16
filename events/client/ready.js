@@ -1,4 +1,4 @@
-const { Client } = require("discord.js")
+const { Client, WebhookClient, MessageEmbed } = require("discord.js")
 const mongoose = require("mongoose")
 const Models = require("../../database/models/Models")
 
@@ -22,6 +22,19 @@ module.exports = {
         }
 
         console.log(`Bot logged in as ${client.user.tag} in ${client.guilds.cache.size} guilds successfully.`)
+        const webhook = new WebhookClient({
+            id: process.env.BOT_LOGS_WEBHOOK_ID,
+            token: process.env.BOT_LOGS_WEBHOOK_TOKEN,
+            url: process.env.BOT_LOGS_WEBHOOK_URL,
+        })
+
+        webhook.send({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription(`Bot has successfully started <t:${parseInt(Date.now() / 1000)}:R>.`)
+                    .setColor(client.color)
+            ]
+        })
 
         client.footer = { text: client.user.username, iconURL: client.user.avatarURL() }
 
