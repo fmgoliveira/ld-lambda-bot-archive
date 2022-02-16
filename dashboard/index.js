@@ -74,7 +74,7 @@ module.exports = async (client) => {
 
         const baseData = {
             https: "https://",
-            domain: process.env.DOMAIN_BETA,
+            domain: process.env.DOMAIN,
             bot: client,
             hostname,
             pathname,
@@ -82,7 +82,7 @@ module.exports = async (client) => {
             user: req.isAuthenticated() ? req.user : null,
             url: res,
             req: req,
-            image: `${process.env.DOMAIN_BETA}/img/favicon1.png`,
+            image: `${process.env.DOMAIN}/img/favicon1.png`,
             name: client.username,
             tag: client.tag,
             template
