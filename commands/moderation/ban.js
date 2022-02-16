@@ -77,7 +77,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setDescription(`User \`${user.tag}\` banned successfully. ${db.moderation.includeReason ? "| " + reason : ""}`)
-                        .setColor(client.footer)
+                        .setColor(client.color)
                 ]
             })
         }).catch(() => {
