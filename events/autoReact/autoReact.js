@@ -15,7 +15,7 @@ module.exports = {
 
         reactsDb.emojis.forEach(emoji => {
             var emoj = emoji.trim()
-            message.react(message.guild.emojis.cache.get(emoj) ? message.guild.emojis.cache.get(emoj) : (emoj.length === 1 ? emoj : "⁉")).catch(e => {
+            message.react(message.guild.emojis.cache.get(emoj) ? message.guild.emojis.cache.get(emoj) : emoj).catch(e => {
                 console.log(e)
                 message.react("⁉")
             })
