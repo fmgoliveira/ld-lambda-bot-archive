@@ -18,7 +18,7 @@ module.exports = {
         const { guild, member } = interaction
 
         try {
-            member.roles.remove(vDb.role).catch(err => {
+            member.roles.add(vDb.role).catch(err => {
                 console.log(err)
                 return interaction.reply({ embeds: [new MessageEmbed().setDescription("❌ | Could not verify you.").setColor("RED")], ephemeral: true })
             })

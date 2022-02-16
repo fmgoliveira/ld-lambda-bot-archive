@@ -2218,7 +2218,7 @@ module.exports = async (client) => {
                 } else {
                     return {
                         type: "danger",
-                        msg: "The no-perms role specified was not found on this guild."
+                        msg: "The verified role specified was not found on this guild."
                     }
                 }
             } else {
@@ -2302,7 +2302,7 @@ module.exports = async (client) => {
             if (!settings.verification.role) {
                 return {
                     type: "danger",
-                    msg: "The no-perms role is not set."
+                    msg: "The verified role is not set."
                 }
             }
 

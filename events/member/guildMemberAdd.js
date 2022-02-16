@@ -80,11 +80,7 @@ module.exports = {
 
         client.updateStatus(client)
 
-        if (verification.active && verification.role) {
-            try {
-                member.roles.add(verification.role).catch(err => console.log(err))
-            } catch (err) { console.log(err) }
-        } else if (settings.autorole.active) {
+        if (settings.autorole.active && !verification.active) {
             if (settings.autorole.id) {
                 try {
                     member.roles.add(settings.autorole.id).catch(err => console.log(err))
