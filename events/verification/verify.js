@@ -17,6 +17,8 @@ module.exports = {
         if (!vDb.active) return interaction.reply({ embeds: [new MessageEmbed().setDescription("❌ | Verification module is not enabled.").setColor("RED")], ephemeral: true })
         const { guild, member } = interaction
 
+        if (member.roles.cache.has(vDb.role)) return interaction.reply({ embeds: [new MessageEmbed().setDescription("⛔ | You are already verified.").setColor("RED")], ephemeral: true })
+
         try {
             member.roles.add(vDb.role).catch(err => {
                 console.log(err)
