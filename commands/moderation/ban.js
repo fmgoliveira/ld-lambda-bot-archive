@@ -54,7 +54,7 @@ module.exports = {
         })
 
         interaction.guild.members.ban(user, { reason }).then(() => {
-            if (db.moderation.db.ban) {
+            if (db.moderation.dm.ban) {
                 try {
                     user.send({
                         embeds: [

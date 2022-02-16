@@ -54,7 +54,7 @@ module.exports = {
         })
 
         interaction.guild.members.kick(user, { reason }).then(() => {
-            if (db.moderation.db.kick) {
+            if (db.moderation.dm.kick) {
                 try {
                     user.send({
                         embeds: [
