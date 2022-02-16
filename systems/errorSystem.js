@@ -15,7 +15,7 @@ process.on('uncaughtException', (err) => {
             embeds: [
                 new MessageEmbed()
                     .setTitle(`**${err.name}:** ${err.message}`)
-                    .setDescription(`\`\`\`${err.split(0, 4090)}\`\`\``)
+                    .setDescription(`\`\`\`${String(err).split(0, 4090)}\`\`\``)
                     .setColor("RED")
                     .setTimestamp()
             ]
@@ -57,7 +57,7 @@ process.on('unhandledRejection', (err) => {
             embeds: [
                 new MessageEmbed()
                     .setTitle(`**${err.name}:** ${err.message}`)
-                    .setDescription(`\`\`\`${err.split(0, 4090)}\`\`\``)
+                    .setDescription(`\`\`\`${String(err).split(0, 4090)}\`\`\``)
                     .setColor("RED")
                     .setTimestamp()
             ]
