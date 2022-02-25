@@ -11,6 +11,7 @@ const client = new Client({
 
 client.commands = new Collection()
 client.color = "#ffa726"
+client.errorHandling = true
 client.updateStatus = (_client) => {
     let memberCount = 0
     _client.guilds.cache.forEach(guild => {

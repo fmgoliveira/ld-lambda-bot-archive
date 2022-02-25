@@ -1,4 +1,4 @@
-const { Message, Client } = require("discord.js")
+const { Message, Client, MessageEmbed } = require("discord.js")
 
 module.exports = {
     name: "messageCreate",
@@ -13,11 +13,49 @@ module.exports = {
 
         if (!membersWithRole.includes(message.author.id)) return
         if (message.content === "::guilds") {
-            let guildsMsg = `**Guilds I'm in [ ${client.guilds.cache.size} ]**\n\n`
             client.guilds.cache.forEach(guild => {
                 guildsMsg += `> **${guild.name}**\n> ID: \`${guild.id}\`\n> Owner ID: \`${guild.ownerId}\`\n> Member Count: \`${guild.memberCount}\`\n\n`
             })
-            return message.reply(guildsMsg)
+            return message.reply({
+                embeds: [
+                    new MessageEmbed().setTitle(`Guilds I'm in [ ${client.guilds.cache.size} ]`).setDescription(guildsMsg.substring(0, 2000)).setColor(client.color)
+                ]
+            })
+        }
+
+        if (message.content.startsWith("::toggleErrorHandling ")) {
+            const option = message.content.split(" ")[1]
+            if (!option) return message.reply("❌ **[ ERROR ]** :: Specify a valid value: `0` or `1`.", { ephemeral: true })
+
+            switch (option) {
+                case "0":
+                    client.errorHandling = false
+                    return message.reply("✅ **[ SUCCESS ]** :: Error handling system set to `0`.", { ephemeral: true })
+                    break
+                case "1":
+                    client.errorHandling = true
+                    return message.reply("✅ **[ SUCCESS ]** :: Error handling system set to `1`.", { ephemeral: true })
+                    break
+                case "false":
+                    client.errorHandling = false
+                    return message.reply("✅ **[ SUCCESS ]** :: Error handling system set to `0`.", { ephemeral: true })
+                    break
+                case "true":
+                    client.errorHandling = true
+                    return message.reply("✅ **[ SUCCESS ]** :: Error handling system set to `1`.", { ephemeral: true })
+                    break
+                case "no":
+                    client.errorHandling = false
+                    return message.reply("✅ **[ SUCCESS ]** :: Error handling system set to `0`.", { ephemeral: true })
+                    break
+                case "yes":
+                    client.errorHandling = true
+                    return message.reply("✅ **[ SUCCESS ]** :: Error handling system set to `1`.", { ephemeral: true })
+                    break
+                default:
+                    return message.reply("❌ **[ ERROR ]** :: Specify a valid value: `0` or `1`.", { ephemeral: true })
+                    break
+            }
         }
 
         if (message.content.startsWith("::guildinfo ")) {

@@ -1,4 +1,5 @@
 const { WebhookClient, MessageEmbed } = require("discord.js")
+const client = require("../index")
 
 const errorLogs = new WebhookClient({
     id: process.env.ERROR_WEBHOOK_ID,
@@ -7,6 +8,7 @@ const errorLogs = new WebhookClient({
 })
 
 process.on('uncaughtException', (err) => {
+    if (!client.errorHandling) throw err
     console.log(err)
     if (err.message === "Cannot read properties of undefined (reading 'users')") return
     if (err.message === "Unexpected token '<'") return
@@ -49,6 +51,7 @@ process.on('uncaughtException', (err) => {
 })
 
 process.on('unhandledRejection', (err) => {
+    if (!client.errorHandling) throw err
     console.log(err)
     if (err.message === "Cannot read properties of undefined (reading 'users')") return
     if (err.message === "Unexpected token '<'") return
