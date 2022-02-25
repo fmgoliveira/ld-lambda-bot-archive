@@ -13,12 +13,13 @@ module.exports = {
 
         if (!membersWithRole.includes(message.author.id)) return
         if (message.content === "::guilds") {
+            let guildsMsg
             client.guilds.cache.forEach(guild => {
                 guildsMsg += `> **${guild.name}**\n> ID: \`${guild.id}\`\n> Owner ID: \`${guild.ownerId}\`\n> Member Count: \`${guild.memberCount}\`\n\n`
             })
             return message.reply({
                 embeds: [
-                    new MessageEmbed().setTitle(`Guilds I'm in [ ${client.guilds.cache.size} ]`).setDescription(guildsMsg.substring(0, 2000)).setColor(client.color)
+                    new MessageEmbed().setTitle(`Guilds I'm in [ ${client.guilds.cache.size} ]`).setDescription(guildsMsg.substring(0, 4096)).setColor(client.color)
                 ]
             })
         }
