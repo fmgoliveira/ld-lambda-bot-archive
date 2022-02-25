@@ -26,6 +26,13 @@ module.exports = async (client) => {
         next();
     })
 
+    app.use((req, res, next) => {
+        res.setTimeout(120000, () => {
+            res.status(408)
+        })
+        next()
+    })
+
     app.use(favicon(dataDir + "/public/img/favicon1.png"))
     app.use("/css", express.static(dataDir + "/public/css"))
     app.use("/js", express.static(dataDir + "/public/js"))
