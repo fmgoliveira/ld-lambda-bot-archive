@@ -1,5 +1,5 @@
 const { CommandInteraction, Client, MessageEmbed, WebhookClient, MessageActionRow, MessageButton } = require("discord.js")
-const { joinVoiceChannel } = require("@discord.js/voice")
+const { joinVoiceChannel } = require("@discordjs/voice")
 
 module.exports = {
     name: "play",
