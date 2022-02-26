@@ -1,4 +1,5 @@
 const { CommandInteraction, Client, MessageEmbed, WebhookClient, MessageActionRow, MessageButton } = require("discord.js")
+const { joinVoiceChannel } = require("@discord.js/voice")
 
 module.exports = {
     name: "play",
@@ -46,6 +47,11 @@ module.exports = {
         })
 
         try {
+            joinVoiceChannel({
+               channelId: VoiceChannel.id,
+               guildId: guild.id,
+               adapterCreator: guild.voiceAdapterCreator
+            })
             client.distube.play(VoiceChannel, interaction.options.getString("query"), { textChannel: channel, member })
             return interaction.reply({
                 embeds: [
