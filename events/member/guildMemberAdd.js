@@ -78,7 +78,7 @@ module.exports = {
             }
         }
 
-        client.updateStatus(client)
+
 
         if (settings.autorole.active && !verification.active) {
             if (settings.autorole.id) {

@@ -28,7 +28,7 @@ module.exports = {
             }
         }
 
-        client.updateStatus(client)
+
 
         if (!leave.active) return
 
