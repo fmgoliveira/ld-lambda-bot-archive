@@ -128,7 +128,7 @@ module.exports = {
 
             channel.send({ embeds: [embed], components: [buttons] })
 
-            await channel.send({ content: `<@${panelDb.supportRole}>, <@${member.id}> created a ticket.` }).then(msg => {
+            await channel.send({ content: `<@&${panelDb.supportRole}>, <@${member.id}> created a ticket.` }).then(msg => {
                 setTimeout(() => { msg.delete().catch(err => console.log(err)) }, 1500)
             }).catch(err => console.log(err))
 
