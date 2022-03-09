@@ -1,5 +1,4 @@
-const { ButtonInteraction, MessageEmbed, Client } = require("discord.js")
-const { createTranscript } = require("discord-html-transcripts")
+const { ButtonInteraction, MessageEmbed, Client, MessageActionRow, MessageButton } = require("discord.js")
 
 module.exports = {
     name: "interactionCreate",
@@ -41,14 +40,25 @@ module.exports = {
                 ephemeral: true
             })
 
-            if (!member.roles.cache.has(panelDb.supportRole)) return interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                        .setColor("RED")
-                        .setDescription("❌ | You don't have permissions to use these buttons.")
-                ],
-                ephemeral: true
-            })
+            if (customId === "close") {
+                if (!member.roles.cache.has(panelDb.supportRole) && member.id !== docs.memberId) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor("RED")
+                            .setDescription("❌ | You don't have permissions to use this button.")
+                    ],
+                    ephemeral: true
+                })
+            } else {
+                if (!member.roles.cache.has(panelDb.supportRole)) return interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor("RED")
+                            .setDescription("❌ | You don't have permissions to use this button.")
+                    ],
+                    ephemeral: true
+                })
+            }
 
             switch (customId) {
                 case "lock":
@@ -140,43 +150,25 @@ module.exports = {
                         ephemeral: true
                     })
 
-                    const attachment = await createTranscript(channel, {
-                        limit: -1,
-                        returnBuffer: false,
-                        fileName: `${channel.name}-transcript.html`
-                    })
-
-                    await db.updateOne({ channelId: channel.id }, { closed: true })
-
-                    const Member = guild.members.cache.get(docs.memberId)
-
-                    let Message
-                    if (logChannel) Message = await logChannel.send({
+                    return interaction.reply({
                         embeds: [
                             new MessageEmbed()
-                                .setAuthor({ name: Member.user.tag, iconURL: Member.user.avatarURL({ dynamic: true }) })
-                                .setTitle("Ticket Closed")
-                                .setDescription(`Ticket ${channel.name} was **closed** by ${member.user.tag}.\n**Category Label:** ${panelDb.label}`)
-                                .setFooter(client.footer)
-                                .setTimestamp()
+                                .setDescription("🛑 | Are you sure you want to close this ticket?")
                                 .setColor("RED")
                         ],
-                        files: [attachment]
-                    })
-
-                    interaction.reply({
-                        embeds: [
-                            new MessageEmbed()
-                                .setDescription(`💾 | This ticket has been closed. ${Message ? "[Go to transcript](" + Message.url + ")" : ""}`)
-                                .setColor(client.color)
+                        components: [
+                            new MessageActionRow().addComponents(
+                                new MessageButton()
+                                    .setCustomId("ticket-close_confirm")
+                                    .setLabel("Close")
+                                    .setStyle("DANGER"),
+                                new MessageButton()
+                                    .setCustomId("ticket-close_cancel")
+                                    .setLabel("Cancel")
+                                    .setStyle("SECONDARY")
+                            )
                         ]
                     })
-
-                    setTimeout(() => {
-                        channel.delete().catch(err => console.log(err))
-                    }, 10000)
-
-                    await db.deleteOne({ channelId: channel.id })
                     break
 
                 case "claim":
