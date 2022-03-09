@@ -1,4 +1,4 @@
-const { GuildMember, Client, MessageEmbed } = require("discord.js")
+const { GuildMember, Client, MessageEmbed, MessageActionRow, MessageButton } = require("discord.js")
 const placeholderReplace = require("../../utils/placeholderReplace")
 
 module.exports = {
@@ -72,6 +72,14 @@ module.exports = {
                 if (!welcome.channel) return
                 member.guild.channels.cache.get(welcome.channel).send(message)
             } else {
+                message.components = [
+                    new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId("dm-welcome")
+                            .setLabel(`Sent from server: ${member.guild.name}`.substring(0, 80))
+                            .setDisabled(true)
+                            .setStyle("SECONDARY")
+                    )]
                 try {
                     member.send(message)
                 } catch (err) { console.log(err) }

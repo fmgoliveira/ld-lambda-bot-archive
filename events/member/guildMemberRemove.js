@@ -73,6 +73,14 @@ module.exports = {
             if (!leave.channel) return
             member.guild.channels.cache.get(leave.channel).send(message)
         } else {
+            message.components = [
+                new MessageActionRow().addComponents(
+                    new MessageButton()
+                        .setCustomId("dm-welcome")
+                        .setLabel(`Sent from server: ${member.guild.name}`.substring(0, 80))
+                        .setDisabled(true)
+                        .setStyle("SECONDARY")
+                )]
             try {
                 member.send(message)
             } catch (err) { console.log(err) }
