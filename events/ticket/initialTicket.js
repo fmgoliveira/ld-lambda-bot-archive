@@ -68,7 +68,7 @@ module.exports = {
                     ]
                 },
                 {
-                    id: client.user.id
+                    id: client.user.id,
                     allow: [
                         "SEND_MESSAGES",
                         "VIEW_CHANNEL",
