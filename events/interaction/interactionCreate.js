@@ -28,7 +28,7 @@ module.exports = {
                 embeds: [
                     new MessageEmbed()
                         .setTitle("Privacy Policy")
-                        .setDescription("To use our bot, you need to accept our [Terms of Service](https://wiki.lambdadev.xyz/legal/terms).\n*This will be asked every time you try to use the bot until you accept it.*")
+                        .setDescription("To use our bot, you need to accept our [Privacy Policy](https://wiki.lambdadev.xyz/legal/policy) and [Terms of Service](https://wiki.lambdadev.xyz/legal/terms).\n*This will only be asked until you accept they.*")
                         .setThumbnail(client.user.avatarURL())
                         .setFooter(client.footer)
                         .setColor(client.color)
