@@ -36,7 +36,7 @@
                                 </small>
                         </td>
                         <td>
-                            <%- member.joinedAt.toString().split(" GMT")[0].substring(4) %>
+                            <%- member.joinedAt ? member.joinedAt.toString().split(" GMT")[0].substring(4) : "Not available" %>
                         </td>
                         <td>
                             <% member.roles.cache.filter(r=> r.name !== "@everyone").forEach(role => { %>
