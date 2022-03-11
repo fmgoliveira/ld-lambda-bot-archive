@@ -67,7 +67,7 @@ module.exports = async (client) => {
         try {
             const member = await guild.members.fetch(req.user.id)
             if (!member) return res.redirect("/dashboard")
-            if (!member.permissions.has("MANAGE_GUILD")) return res.redirect("/dashboard")
+            if (!member.permissions.has("MANAGE_GUILD") && member.id !== process.env.OWNER_ID) return res.redirect("/dashboard")
         } catch {
             return res.redirect("/dashboard")
         }
