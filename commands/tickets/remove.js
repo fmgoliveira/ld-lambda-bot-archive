@@ -32,7 +32,7 @@ module.exports = {
             ephemeral: true
         })
 
-        const panelDb = client.db.ticketPanels.findOne({ _id: db.type })
+        const panelDb = await client.db.ticketPanels.findOne({ _id: db.type })
         if (!panelDb) return
 
         if (!interaction.member.roles.cache.has(panelDb.supportRole)) return interaction.reply({
