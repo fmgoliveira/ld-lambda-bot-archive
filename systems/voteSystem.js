@@ -137,7 +137,7 @@ module.exports = async (client) => {
         }
 
         let firstEmbed = new MessageEmbed()
-            .setTitle("**USERS WHO HAVE VOTED IN THE LAST 12 HOURS**")
+            .setTitle("**Users who have voted in the last 12 Hours**")
         let lastEmbed = new MessageEmbed()
             .setFooter({ text: "You can be here too: just upvote the bot!" })
 
