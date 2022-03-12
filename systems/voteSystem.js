@@ -141,14 +141,14 @@ module.exports = async (client) => {
         let lastEmbed = new MessageEmbed()
             .setFooter({ text: "You can be here too: just upvote the bot!" })
 
-        let embed2 = new MessageEmbed()
-        let embed3 = new MessageEmbed()
-        let embed4 = new MessageEmbed()
-        let embed5 = new MessageEmbed()
-        let embed6 = new MessageEmbed()
-        let embed7 = new MessageEmbed()
-        let embed8 = new MessageEmbed()
-        let embed9 = new MessageEmbed()
+        let embed2 = new MessageEmbed().setColor("#2f3136")
+        let embed3 = new MessageEmbed().setColor("#2f3136")
+        let embed4 = new MessageEmbed().setColor("#2f3136")
+        let embed5 = new MessageEmbed().setColor("#2f3136")
+        let embed6 = new MessageEmbed().setColor("#2f3136")
+        let embed7 = new MessageEmbed().setColor("#2f3136")
+        let embed8 = new MessageEmbed().setColor("#2f3136")
+        let embed9 = new MessageEmbed().setColor("#2f3136")
 
         if (votedArray.length === 0) {
             firstEmbed.setFooter({ text: "You can be here: just upvote the bot!" }).setDescription(`There are no users who have upvoted the bot in the last 12 hours. **Be the first!**`)
@@ -246,7 +246,7 @@ module.exports = async (client) => {
             embeds.push(lastEmbed)
         }
 
-        webhook.editMessage("942355029971578921", {
+        webhook.editMessage("952186941196095529", {
             content: null,
             embeds
         })
