@@ -18,7 +18,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(interaction, client) {
-        const target = await interaction.guild.members.fetch(interaction.options.getUser("target") || interaction.member).id)
+        const target = await interaction.guild.members.fetch((interaction.options.getUser("target") || interaction.member).id)
 
         const { id, bot, username, discriminator, } = target.user
         const userDb = await client.db.users.findOne({ userId: id }) || new client.db.users({ userId: id })
