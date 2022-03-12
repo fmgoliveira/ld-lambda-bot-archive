@@ -13,7 +13,7 @@ module.exports = {
 
         if (!membersWithRole.includes(message.author.id)) return
         if (message.content === "::guilds") {
-            let guildsMsg
+            let guildsMsg = " "
             client.guilds.cache.forEach(guild => {
                 guildsMsg += `> **${guild.name}**\n> ID: \`${guild.id}\`\n> Owner ID: \`${guild.ownerId}\`\n> Member Count: \`${guild.memberCount}\`\n\n`
             })
