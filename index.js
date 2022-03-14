@@ -21,8 +21,16 @@ client.updateStatus = (_client) => {
     let currentIndex = 0
     const activities = [
         {
+            name: "bot.lambdadev.xyz",
+            type: "PLAYING"
+        },
+        {
             name: `/help`,
             type: "LISTENING"
+        },
+        {
+            name: "bot.lambdadev.xyz",
+            type: "PLAYING"
         },
         {
             name: `${memberCount} users`,
@@ -44,7 +52,7 @@ client.updateStatus = (_client) => {
         _client.user.setPresence({ activities: [activity] })
 
         currentIndex = currentIndex >= activities.length - 1 ? 0 : currentIndex + 1
-    }, 60000)
+    }, 20000)
 }
 
 const { DisTube } = require("distube")
