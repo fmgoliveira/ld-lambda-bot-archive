@@ -234,7 +234,7 @@ module.exports = {
                                 .setFooter(client.footer)
                                 .setTimestamp()
                                 .setTitle("Ticket Deleted")
-                                .setDescription(`Ticket <#${channel.id}> has been deleted by ${member.user.tag}.`)
+                                .setDescription(`Ticket \`#${channel.name}\` has been deleted by ${member.user.tag}.`)
                         ]
                     })
 
