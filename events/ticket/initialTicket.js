@@ -114,19 +114,14 @@ module.exports = {
             const buttons = new MessageActionRow().addComponents(
                 new MessageButton()
                     .setCustomId("ticket-close")
-                    .setEmoji("💾")
-                    .setStyle("PRIMARY")
-                    .setLabel("Save & Close"),
+                    .setEmoji("✖")
+                    .setStyle("DANGER")
+                    .setLabel("Close"),
                 new MessageButton()
                     .setCustomId("ticket-lock")
                     .setEmoji("🔒")
                     .setStyle("SECONDARY")
                     .setLabel("Lock"),
-                new MessageButton()
-                    .setCustomId("ticket-unlock")
-                    .setEmoji("🔓")
-                    .setStyle("SECONDARY")
-                    .setLabel("Unlock"),
                 new MessageButton()
                     .setCustomId("ticket-claim")
                     .setEmoji("✋")

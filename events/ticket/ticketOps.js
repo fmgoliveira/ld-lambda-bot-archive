@@ -17,7 +17,7 @@ module.exports = {
         const guildDb = await client.db.guilds.findOne({ guildId: guild.id }) || new client.db.guilds({ guildId: guild.id })
         const logChannel = guild.channels.cache.get(guildDb.tickets.logChannel)
 
-        if (!["close", "lock", "unlock", "claim"].includes(customId)) return
+        if (!["close", "lock", "unlock", "claim", "unclaim"].includes(customId)) return
 
         db.findOne({ channelId: channel.id }, async (err, docs) => {
             if (err) throw err
@@ -91,6 +91,26 @@ module.exports = {
                         ]
                     })
 
+                    const buttons = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId("ticket-close")
+                            .setEmoji("✖")
+                            .setStyle("DANGER")
+                            .setLabel("Close"),
+                        new MessageButton()
+                            .setCustomId("ticket-unlock")
+                            .setEmoji("🔓")
+                            .setStyle("SECONDARY")
+                            .setLabel("Unlock"),
+                        new MessageButton()
+                            .setCustomId("ticket-claim")
+                            .setEmoji("✋")
+                            .setStyle("SUCCESS")
+                            .setLabel("Claim")
+                    )
+
+                    interaction.message.edit({ components: [buttons] })
+
                     return interaction.reply({
                         embeds: [
                             new MessageEmbed()
@@ -131,6 +151,26 @@ module.exports = {
                         ]
                     })
 
+                    const buttons1 = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId("ticket-close")
+                            .setEmoji("✖")
+                            .setStyle("DANGER")
+                            .setLabel("Close"),
+                        new MessageButton()
+                            .setCustomId("ticket-lock")
+                            .setEmoji("🔒")
+                            .setStyle("SECONDARY")
+                            .setLabel("Lock"),
+                        new MessageButton()
+                            .setCustomId("ticket-claim")
+                            .setEmoji("✋")
+                            .setStyle("SUCCESS")
+                            .setLabel("Claim")
+                    )
+
+                    interaction.message.edit({ components: [buttons1] })
+
                     return interaction.reply({
                         embeds: [
                             new MessageEmbed()
@@ -154,14 +194,21 @@ module.exports = {
                         embeds: [
                             new MessageEmbed()
                                 .setDescription("🛑 | Are you sure you want to close this ticket?")
+                                .addField("Just close", "Close the ticket without creating a transcript")
+                                .addField("Save & close", "Close the ticket, but create a transcript")
+                                .addField("Cancel", "Don't close the ticket")
                                 .setColor("RED")
                         ],
                         components: [
                             new MessageActionRow().addComponents(
                                 new MessageButton()
                                     .setCustomId("ticket-close_confirm")
-                                    .setLabel("Close")
+                                    .setLabel("Just Close")
                                     .setStyle("DANGER"),
+                                new MessageButton()
+                                    .setCustomId("ticket-close_save")
+                                    .setLabel("Save & Close")
+                                    .setStyle("SECONDARY"),
                                 new MessageButton()
                                     .setCustomId("ticket-close_cancel")
                                     .setLabel("Cancel")
@@ -183,11 +230,73 @@ module.exports = {
 
                     await db.updateOne({ channelId: channel.id }, { claimed: true, claimedBy: member.id })
 
+                    const buttons2 = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId("ticket-close")
+                            .setEmoji("✖")
+                            .setStyle("DANGER")
+                            .setLabel("Close"),
+                        new MessageButton()
+                            .setCustomId(docs.locked ? "ticket-lock" : "ticket-unlock")
+                            .setEmoji(docs.locked ? "🔒" : "🔓")
+                            .setStyle("SECONDARY")
+                            .setLabel(docs.locked ? "Lock" : "Unlock"),
+                        new MessageButton()
+                            .setCustomId("ticket-unclaim")
+                            .setEmoji("🚫")
+                            .setStyle("SUCCESS")
+                            .setLabel("Unclaim")
+                    )
+
+                    interaction.message.edit({ components: [buttons2] })
+
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
                                 .setColor(client.color)
                                 .setDescription(`✋ | This ticket has been claimed by <@${member.id}>`)
+                        ]
+                    })
+
+                    break
+
+                case "unclaim":
+                    if (docs.claimedBy !== interaction.member.id) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor("RED")
+                                .setDescription(`❌ | You can't unclaim this ticket: it has been claimed by <@${docs.claimedBy}>`)
+                        ],
+                        ephemeral: true
+                    })
+
+                    await db.updateOne({ channelId: channel.id }, { claimed: false, claimedBy: null })
+
+                    const buttons3 = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId("ticket-close")
+                            .setEmoji("✖")
+                            .setStyle("DANGER")
+                            .setLabel("Close"),
+                        new MessageButton()
+                            .setCustomId(docs.locked ? "ticket-lock" : "ticket-unlock")
+                            .setEmoji(docs.locked ? "🔒" : "🔓")
+                            .setStyle("SECONDARY")
+                            .setLabel(docs.locked ? "Lock" : "Unlock"),
+                        new MessageButton()
+                            .setCustomId("ticket-claim")
+                            .setEmoji("✋")
+                            .setStyle("SUCCESS")
+                            .setLabel("Claim")
+                    )
+
+                    interaction.message.edit({ components: [buttons3] })
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(client.color)
+                                .setDescription(`🚫 | This ticket has been unclaimed`)
                         ]
                     })
 

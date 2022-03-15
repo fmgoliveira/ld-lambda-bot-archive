@@ -18,7 +18,7 @@ module.exports = {
         const guildDb = await client.db.guilds.findOne({ guildId: guild.id }) || new client.db.guilds({ guildId: guild.id })
         const logChannel = guild.channels.cache.get(guildDb.tickets.logChannel)
 
-        if (!["close_confirm", "close_cancel"].includes(customId)) return
+        if (!["close_confirm", "close_cancel", "close_save"].includes(customId)) return
 
         db.findOne({ channelId: channel.id }, async (err, docs) => {
             if (err) throw err
@@ -58,7 +58,7 @@ module.exports = {
                     })
                     break
 
-                case "close_confirm":
+                case "close_save":
                     if (docs.closed == true) return interaction.reply({
                         embeds: [
                             new MessageEmbed()
@@ -101,6 +101,52 @@ module.exports = {
                         embeds: [
                             new MessageEmbed()
                                 .setDescription(`💾 | This ticket has been closed. ${Message ? "[Go to transcript](" + Message.url + ")" : ""}`)
+                                .setColor(client.color)
+                        ]
+                    })
+
+                    setTimeout(() => {
+                        channel.delete().catch(err => console.log(err))
+                    }, 10000)
+
+                    await db.deleteOne({ channelId: channel.id })
+                    break
+
+                case "close_confirm":
+                    if (docs.closed == true) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor("RED")
+                                .setDescription("❌ | This ticket is already closed.")
+                        ],
+                        ephemeral: true
+                    })
+
+                    interaction.message.delete().catch(err => {
+                        interaction.deferUpdate()
+                        return console.log(err)
+                    })
+
+                    await db.updateOne({ channelId: channel.id }, { closed: true })
+
+                    const _Member = guild.members.cache.get(docs.memberId)
+
+                    if (logChannel) Message = await logChannel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setAuthor({ name: _Member.user.tag, iconURL: _Member.user.avatarURL({ dynamic: true }) })
+                                .setTitle("Ticket Closed")
+                                .setDescription(`Ticket ${channel.name} was **closed** by ${member.user.tag}.\n**Category Label:** ${panelDb.label}`)
+                                .setFooter(client.footer)
+                                .setTimestamp()
+                                .setColor("RED")
+                        ]
+                    })
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`💾 | This ticket has been closed.`)
                                 .setColor(client.color)
                         ]
                     })
