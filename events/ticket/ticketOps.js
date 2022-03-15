@@ -103,10 +103,10 @@ module.exports = {
                             .setStyle("SECONDARY")
                             .setLabel("Unlock"),
                         new MessageButton()
-                            .setCustomId("ticket-claim")
-                            .setEmoji("✋")
+                            .setCustomId(docs.claimed ? "ticket-unclaim" : "ticket-claim")
+                            .setEmoji(docs.claimed ? "🚫" : "✋")
                             .setStyle("SUCCESS")
-                            .setLabel("Claim")
+                            .setLabel(docs.claimed ? "Unclaim" : "Claim")
                     )
 
                     interaction.message.edit({ components: [buttons] })
@@ -163,10 +163,10 @@ module.exports = {
                             .setStyle("SECONDARY")
                             .setLabel("Lock"),
                         new MessageButton()
-                            .setCustomId("ticket-claim")
-                            .setEmoji("✋")
+                            .setCustomId(docs.claimed ? "ticket-unclaim" : "ticket-claim")
+                            .setEmoji(docs.claimed ? "🚫" : "✋")
                             .setStyle("SUCCESS")
-                            .setLabel("Claim")
+                            .setLabel(docs.claimed ? "Unclaim" : "Claim")
                     )
 
                     interaction.message.edit({ components: [buttons1] })
