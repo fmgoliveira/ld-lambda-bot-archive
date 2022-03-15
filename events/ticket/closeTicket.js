@@ -106,7 +106,7 @@ module.exports = {
                         files: [attachment]
                     })
 
-                    interaction.reply({
+                    await interaction.reply({
                         embeds: [
                             new MessageEmbed()
                                 .setDescription(`🔴 | This ticket has been closed. ${Message ? "[Go to transcript](" + Message.url + ")" : ""}`)
