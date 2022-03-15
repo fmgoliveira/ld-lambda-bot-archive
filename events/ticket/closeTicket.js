@@ -131,7 +131,7 @@ module.exports = {
                                     .setStyle("DANGER")
                             )
                         ]
-                    })
+                    }).then(msg => msg.pin())
 
                     break
 

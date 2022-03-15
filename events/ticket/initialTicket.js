@@ -73,7 +73,8 @@ module.exports = {
                         "SEND_MESSAGES",
                         "VIEW_CHANNEL",
                         "READ_MESSAGE_HISTORY",
-                        "MANAGE_MESSAGES"
+                        "MANAGE_MESSAGES",
+                        "ATTACH_FILES"
                     ]
                 }
             ]
