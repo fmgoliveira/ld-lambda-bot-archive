@@ -208,7 +208,7 @@ module.exports = {
                                 new MessageButton()
                                     .setCustomId("ticket-close_save")
                                     .setLabel("Save & Close")
-                                    .setStyle("SECONDARY"),
+                                    .setStyle("PRIMARY"),
                                 new MessageButton()
                                     .setCustomId("ticket-close_cancel")
                                     .setLabel("Cancel")
