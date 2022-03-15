@@ -18,7 +18,7 @@ module.exports = {
         const guildDb = await client.db.guilds.findOne({ guildId: guild.id }) || new client.db.guilds({ guildId: guild.id })
         const logChannel = guild.channels.cache.get(guildDb.tickets.logChannel)
 
-        if (!["close_confirm", "close_cancel", "close_save", "close_delete"].includes(customId)) return
+        if (!["close_confirm", "close_cancel", "close_save", "close_delete", "close_reopen"].includes(customId)) return
 
         db.findOne({ channelId: channel.id }, async (err, docs) => {
             if (err) throw err
