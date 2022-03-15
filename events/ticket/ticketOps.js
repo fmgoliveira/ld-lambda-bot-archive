@@ -230,6 +230,17 @@ module.exports = {
 
                     await db.updateOne({ channelId: channel.id }, { claimed: true, claimedBy: member.id })
 
+                    if (logChannel) logChannel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(client.color)
+                                .setFooter(client.footer)
+                                .setTimestamp()
+                                .setTitle("Ticket Claimed")
+                                .setDescription(`Ticket <#${channel.id}> has been claimed by ${member.user.tag}.`)
+                        ]
+                    })
+
                     const buttons2 = new MessageActionRow().addComponents(
                         new MessageButton()
                             .setCustomId("ticket-close")
@@ -271,6 +282,17 @@ module.exports = {
                     })
 
                     await db.updateOne({ channelId: channel.id }, { claimed: false, claimedBy: null })
+
+                    if (logChannel) logChannel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(client.color)
+                                .setFooter(client.footer)
+                                .setTimestamp()
+                                .setTitle("Ticket Unclaimed")
+                                .setDescription(`Ticket <#${channel.id}> has been unclaimed by ${member.user.tag}.`)
+                        ]
+                    })
 
                     const buttons3 = new MessageActionRow().addComponents(
                         new MessageButton()
