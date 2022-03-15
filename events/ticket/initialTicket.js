@@ -72,7 +72,8 @@ module.exports = {
                     allow: [
                         "SEND_MESSAGES",
                         "VIEW_CHANNEL",
-                        "READ_MESSAGE_HISTORY"
+                        "READ_MESSAGE_HISTORY",
+                        "MANAGE_MESSAGES"
                     ]
                 }
             ]
@@ -129,7 +130,7 @@ module.exports = {
                     .setLabel("Claim")
             )
 
-            channel.send({ embeds: [embed], components: [buttons] })
+            await channel.send({ embeds: [embed], components: [buttons] }).then(msg => msg.pin())
 
             await channel.send({ content: `<@&${panelDb.supportRole}>, <@${member.id}> created a ticket.` }).then(msg => {
                 setTimeout(() => { msg.delete().catch(err => console.log(err)) }, 1500)
