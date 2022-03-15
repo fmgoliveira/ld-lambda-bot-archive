@@ -81,12 +81,12 @@ module.exports = {
 
                     await db.updateOne({ channelId: channel.id }, { closed: true })
                     channel.permissionOverwrites.edit(docs.memberId, {
-                        VIEW_CHANNEL: true
+                        VIEW_CHANNEL: false
                     })
 
                     docs.otherMembers.forEach(m => {
                         channel.permissionOverwrites.edit(m, {
-                            VIEW_CHANNEL: true
+                            VIEW_CHANNEL: false
                         })
                     })
 
