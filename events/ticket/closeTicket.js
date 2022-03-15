@@ -131,7 +131,7 @@ module.exports = {
 
                     const _Member = guild.members.cache.get(docs.memberId)
 
-                    if (logChannel) Message = await logChannel.send({
+                    if (logChannel) await logChannel.send({
                         embeds: [
                             new MessageEmbed()
                                 .setAuthor({ name: _Member.user.tag, iconURL: _Member.user.avatarURL({ dynamic: true }) })
