@@ -1,4 +1,4 @@
-const { ButtonInteraction, MessageEmbed, Client } = require("discord.js")
+const { ButtonInteraction, MessageEmbed, Client, MessageActionRow, MessageButton } = require("discord.js")
 const { createTranscript } = require("discord-html-transcripts")
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
         const guildDb = await client.db.guilds.findOne({ guildId: guild.id }) || new client.db.guilds({ guildId: guild.id })
         const logChannel = guild.channels.cache.get(guildDb.tickets.logChannel)
 
-        if (!["close_confirm", "close_cancel", "close_save"].includes(customId)) return
+        if (!["close_confirm", "close_cancel", "close_save", "close_delete"].includes(customId)) return
 
         db.findOne({ channelId: channel.id }, async (err, docs) => {
             if (err) throw err
@@ -58,7 +58,7 @@ module.exports = {
                     })
                     break
 
-                case "close_save":
+                case "close_confirm":
                     if (docs.closed == true) return interaction.reply({
                         embeds: [
                             new MessageEmbed()
@@ -80,6 +80,15 @@ module.exports = {
                     })
 
                     await db.updateOne({ channelId: channel.id }, { closed: true })
+                    channel.permissionOverwrites.edit(docs.memberId, {
+                        VIEW_CHANNEL: true
+                    })
+
+                    docs.otherMembers.forEach(m => {
+                        channel.permissionOverwrites.edit(m, {
+                            VIEW_CHANNEL: true
+                        })
+                    })
 
                     const Member = guild.members.cache.get(docs.memberId)
 
@@ -100,62 +109,153 @@ module.exports = {
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
-                                .setDescription(`💾 | This ticket has been closed. ${Message ? "[Go to transcript](" + Message.url + ")" : ""}`)
+                                .setDescription(`🔴 | This ticket has been closed. ${Message ? "[Go to transcript](" + Message.url + ")" : ""}`)
                                 .setColor(client.color)
+                        ],
+                        components: [
+                            new MessageActionRow().addComponents(
+                                new MessageButton()
+                                    .setCustomId("ticket-close_save")
+                                    .setEmoji("📑")
+                                    .setLabel("Transcript")
+                                    .setStyle("SECONDARY"),
+                                new MessageButton()
+                                    .setCustomId("ticket-close_open")
+                                    .setEmoji("🔓")
+                                    .setLabel("Re-open")
+                                    .setStyle("SUCCESS"),
+                                new MessageButton()
+                                    .setCustomId("ticket-close_delete")
+                                    .setEmoji("🗑️")
+                                    .setLabel("Delete")
+                                    .setStyle("DANGER")
+                            )
                         ]
                     })
 
-                    setTimeout(() => {
-                        channel.delete().catch(err => console.log(err))
-                    }, 10000)
-
-                    await db.deleteOne({ channelId: channel.id })
                     break
 
-                case "close_confirm":
-                    if (docs.closed == true) return interaction.reply({
+                case "close_save":
+                    if (docs.closed == false) return interaction.reply({
                         embeds: [
                             new MessageEmbed()
                                 .setColor("RED")
-                                .setDescription("❌ | This ticket is already closed.")
+                                .setDescription("❌ | This ticket is not closed.")
                         ],
                         ephemeral: true
                     })
 
-                    interaction.message.delete().catch(err => {
-                        interaction.deferUpdate()
-                        return console.log(err)
+                    const _attachment = await createTranscript(channel, {
+                        limit: -1,
+                        returnBuffer: false,
+                        fileName: `${channel.name}-transcript.html`
                     })
 
-                    await db.updateOne({ channelId: channel.id }, { closed: true })
-
-                    const _Member = guild.members.cache.get(docs.memberId)
-
-                    if (logChannel) await logChannel.send({
+                    if (logChannel) logChannel.send({
                         embeds: [
                             new MessageEmbed()
-                                .setAuthor({ name: _Member.user.tag, iconURL: _Member.user.avatarURL({ dynamic: true }) })
-                                .setTitle("Ticket Closed")
-                                .setDescription(`Ticket ${channel.name} was **closed** by ${member.user.tag}.\n**Category Label:** ${panelDb.label}`)
+                                .setColor(client.color)
                                 .setFooter(client.footer)
                                 .setTimestamp()
-                                .setColor("RED")
+                                .setTitle("Ticket Transcript Created")
+                                .setDescription(`Ticket <#${channel.id}> has been transcripted by ${member.user.tag}.`)
                         ]
                     })
 
                     interaction.reply({
                         embeds: [
                             new MessageEmbed()
-                                .setDescription(`💾 | This ticket has been closed.`)
+                                .setDescription(`📑 | Ticket transcript (\`${channel.name}-transcript.html\`)`)
+                                .setColor(client.color)
+                        ],
+                        files: [_attachment]
+                    })
+
+                    break
+
+                case "close_open":
+                    if (docs.closed == false) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor("RED")
+                                .setDescription("❌ | This ticket is not closed.")
+                        ],
+                        ephemeral: true
+                    })
+
+                    await db.updateOne({ channelId: channel.id }, { closed: false })
+                    channel.permissionOverwrites.edit(docs.memberId, {
+                        VIEW_CHANNEL: true
+                    })
+
+                    docs.otherMembers.forEach(m => {
+                        channel.permissionOverwrites.edit(m, {
+                            VIEW_CHANNEL: true
+                        })
+                    })
+
+                    if (logChannel) logChannel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(client.color)
+                                .setFooter(client.footer)
+                                .setTimestamp()
+                                .setTitle("Ticket Re-opened")
+                                .setDescription(`Ticket <#${channel.id}> has been re-opened by ${member.user.tag}.`)
+                        ]
+                    })
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`✅ | Ticket successfully re-opened.`)
                                 .setColor(client.color)
                         ]
                     })
 
-                    setTimeout(() => {
-                        channel.delete().catch(err => console.log(err))
-                    }, 10000)
+                    break
+
+                case "close_delete":
+                    if (docs.closed == false) return interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor("RED")
+                                .setDescription("❌ | This ticket is not closed.")
+                        ],
+                        ephemeral: true
+                    })
 
                     await db.deleteOne({ channelId: channel.id })
+
+                    if (logChannel) logChannel.send({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor(client.color)
+                                .setFooter(client.footer)
+                                .setTimestamp()
+                                .setTitle("Ticket Deleted")
+                                .setDescription(`Ticket <#${channel.id}> has been deleted by ${member.user.tag}.`)
+                        ]
+                    })
+
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setDescription(`🗑️ | Ticket will be deleted in 5 seconds.`)
+                                .setColor("RED")
+                        ]
+                    })
+
+                    setTimeout(() => {
+                        channel.delete().catch(err => interaction.followUp({
+                            embeds: [
+                                new MessageEmbed()
+                                    .setDescription(`❌ | Could not delete the ticket channel. It has been already deleted from the database, please delete the channel manually.`)
+                                    .setColor("RED")
+                            ]
+                        }))
+                    }, 5000)
+
                     break
             }
         })

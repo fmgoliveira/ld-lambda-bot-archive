@@ -40,6 +40,15 @@ module.exports = {
                 ephemeral: true
             })
 
+            if (docs.closed) return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor("RED")
+                        .setDescription("❌ | This ticket is closed.")
+                ],
+                ephemeral: true
+            })
+
             if (customId === "close") {
                 if (!member.roles.cache.has(panelDb.supportRole) && member.id !== docs.memberId) return interaction.reply({
                     embeds: [
@@ -194,21 +203,14 @@ module.exports = {
                         embeds: [
                             new MessageEmbed()
                                 .setDescription("🛑 | Are you sure you want to close this ticket?")
-                                .addField("Just close", "Close the ticket without creating a transcript")
-                                .addField("Save & close", "Close the ticket, but create a transcript")
-                                .addField("Cancel", "Don't close the ticket")
                                 .setColor("RED")
                         ],
                         components: [
                             new MessageActionRow().addComponents(
                                 new MessageButton()
                                     .setCustomId("ticket-close_confirm")
-                                    .setLabel("Just Close")
+                                    .setLabel("Close")
                                     .setStyle("DANGER"),
-                                new MessageButton()
-                                    .setCustomId("ticket-close_save")
-                                    .setLabel("Save & Close")
-                                    .setStyle("PRIMARY"),
                                 new MessageButton()
                                     .setCustomId("ticket-close_cancel")
                                     .setLabel("Cancel")
