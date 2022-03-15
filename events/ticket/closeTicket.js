@@ -176,8 +176,6 @@ module.exports = {
                     break
 
                 case "close_reopen":
-                console.log("here")
-
                     if (docs.closed == false) return interaction.reply({
                         embeds: [
                             new MessageEmbed()
@@ -187,24 +185,18 @@ module.exports = {
                         ephemeral: true
                     })
 
-                    console.log("here2")
+                    interaction.message.delete()
 
                     await db.updateOne({ channelId: channel.id }, { closed: false })
                     channel.permissionOverwrites.edit(docs.memberId, {
                         VIEW_CHANNEL: true
                     })
 
-                    console.log("here3")
-
-
                     docs.otherMembers.forEach(m => {
                         channel.permissionOverwrites.edit(m, {
                             VIEW_CHANNEL: true
                         })
                     })
-
-                    console.log("here4")
-
 
                     if (logChannel) logChannel.send({
                         embeds: [
@@ -216,9 +208,6 @@ module.exports = {
                                 .setDescription(`Ticket <#${channel.id}> has been re-opened by ${member.user.tag}.`)
                         ]
                     })
-
-                    console.log("here5")
-
 
                     interaction.reply({
                         embeds: [
