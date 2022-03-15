@@ -106,7 +106,7 @@ module.exports = {
                         files: [attachment]
                     })
 
-                    await interaction.reply({
+                    interaction.reply({
                         embeds: [
                             new MessageEmbed()
                                 .setDescription(`🔴 | This ticket has been closed. ${Message ? "[Go to transcript](" + Message.url + ")" : ""}`)
@@ -131,7 +131,9 @@ module.exports = {
                                     .setStyle("DANGER")
                             )
                         ]
-                    }).then(msg => msg.pin())
+                    })
+
+                    interaction.fetchReply().then(msg => msg.pin())
 
                     break
 
