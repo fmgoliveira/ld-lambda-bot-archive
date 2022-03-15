@@ -237,10 +237,10 @@ module.exports = {
                             .setStyle("DANGER")
                             .setLabel("Close"),
                         new MessageButton()
-                            .setCustomId(docs.locked ? "ticket-lock" : "ticket-unlock")
-                            .setEmoji(docs.locked ? "🔒" : "🔓")
+                            .setCustomId(docs.locked ? "ticket-unlock" : "ticket-lock")
+                            .setEmoji(docs.locked ? "🔓" : "🔒")
                             .setStyle("SECONDARY")
-                            .setLabel(docs.locked ? "Lock" : "Unlock"),
+                            .setLabel(docs.locked ? "Unlock" : "Lock"),
                         new MessageButton()
                             .setCustomId("ticket-unclaim")
                             .setEmoji("🚫")
@@ -279,10 +279,10 @@ module.exports = {
                             .setStyle("DANGER")
                             .setLabel("Close"),
                         new MessageButton()
-                            .setCustomId(docs.locked ? "ticket-lock" : "ticket-unlock")
-                            .setEmoji(docs.locked ? "🔒" : "🔓")
+                            .setCustomId(docs.locked ? "ticket-unlock" : "ticket-lock")
+                            .setEmoji(docs.locked ? "🔓" : "🔒")
                             .setStyle("SECONDARY")
-                            .setLabel(docs.locked ? "Lock" : "Unlock"),
+                            .setLabel(docs.locked ? "Unlock" : "Lock"),
                         new MessageButton()
                             .setCustomId("ticket-claim")
                             .setEmoji("✋")
