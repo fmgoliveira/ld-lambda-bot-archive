@@ -12,7 +12,7 @@ module.exports = {
     async execute(interaction, client) {
         const embed = new MessageEmbed()
             .setTitle(`Need help?`)
-            .setDescription(`Click **[here](process.env.LAMBDA_GUILD_LINK)** to join <:logo:921033010764218428> **Lambda Development Server**!`)
+            .setDescription(`Click **[here](${process.env.LAMBDA_GUILD_LINK})** to join <:logo:921033010764218428> **Lambda Development Server**!`)
             .setThumbnail(client.user.avatarURL())
             .setTimestamp()
             .setFooter(client.footer)
