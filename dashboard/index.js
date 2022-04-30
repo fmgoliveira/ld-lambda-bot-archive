@@ -2479,43 +2479,5 @@ module.exports = async (client) => {
         res.redirect("https://discord.com/api/oauth2/authorize?client_id=900398063607242762&permissions=1118741982327&redirect_uri=https%3A%2F%2Fdiscord.gg%2FzqBF8Wv5Pg&response_type=code&scope=bot%20applications.commands")
     })
 
-    // Bot Lists API Webhooks
-    app.post("/discordswebhook", bodyParser.json(), async (req, res) => {
-        if (!req.headers.authorization || (req.headers.authorization !== process.env.BOTSFORDISCORD_WEBHOOK_TOKEN)) return res.sendStatus(403)
-        res.sendStatus(200)
-
-        if (!req.body) return
-
-        const { user, bot } = req.body
-
-        if (bot !== process.env.APPLICATION_ID) return
-        const timestamp = Date.now()
-
-        await client.db.votes.create({
-            userId: user,
-            timestamp,
-            list: "botsfordiscord"
-        })
-    })
-
-    app.post("/dblwebhook", bodyParser.json(), async (req, res) => {
-        if (!req.headers.authorization || (req.headers.authorization !== process.env.TOP_GG_WEBHOOK_TOKEN)) return res.sendStatus(403)
-        res.sendStatus(200)
-
-        if (!req.body) return
-
-        const { user, bot, type } = req.body
-
-        if (bot !== process.env.APPLICATION_ID) return
-        if (type === "test") return
-        const timestamp = Date.now()
-
-        await client.db.votes.create({
-            userId: user,
-            timestamp,
-            list: "topgg"
-        })
-    })
-
     app.listen(PORT, () => console.log(`🌐 Webserver started at port ${PORT} successfully`))
 }

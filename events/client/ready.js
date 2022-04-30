@@ -41,7 +41,7 @@ module.exports = {
         client.updateStatus(client)
         connectToDatabase(client)
         require("../../dashboard/index")(client)
-        require("../../systems/voteSystem")(client)
-        require("../../systems/statsSystem")(client)
+        // require("../../systems/voteSystem")(client)
+        // require("../../systems/statsSystem")(client)
     }
 }
